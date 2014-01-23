@@ -8,10 +8,10 @@ import webbrowser
 from PySide import QtCore, QtGui
 
 from ..code_editor.pinguino_code_editor import PinguinoCodeEditor
-from ..helpers.syntax import Snippet
-from ..helpers.dialogs import Dialogs
-from ..helpers.decorators import Decorator
-from ..helpers import constants as Constants
+from ..methods.syntax import Snippet
+from ..methods.dialogs import Dialogs
+from ..methods.decorators import Decorator
+from ..methods import constants as Constants
 #from ..tools.code_navigator import CodeNavigator
 from ..tools.files import Files
 from ..tools.search_replace import SearchReplace

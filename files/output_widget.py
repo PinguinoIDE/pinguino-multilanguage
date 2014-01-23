@@ -6,8 +6,8 @@ import sys
 from PySide import QtCore, QtGui
 import git
 
-from ..helpers import constants as Constants
-from ..helpers.python_shell import PythonShell
+from ..methods import constants as Constants
+from ..methods.python_shell import PythonShell
 
 HEAD = Constants.TAB_NAME + "\n" + "Python " + sys.version + " on " + sys.platform
 HELP = QtGui.QApplication.translate("PythonShell", "can also use the commands:") + '"clear", "restart"'
