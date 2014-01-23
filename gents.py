@@ -5,7 +5,27 @@ import time
 import os
 import sys
 
+if len(sys.argv) == 1:
+    print("Missing locale name\n")
+    print("e.g.: python gents.py de")
+    print("      python gents.py de_DE\n")
+    print("A locale name usually has the form ‘ll_CC’. Here ‘ll’ is an ISO 639 two-letter language code,"
+          "and ‘CC’ is an ISO 3166 two-letter country code. For example, for German in Germany, ll is de, "
+          "and CC is DE. You find a list of the language codes in appendix Language Codes and a list of the "
+          "country codes in appendix Country Codes.\n")
+    
+    print("ISO 639 reference: https://www.gnu.org/software/gettext/manual/html_node/Usual-Language-Codes.html#Usual-Language-Codes")
+    print("ISO 3166reference: https://www.gnu.org/software/gettext/manual/html_node/Country-Codes.html#Country-Codes")
+    print("\n")
+    print("Locale Names: https://www.gnu.org/software/gettext/manual/html_node/Locale-Names.html")
+    sys.exit()
+
+elif len(sys.argv) > 2:
+    print("One (and only one) argument is requiered.")
+    sys.exit()
+    
 lang = sys.argv[1]
+    
 
 files = []
 for root, dirnames, filenames in os.walk("files"):
