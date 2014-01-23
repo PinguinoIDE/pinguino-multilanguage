@@ -8,7 +8,7 @@ import sys
 lang = sys.argv[1]
 
 files = []
-for root, dirnames, filenames in os.walk("pinguino-ide"):
+for root, dirnames, filenames in os.walk("files"):
     filenames = filter(lambda filename: filename.endswith(".py") or filename.endswith(".ui"), filenames)
     for filename in filenames:
         files.append(os.path.join(root, filename))
@@ -35,9 +35,10 @@ kalam.close()
 time.sleep(0.1)  #important delay
 exist = os.path.exists(file_ts)
 os.system("pyside-lupdate project.pro")
-os.remove("project.pro")
+#os.remove("project.pro")
 
 if exist:
     print("pinguino_%s.ts updated"%lang)
 else:
     print("pinguino_%s.ts generated"%lang)
+    
