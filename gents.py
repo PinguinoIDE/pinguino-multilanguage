@@ -42,8 +42,14 @@ ui_files = []
 for file_ in files:
     if file_.endswith(".ui"):
         ui_files.append(file_)
-        
-        
+          
+#exclude compiled files
+for ui_file in ui_files:
+    py_file = ui_file.replace(".ui", ".py")
+    if py_file in python_files:
+        python_files.pop(python_files.index(py_file))
+        #print("exclude: " + py_file)
+
 file_ts = "pinguino_%s.ts"%lang
 
 kalam = open("project.pro", "w")
