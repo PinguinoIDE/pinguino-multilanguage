@@ -60,11 +60,5 @@ kalam.close()
 
 time.sleep(0.1)  #important delay
 exist = os.path.exists(file_ts)
-os.system("pyside-lupdate project.pro")
+os.system("pyside-lupdate -verbose project.pro")
 #os.remove("project.pro")
-
-if exist:
-    print("pinguino_%s.ts updated"%lang)
-else:
-    print("pinguino_%s.ts generated"%lang)
-    
