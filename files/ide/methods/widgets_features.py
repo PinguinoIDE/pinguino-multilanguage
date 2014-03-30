@@ -11,7 +11,8 @@ class PrettyFeatures(object):
         
     #----------------------------------------------------------------------
     @classmethod
-    def LineEdit_default_text(self, parent, lineEdit, default_text):
+    #def LineEdit_default_text(self, parent, lineEdit, default_text):
+    def LineEdit_default_text(cls, lineEdit, default_text):
         
         
         def set_focus_out_color():
@@ -30,7 +31,7 @@ class PrettyFeatures(object):
             if lineEdit.text() == "":
                 lineEdit.setText(default_text)
                 set_focus_out_color()
-            QtGui.QLineEdit.focusInEvent(lineEdit, QtGui.QFocusEvent(QtCore.QEvent.FocusOut))
+            QtGui.QLineEdit.focusOutEvent(lineEdit, QtGui.QFocusEvent(QtCore.QEvent.FocusOut))
             
         lineEdit.focusInEvent = focus_in      
         lineEdit.focusOutEvent = focus_out     

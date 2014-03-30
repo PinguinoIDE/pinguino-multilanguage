@@ -5,28 +5,34 @@ from PySide.QtGui import QWidget
 from PySide.QtGui import QPainter
 from PySide import QtCore, QtGui
 
-from ..methods.backgrounds import BackgroundPallete
+#from ..methods.backgrounds import BackgroundPallete
 
 class LineNumber(QWidget):
 
     #----------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super(LineNumber, self).__init__(*args, **kwargs)
-        
+
         self.edit = None
         self.highest_line = 0
-        self.current=0
-        
+        self.current = 0
+
         self.setMinimumSize(QtCore.QSize(51, 0))
         self.setMaximumSize(QtCore.QSize(51, 16777215))
         #BackgroundPallete.set_background_pinguino(self)
-        
+
         palette = QtGui.QPalette(self.palette())
         self.setAutoFillBackground(True)
         palette.setColor(QtGui.QPalette.Window, QtGui.QColor(175, 200, 225))
-        self.setPalette(palette)        
-               
-        
+        self.setPalette(palette)
+
+        self.setStyleSheet("""
+        font-family: ubuntu mono;
+        font-weight: normal;
+        font-size: 12pt;
+
+        """)
+
 
     #----------------------------------------------------------------------
     def setTextEdit(self, edit):
@@ -59,7 +65,7 @@ class LineNumber(QWidget):
                 font = painter.font()
                 font.setBold(True)
                 painter.setFont(font)
-                self.current=line_count
+                self.current = line_count
             painter.drawText(self.width() - font_metrics.width(str(line_count)) - 10,
                              round(position.y()) - contents_y + font_metrics.ascent(),
                              str(line_count))

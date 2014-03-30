@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+import os
+
 from ...frames.board_config import Ui_BoardConfig
-from ..methods.constants import TAB_NAME
+#from ..methods.constants import os.getenv("NAME")
 from PySide import QtGui, QtCore
 
 
@@ -16,7 +18,7 @@ class BoardConfig(QtGui.QDialog):
         self.board_config.setupUi(self)
         self.main = parent
         
-        self.setWindowTitle(TAB_NAME+" - "+self.windowTitle())
+        self.setWindowTitle(os.getenv("NAME")+" - "+self.windowTitle())
         
         self.build_devices_arch()        
         self.load_config()
@@ -32,8 +34,14 @@ class BoardConfig(QtGui.QDialog):
         
         self.closeEvent = self.terminate_config
         
+        self.setStyleSheet("""
+        font-family: ubuntu regular;
+        font-weight: normal;
+        
+        """)
+        
     #----------------------------------------------------------------------
-    def terminate_config(self, *args):
+    def terminate_config(self, event=None):
         
         self.main.configIDE.load_config()
         self.close()
@@ -168,3 +176,4 @@ class BoardConfig(QtGui.QDialog):
             if name_checked == board.name: radio.setChecked(True)
             self.connect(radio, QtCore.SIGNAL("clicked()"), self.set_board_name(board.name, "32"))
             count += 1
+            

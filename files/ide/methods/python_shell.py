@@ -24,7 +24,7 @@ class PythonShell(object):
         
         log = StringIO()
         sys.stdout = log
-        sys.stderr = log        
+        sys.stderr = log
         
         try:
             compiled = compile(command, '<string>', 'single')
@@ -35,5 +35,5 @@ class PythonShell(object):
 
     #----------------------------------------------------------------------
     def restart(self):
-        
         self.__init__()
+        
