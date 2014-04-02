@@ -6,6 +6,6 @@
 #-------------------------------------------------------------------
 
 
-Name:
-Language:
-Contribution:
+Name: avrin
+Language: ja
+Contribution: 2014/03 
