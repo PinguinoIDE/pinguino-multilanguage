@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/yeison/.virtualenvs/pinguino_env/pinguino/pinguino-ide/qtgui/gide/bloques/nested/nested.ui'
+# Form implementation generated from reading ui file '/home/yeison/Documentos/python/dev/developing/pinguino/pinguino-ide/qtgui/gide/bloques/nested/nested.ui'
 #
-# Created: Mon Jan 27 18:23:23 2014
-#      by: pyside-uic 0.2.15 running on PySide 1.2.1
+# Created: Sun Mar 30 15:51:11 2014
+#      by: pyside-uic 0.2.14 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 

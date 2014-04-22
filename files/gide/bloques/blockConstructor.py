@@ -5,13 +5,26 @@ import sys
 
 from PySide import QtCore, QtGui
 
-from .linear import Linear
-from .nested import Nested
-from .nested_in_code import NestedLinear
-from .nested_in_code_next import NestedSecond
-from .inside import Floatable, FloatableBool
-from .frame_edit import FrameEdit
-from .constructor import Constructor, FONT_SIZE, changeFontSize
+#from .linear import Linear
+from .linear.linear import Ui_Form as Linear
+
+#from .nested import Nested
+from .nested.nested import Ui_Form as Nested
+
+#from .nested_in_code import NestedLinear
+from .nested_in_code.nested_line import Ui_Form as NestedLinear
+
+#from .nested_in_code_next import NestedSecond
+from .nested_in_code_next.nested_second import Ui_Form as NestedSecond
+
+#from .inside import Floatable, FloatableBool
+from .inside.part import Ui_Form as Floatable
+from .inside.part_bool import Ui_Form as FloatableBool
+
+#from .frame_edit import FrameEdit
+from .frame_edit.frame_edit import Ui_Form as FrameEdit
+
+from .constructor import Constructor, changeFontSize
 
 #----------------------------------------------------------------------
 def setPartOfBlock(blocks):
@@ -67,6 +80,14 @@ class Properties(object):
         #menu.addAction("Clone with sublocks", )    
         #menu.addAction("Clone", )
         
+        menu.setStyleSheet("""
+        QMenu {
+            font-family: ubuntu regular;
+            font-weight: normal;
+            }
+        
+        """)         
+        
         menu.exec_(event.globalPos())
     
     
@@ -86,7 +107,7 @@ class Properties(object):
     
     #----------------------------------------------------------------------
     def destroy_this(self):
-        base = self.widget.BASENAME
+        #base = self.widget.BASENAME
         #c = self.widget.parent()
         #while c.objectName() != "": c = c.parent()
         #c.addBlock(base, True)
@@ -134,31 +155,33 @@ class BlockLinear(Constructor, Properties):
         return "BlockLinear"
 
     #----------------------------------------------------------------------
-    def __init__(self, widget, bloque, IDE=None):
+    def __init__(self, widget, bloque):
         
         delay = Linear()
         delay.setupUi(widget)
         widget.setObjectName("Bloq!")
         self.f_expand = lambda :None
-        self.IDE = IDE
+        #self.IDE = IDE
         self.delay = delay
         
         #self.principalColor = 
         
-        self.isideDir = "%s/qtgui/gide/bloques/linear/arte/"%sys.path[0]
-        #print "%s/qtgui/gide/bloques/linear/arte/"%sys.path[0]
-        delay.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/linear/arte/linear1.svg);"%sys.path[0])
-        delay.area.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/linear/arte/linear2.svg);"%sys.path[0])
-        delay.frame_3.setStyleSheet("image: url(%s/qtgui/gide/bloques/linear/arte/linear3.svg);"%sys.path[0])
+        self.isideDir = ":/bloques/bloques/linear/arte/"
+        
+        delay.frame.setStyleSheet("image: url(:/bloques/bloques/linear/arte/linear1.svg);")
+        delay.area.setStyleSheet("background-image: url(:/bloques/bloques/linear/arte/linear2.svg);")
+        delay.frame_3.setStyleSheet("image: url(:/bloques/bloques/linear/arte/linear3.svg);")
 
         setPartOfBlock([delay.frame,
                         delay.area,
                         delay.frame_3])
         
         self.layout = delay.horizontalLayout
-        self.layout.setContentsMargins(0, 0, 0, 0)
+        
+        self.layout.setContentsMargins(0, 0, 0, 0)  
 
         self.buildBlock(widget, bloque)
+    
         
         widget.adjustSize()
         self.widget = widget
@@ -212,7 +235,7 @@ class BlockFunction(Constructor, Properties):
     #toChild = 0
     
     #----------------------------------------------------------------------
-    def __init__(self, widget, bloque, IDE):
+    def __init__(self, widget, bloque):
         
         #setColor(color, "nested")
         
@@ -220,7 +243,7 @@ class BlockFunction(Constructor, Properties):
         Nest = Nested()
         Nest.setupUi(widget)
         widget.setObjectName("Bloq!")
-        self.IDE = IDE
+        #self.IDE = IDE
         
         
         #self.child = self.CHILD
@@ -233,12 +256,13 @@ class BlockFunction(Constructor, Properties):
         
         #self.color = IDE("theme", self.color_, "ffff00")
         
-        self.isideDir = "%s/qtgui/gide/bloques/nested/arte/function/"%sys.path[0]
-        Nest.frame_2.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/nested/arte/function/linear2.svg);"%sys.path[0])
-        Nest.frame_3.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/function/linear3.svg);"%sys.path[0])
-        Nest.frame_4.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/nested/arte/function/nested2.svg);"%sys.path[0])
-        Nest.frame_5.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/function/nested3.svg);"%sys.path[0])
-        Nest.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/function/nested1.svg);"%sys.path[0])
+        self.isideDir = ":/bloques/bloques/nested/arte/function/"
+        
+        Nest.frame_2.setStyleSheet("background-image: url(:/bloques/bloques/nested/arte/function/linear2.svg);")
+        Nest.frame_3.setStyleSheet("image: url(:/bloques/bloques/nested/arte/function/linear3.svg);")
+        Nest.frame_4.setStyleSheet("background-image: url(:/bloques/bloques/nested/arte/function/nested2.svg);")
+        Nest.frame_5.setStyleSheet("image: url(:/bloques/bloques/nested/arte/function/nested3.svg);")
+        Nest.frame.setStyleSheet("image: url(:/bloques/bloques/nested/arte/function/nested1.svg);")
         
         setPartOfBlock([Nest.frame_2,
                         Nest.frame_3,
@@ -281,12 +305,13 @@ class BlockFunction(Constructor, Properties):
         
     #----------------------------------------------------------------------
     def updatePoints(self):
+        super(BlockFunction, self).updatePoints()
         
-        poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts)
-        self.toType["tipo5"] = poits
+        #poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts)
+        #self.toType["tipo5"] = poits
         
-        poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts_b)
-        self.toType["tipo2"] = poits
+        #poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts_b)
+        #self.toType["tipo2"] = poits
         
         
         self.toType["tipo1"] = [QtCore.QPoint(12, 39)]      
@@ -387,7 +412,7 @@ class BlockNested(Constructor, Properties):
     #color_ = "nested"
     
     #----------------------------------------------------------------------
-    def __init__(self, widget, bloque, IDE=None):
+    def __init__(self, widget, bloque):
         NestLin = NestedLinear()
         NestLin.setupUi(widget)
         widget.setObjectName("Bloq!")
@@ -402,13 +427,13 @@ class BlockNested(Constructor, Properties):
         
         #self.color = IDE("theme", self.color_, "ffff00")
         
-        self.isideDir = "%s/qtgui/gide/bloques/nested/arte/nested/"%sys.path[0]
+        self.isideDir = ":/bloques/bloques/nested/arte/nested/"
         
-        NestLin.frame_2.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/nested/arte/nested/linear2.svg);"%sys.path[0])
-        NestLin.frame_3.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/nested/linear3.svg);"%sys.path[0])
-        NestLin.frame_4.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested2.svg);"%sys.path[0])
-        NestLin.frame_5.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested32.svg);"%sys.path[0])
-        NestLin.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested1sec.svg);"%sys.path[0])
+        NestLin.frame_2.setStyleSheet("background-image: url(:/bloques/bloques/nested/arte/nested/linear2.svg);")
+        NestLin.frame_3.setStyleSheet("image: url(:/bloques/bloques/nested/arte/nested/linear3.svg);")
+        NestLin.frame_4.setStyleSheet("background-image: url(:/bloques/bloques/nested/arte/nested/nested2.svg);")
+        NestLin.frame_5.setStyleSheet("image: url(:/bloques/bloques/nested/arte/nested/nested32.svg);")
+        NestLin.frame.setStyleSheet("image: url(:/bloques/bloques/nested/arte/nested/nested1sec.svg);")
         
         setPartOfBlock([
                         NestLin.frame_2,
@@ -448,7 +473,7 @@ class BlockNested(Constructor, Properties):
         a = widgetMove.pos() - WidgetStatic.pos()
 
         c = b - a
-        #print "XXXXXXXXXX", c, a
+        #print c, a
         #print widgetMove.DATA["pos"], WidgetStatic.DATA["pos"]
         if abs(c.y()) < 2:
             #print "Funciona"
@@ -478,16 +503,12 @@ class BlockNested(Constructor, Properties):
         
     #----------------------------------------------------------------------
     def updatePoints(self):
+        super(BlockNested, self).updatePoints()
+        #poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts)
+        #self.toType["tipo5"] = poits
         
-        poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts)
-        self.toType["tipo5"] = poits
-        
-        poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts_b)
-        self.toType["tipo2"] = poits
-        
-        
-        
-        
+        #poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts_b)
+        #self.toType["tipo2"] = poits
 
         c = QtCore.QPoint(0, self.widget.size().height()-7)
         d = QtCore.QPoint(0, self.widget.size().height()-16)
@@ -515,7 +536,7 @@ class BlockSpace(Constructor, Properties):
     #color_ = "inside"
 
     #----------------------------------------------------------------------
-    def __init__(self, widget, bloque, IDE=None):
+    def __init__(self, widget, bloque):
         self.Inside = Floatable()
         self.Inside.setupUi(widget)
         widget.setObjectName("Bloq!")
@@ -529,10 +550,10 @@ class BlockSpace(Constructor, Properties):
         
         #self.color = IDE("theme", self.color_, "ffff00")
         
-        self.isideDir = "%s/qtgui/gide/bloques/inside/arte/in/"%sys.path[0]
+        self.isideDir = ":/bloques/bloques/inside/arte/in/"
         
-        self.Inside.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/inside/arte/in/insert.svg);"%sys.path[0])
-        self.Inside.frame_2.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/inside/arte/in/insert3.svg);"%sys.path[0])
+        self.Inside.frame.setStyleSheet("image: url(:/bloques/bloques/inside/arte/in/insert.svg);")
+        self.Inside.frame_2.setStyleSheet("background-image: url(:/bloques/bloques/inside/arte/in/insert3.svg);")
         
         setPartOfBlock([self.Inside.frame,
                         self.Inside.frame_2])
@@ -582,7 +603,7 @@ class BlockSpaceBool(Constructor, Properties):
     #color_ = "inside"
 
     #----------------------------------------------------------------------
-    def __init__(self, widget, bloque, IDE=None):
+    def __init__(self, widget, bloque):
         self.Inside = FloatableBool()
         self.Inside.setupUi(widget)
         widget.setObjectName("Bloq!")
@@ -596,11 +617,11 @@ class BlockSpaceBool(Constructor, Properties):
         
         #self.color = IDE("theme", self.color_, "ffff00")
         
-        self.isideDir = "%s/qtgui/gide/bloques/inside/arte/bool/"%sys.path[0]
+        self.isideDir = ":/bloques/bloques/inside/arte/bool/"
         
-        self.Inside.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/inside/arte/bool/insert.svg);"%sys.path[0])
-        self.Inside.frame_2.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/inside/arte/bool/insert3.svg);"%sys.path[0])
-        self.Inside.frame_3.setStyleSheet("image: url(%s/qtgui/gide/bloques/inside/arte/bool/insert_.svg);"%sys.path[0])
+        self.Inside.frame.setStyleSheet("image: url(:/bloques/bloques/inside/arte/bool/insert.svg);")
+        self.Inside.frame_2.setStyleSheet("background-image: url(:/bloques/bloques/inside/arte/bool/insert3.svg);")
+        self.Inside.frame_3.setStyleSheet("image: url(:/bloques/bloques/inside/arte/bool/insert_.svg);")
 
         setPartOfBlock([self.Inside.frame,
                         self.Inside.frame_2,
@@ -613,7 +634,7 @@ class BlockSpaceBool(Constructor, Properties):
         self.layout_adds = []
         self.layout_pos = []
 
-        self.buildBlock(widget, bloque, (13, 0), inside=True, bool=True)
+        self.buildBlock(widget, bloque, (13, 0), inside=True)
         
         
         self.w_parent = None
@@ -652,7 +673,7 @@ class BlockNestedSecond(Constructor, Properties):
     #color_ = "nested"
     
     #----------------------------------------------------------------------
-    def __init__(self, widget, bloque, IDE=None):
+    def __init__(self, widget, bloque):
         NestSec = NestedSecond()
         NestSec.setupUi(widget)
         widget.setObjectName("Bloq!")
@@ -667,13 +688,13 @@ class BlockNestedSecond(Constructor, Properties):
         
         #self.color = IDE("theme", self.color_, "ffff00")
         
-        self.isideDir = "%s/qtgui/gide/bloques/nested/arte/nested/"%sys.path[0]
+        self.isideDir = ":/bloques/bloques/nested/arte/nested/"
         
-        NestSec.frame_2.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/nested/arte/nested/linear2.svg);"%sys.path[0])
-        NestSec.frame_3.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/nested/arte/nested/linear3.svg);"%sys.path[0])
-        NestSec.frame_4.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested2.svg);"%sys.path[0])
-        NestSec.frame_5.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested32.svg);"%sys.path[0])
-        NestSec.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested1.svg);"%sys.path[0])
+        NestSec.frame_2.setStyleSheet("background-image: url(:/bloques/bloques/nested/arte/nested/linear2.svg);")
+        NestSec.frame_3.setStyleSheet("background-image: url(:/bloques/bloques/nested/arte/nested/linear3.svg);")
+        NestSec.frame_4.setStyleSheet("background-image: url(:/bloques/bloques/nested/arte/nested/nested2.svg);")
+        NestSec.frame_5.setStyleSheet("image: url(:/bloques/bloques/nested/arte/nested/nested32.svg);")
+        NestSec.frame.setStyleSheet("image: url(:/bloques/bloques/nested/arte/nested/nested1.svg);")
         
         setPartOfBlock([
                         NestSec.frame_2,
@@ -713,7 +734,7 @@ class BlockNestedSecond(Constructor, Properties):
         a = widgetMove.metadata.pos_ - WidgetStatic.metadata.pos_
 
         c = b - a
-        #print "XXXXXXXXXX", c, a
+        #print c, a
         #print widgetMove.DATA["pos"], WidgetStatic.DATA["pos"]
         if abs(c.y()) < 2:
             #print "Funciona"
@@ -748,15 +769,14 @@ class BlockNestedSecond(Constructor, Properties):
         
     #----------------------------------------------------------------------
     def updatePoints(self):
+               
+        super(BlockNestedSecond, self).updatePoints()
+        #poits = map(lambda x:self.widget.mapToGlobal(x.pos() + self.insidePos), self.inLayouts)
+        #self.toType["tipo5"] = poits
         
-        poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts)
-        self.toType["tipo5"] = poits
+        #poits = map(lambda x:self.widget.mapToGlobal(x.pos() + self.insidePos), self.inLayouts_b)
+        #self.toType["tipo2"] = poits
         
-        poits = map(lambda x:self.widget.mapToGlobal(x.pos()+self.insidePos), self.inLayouts_b)
-        self.toType["tipo2"] = poits
-        
-        
-
         c = QtCore.QPoint(0, self.widget.size().height()-7)
         d = QtCore.QPoint(0, self.widget.size().height()-16)
 
@@ -778,7 +798,7 @@ class BlockFrameEdit(Constructor, Properties):
     #color_ = "nested"
     
     #----------------------------------------------------------------------
-    def __init__(self, widget, bloque, IDE=None):
+    def __init__(self, widget, bloque):
         NestSec = FrameEdit()
         NestSec.setupUi(widget)
         widget.setObjectName("Bloq!")
@@ -796,16 +816,16 @@ class BlockFrameEdit(Constructor, Properties):
         
         #self.isideDir = "bloques/nested/arte/nested/"
         
-        NestSec.frame_8.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame_edit/arte/fill.svg);"%sys.path[0])
-        NestSec.frame_10.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame_edit/arte/fill.svg);"%sys.path[0])
-        NestSec.frame_6.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame_edit/arte/fill.svg);"%sys.path[0])
-        NestSec.frame_7.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame_edit/arte/fill.svg);"%sys.path[0])
-        NestSec.frame_11.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame_edit/arte/fill.svg);"%sys.path[0])
+        NestSec.frame_8.setStyleSheet("background-image: url(:/bloques/bloques/frame_edit/arte/fill.svg);")
+        NestSec.frame_10.setStyleSheet("background-image: url(:/bloques/bloques/frame_edit/arte/fill.svg);")
+        NestSec.frame_6.setStyleSheet("background-image: url(:/bloques/bloques/frame_edit/arte/fill.svg);")
+        NestSec.frame_7.setStyleSheet("background-image: url(:/bloques/bloques/frame_edit/arte/fill.svg);")
+        NestSec.frame_11.setStyleSheet("background-image: url(:/bloques/bloques/frame_edit/arte/fill.svg);")
         
-        NestSec.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame_edit/arte/esq11.svg);"%sys.path[0])
-        NestSec.frame_2.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame_edit/arte/esq12.svg);"%sys.path[0])
-        NestSec.frame_4.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame_edit/arte/esq22.svg);"%sys.path[0])
-        NestSec.frame_3.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame_edit/arte/esq21.svg);"%sys.path[0])
+        NestSec.frame.setStyleSheet("image: url(:/bloques/bloques/frame_edit/arte/esq11.svg);")
+        NestSec.frame_2.setStyleSheet("image: url(:/bloques/bloques/frame_edit/arte/esq12.svg);")
+        NestSec.frame_4.setStyleSheet("image: url(:/bloques/bloques/frame_edit/arte/esq22.svg);")
+        NestSec.frame_3.setStyleSheet("image: url(:/bloques/bloques/frame_edit/arte/esq21.svg);")
         
         setPartOfBlock([NestSec.frame_8,
                         NestSec.frame_10, 
@@ -819,9 +839,9 @@ class BlockFrameEdit(Constructor, Properties):
                         ])
         
         
-        #NestSec.frame_4.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested2.svg);"%sys.path[0])
-        #NestSec.frame_5.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested32.svg);"%sys.path[0])
-        #NestSec.widget.setStyleSheet("image: url(%s/qtgui/gide/bloques/nested/arte/nested/nested1.svg);"%sys.path[0])
+        #NestSec.frame_4.setStyleSheet("background-image: url(:/bloques/bloques/nested/arte/nested/nested2.svg);")
+        #NestSec.frame_5.setStyleSheet("image: url(:/bloques/bloques/nested/arte/nested/nested32.svg);")
+        #NestSec.widget.setStyleSheet("image: url(:/bloques/bloques/nested/arte/nested/nested1.svg);")
         
         self.layout = None
         #self.layout.setContentsMargins(0, 0, 0, 0)
@@ -834,9 +854,17 @@ class BlockFrameEdit(Constructor, Properties):
         
         NestSec.plainTextEdit.appendPlainText(bloque[0])
         
-        changeFontSize(NestSec.plainTextEdit, -3)
+        changeFontSize(NestSec.plainTextEdit)
         
-        NestSec.plainTextEdit.setStyleSheet("background-image: url(:/bg/bg/box.png);\ncolor: rgb(90, 90, 90);")
+        NestSec.plainTextEdit.setStyleSheet("""
+        QPlainTextEdit{
+            background-image: url(:/bg/bg/box.png);
+            color: rgb(90, 90, 90);
+            font-family: ubuntu mono;
+        }""")
+        
+        
+        
 
         self.widget = widget
         self.buildBlock(widget, [bloque], (40, 2))
@@ -949,16 +977,16 @@ class BlockFrameEdit(Constructor, Properties):
 
         #self.NestSec.horizontalLayout_2.addWidget(self.viewer)
         
-        #self.NestSec.frame_10.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/fill.svg);"%sys.path[0])
-        #self.NestSec.frame_6.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/fill.svg);"%sys.path[0])
-        #self.NestSec.frame_7.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/fill.svg);"%sys.path[0])
-        #self.NestSec.frame_5.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/fill.svg);"%sys.path[0])
-        #self.NestSec.frame_15.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/widgets/arte/box.png);"%sys.path[0])
+        #self.NestSec.frame_10.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/fill.svg);")
+        #self.NestSec.frame_6.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/fill.svg);")
+        #self.NestSec.frame_7.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/fill.svg);")
+        #self.NestSec.frame_5.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/fill.svg);")
+        #self.NestSec.frame_15.setStyleSheet("background-image: url(:/bloques/bloques/widgets/arte/box.png);")
         
-        #self.NestSec.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame/arte/esq11.svg);"%sys.path[0])
-        #self.NestSec.frame_2.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame/arte/esq12.svg);"%sys.path[0])
-        #self.NestSec.frame_4.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame/arte/esq22.svg);"%sys.path[0])
-        #self.NestSec.frame_3.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame/arte/esq21.svg);"%sys.path[0])
+        #self.NestSec.frame.setStyleSheet("image: url(:/bloques/bloques/frame/arte/esq11.svg);")
+        #self.NestSec.frame_2.setStyleSheet("image: url(:/bloques/bloques/frame/arte/esq12.svg);")
+        #self.NestSec.frame_4.setStyleSheet("image: url(:/bloques/bloques/frame/arte/esq22.svg);")
+        #self.NestSec.frame_3.setStyleSheet("image: url(:/bloques/bloques/frame/arte/esq21.svg);")
         
         #setPartOfBlock([
                         #self.NestSec.frame_10,
@@ -1067,17 +1095,17 @@ class BlockFrameEdit(Constructor, Properties):
         #self.MAX_LENGTH = 50
 
         
-        #self.NestSec.frame_10.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/fill.svg);"%sys.path[0])
-        #self.NestSec.frame_6.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/fill.svg);"%sys.path[0])
-        #self.NestSec.frame_7.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/fill.svg);"%sys.path[0])
-        #self.NestSec.frame_5.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/fill.svg);"%sys.path[0])
-        #self.NestSec.frame_15.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/widgets/arte/box.png);")
-        #self.NestSec.plainTextEdit.setStyleSheet("background-image: url(%s/qtgui/gide/bloques/frame/arte/__fill_b.svg); color: rgb(255, 255, 255);"%sys.path[0])
+        #self.NestSec.frame_10.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/fill.svg);")
+        #self.NestSec.frame_6.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/fill.svg);")
+        #self.NestSec.frame_7.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/fill.svg);")
+        #self.NestSec.frame_5.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/fill.svg);")
+        #self.NestSec.frame_15.setStyleSheet("background-image: url(:/bloques/bloques/widgets/arte/box.png);")
+        #self.NestSec.plainTextEdit.setStyleSheet("background-image: url(:/bloques/bloques/frame/arte/__fill_b.svg); color: rgb(255, 255, 255);")
         
-        #self.NestSec.frame.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame/arte/esq11.svg);"%sys.path[0])
-        #self.NestSec.frame_2.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame/arte/esq12.svg);"%sys.path[0])
-        #self.NestSec.frame_4.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame/arte/esq22.svg);"%sys.path[0])
-        #self.NestSec.frame_3.setStyleSheet("image: url(%s/qtgui/gide/bloques/frame/arte/esq21.svg);"%sys.path[0])
+        #self.NestSec.frame.setStyleSheet("image: url(:/bloques/bloques/frame/arte/esq11.svg);")
+        #self.NestSec.frame_2.setStyleSheet("image: url(:/bloques/bloques/frame/arte/esq12.svg);")
+        #self.NestSec.frame_4.setStyleSheet("image: url(:/bloques/bloques/frame/arte/esq22.svg);")
+        #self.NestSec.frame_3.setStyleSheet("image: url(:/bloques/bloques/frame/arte/esq21.svg);")
         
         #setPartOfBlock([
                         #self.NestSec.frame_10,

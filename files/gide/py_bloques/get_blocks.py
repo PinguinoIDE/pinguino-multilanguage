@@ -37,3 +37,15 @@ extractBlocks(Communication)
 
 from .funtions import Functions
 extractBlocks(Functions)
+
+from .lcd import LCD
+extractBlocks(LCD)
+
+from .stepper import Stepper
+extractBlocks(Stepper)
+
+from .servo import Servo
+extractBlocks(Servo)
+
+
+

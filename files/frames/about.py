@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/yeison/.virtualenvs/pinguino_env/pinguino/pinguino-ide/qtgui/frames/about.ui'
+# Form implementation generated from reading ui file '/home/yeison/Documentos/python/dev/developing/pinguino/pinguino-ide/qtgui/frames/about.ui'
 #
-# Created: Mon Jan 27 18:23:25 2014
-#      by: pyside-uic 0.2.15 running on PySide 1.2.1
+# Created: Sun Mar 30 15:51:08 2014
+#      by: pyside-uic 0.2.14 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -35,16 +35,16 @@ class Ui_About(object):
         self.pushButton_close.setObjectName("pushButton_close")
         self.gridLayout_4.addWidget(self.pushButton_close, 0, 1, 1, 1)
         self.gridLayout.addLayout(self.gridLayout_4, 6, 0, 1, 3)
-        self.label_2 = QtGui.QLabel(self.page)
+        self.label_name = QtGui.QLabel(self.page)
         font = QtGui.QFont()
         font.setPointSize(23)
         font.setWeight(75)
         font.setBold(True)
-        self.label_2.setFont(font)
-        self.label_2.setText("Pinguino 11.0")
-        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setObjectName("label_2")
-        self.gridLayout.addWidget(self.label_2, 0, 1, 1, 1)
+        self.label_name.setFont(font)
+        self.label_name.setText("Pinguino 11.0")
+        self.label_name.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_name.setObjectName("label_name")
+        self.gridLayout.addWidget(self.label_name, 0, 1, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(620, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         self.gridLayout.addItem(spacerItem1, 5, 0, 1, 3)
         self.label = QtGui.QLabel(self.page)
@@ -172,7 +172,7 @@ class Ui_About(object):
         QtCore.QMetaObject.connectSlotsByName(About)
 
     def retranslateUi(self, About):
-        About.setWindowTitle(QtGui.QApplication.translate("About", "About", None, QtGui.QApplication.UnicodeUTF8))
+        About.setWindowTitle(QtGui.QApplication.translate("About", "About...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("About", "<html><head/><body><p align=\"center\">Pinguino is an Open Software and Open Hardware<br>Arduino-like project. Boards are based on 8 or 32-bit USB built-in<br>Microchip microcontrollers. The main goal is to build a real<br>USB system without USB to serial converter.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_credits.setText(QtGui.QApplication.translate("About", "Credits", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_close.setText(QtGui.QApplication.translate("About", "Close", None, QtGui.QApplication.UnicodeUTF8))
