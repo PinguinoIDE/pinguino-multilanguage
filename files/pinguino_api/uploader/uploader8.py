@@ -334,11 +334,13 @@ class uploader8(baseUploader):
         # --------------------------------------------------------------
 
         # Pinguino x6j50 or x7j53, erased blocks are 1024-byte long
-        if "j" or "J" in board.proc :
+        if ("j" or "J") in board.proc :
+            #self.add_report("x6j50, x6j53 or x7j53 chip")
             erasedBlockSize = 1024
 
         # Pinguino x455, x550 or x5k50, erased blocks are 64-byte long
         else:
+            #self.add_report("x455, x550 or x5k50 chip")
             erasedBlockSize = 64
 
         # image of the whole PIC memory (above memstart)
@@ -498,7 +500,7 @@ class uploader8(baseUploader):
 
         memfree = self.board.memend - self.board.memstart;
         self.add_report(" - with %d bytes free (%d KB)" % (memfree, memfree/1024))
-
+        self.add_report("   from 0x%05X to 0x%05X" % (self.board.memstart, self.board.memend))
         # find out bootloader version
         # --------------------------------------------------------------
 

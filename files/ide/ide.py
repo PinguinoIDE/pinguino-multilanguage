@@ -63,6 +63,7 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
         #self.update_user_libs()
         splash_write(QtGui.QApplication.translate("Splash", "Linking paths for libraries and compilers"))
         PinguinoConfig.update_pinguino_paths(self.configIDE, self.pinguinoAPI)
+        PinguinoConfig.update_pinguino_extra_options(self.configIDE, self.pinguinoAPI)
         splash_write(QtGui.QApplication.translate("Splash", "Searching user libraries"))
         PinguinoConfig.update_user_libs(self.pinguinoAPI)
         self.pinguinoAPI.set_os_variables()
@@ -112,6 +113,8 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
 
 
         splash_write(QtGui.QApplication.translate("Splash", "Welcome to %s %s")%(os.getenv("NAME"), os.getenv("VERSION")))
+
+
 
     ##----------------------------------------------------------------------
     #def __str__(self):

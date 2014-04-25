@@ -60,5 +60,5 @@ kalam.close()
 
 time.sleep(0.1)  #important delay
 exist = os.path.exists(file_ts)
-os.system("pyside-lupdate -verbose -noobsolete project.pro")
+os.system("pyside-lupdate -verbose project.pro")
 #os.remove("project.pro")
