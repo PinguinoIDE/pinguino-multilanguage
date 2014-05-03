@@ -1,4 +1,6 @@
 *.pyc
 *.qm
 *.sh
+*~
+*.pro
 __pycache__/
