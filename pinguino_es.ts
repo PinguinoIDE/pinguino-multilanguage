@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="es_CO">
+<!DOCTYPE TS>
+<TS version="2.0" language="es_CO">
 <context>
     <name>About</name>
     <message>
@@ -71,49 +72,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="38"/>
+        <location filename="files/frames/board_config_advance.ui" line="41"/>
         <source>Heap Size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="46"/>
+        <location filename="files/frames/board_config_advance.ui" line="49"/>
         <source>512 bytes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="61"/>
+        <location filename="files/frames/board_config_advance.ui" line="64"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-O2: The compiler will attempt to increase code performance without compromising on size, and without taking too much compilation time.&lt;/p&gt;&lt;p&gt;-O3: This is the highest level of optimization possible. It enables optimizations that are expensive in terms of compile time and memory usage, in many cases can slow down a system due to larger binaries and increased memory usage.&lt;/p&gt;&lt;p&gt;-Os: This option will optimize your code for size.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="64"/>
+        <location filename="files/frames/board_config_advance.ui" line="67"/>
         <source>Optimization:</source>
         <translation>Optimización:</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="72"/>
+        <location filename="files/frames/board_config_advance.ui" line="75"/>
         <source>-O2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="77"/>
+        <location filename="files/frames/board_config_advance.ui" line="80"/>
         <source>-O3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="82"/>
+        <location filename="files/frames/board_config_advance.ui" line="85"/>
         <source>-Os</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="107"/>
+        <location filename="files/frames/board_config_advance.ui" line="110"/>
         <source>Restore default</source>
         <translation>Valores predefinidos</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="114"/>
+        <location filename="files/frames/board_config_advance.ui" line="117"/>
         <source>Accept</source>
         <translation>Aceptar</translation>
+    </message>
+    <message>
+        <location filename="files/frames/board_config_advance.ui" line="38"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of memory allocated to objects that are being defined.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -139,7 +145,7 @@
         <translation>32 bits</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="194"/>
+        <location filename="files/frames/board_config.ui" line="200"/>
         <source>Devices</source>
         <translation>Dispositivos</translation>
     </message>
@@ -154,7 +160,7 @@
         <translation>Cacelar</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="187"/>
+        <location filename="files/frames/board_config.ui" line="193"/>
         <source>warning!</source>
         <translation>advertencia!</translation>
     </message>
@@ -169,7 +175,7 @@
         <translation>Modo de programación</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="175"/>
+        <location filename="files/frames/board_config.ui" line="181"/>
         <source>Advance options</source>
         <translation>Opciones avanzadas</translation>
     </message>
@@ -202,57 +208,57 @@
         <translation> - Abrir</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="195"/>
+        <location filename="files/ide/child_windows/libraries.py" line="194"/>
         <source>Zip Files (*.zip)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="213"/>
+        <location filename="files/ide/child_windows/libraries.py" line="212"/>
         <source>Library duplicated (name conflict).</source>
         <translation>Biblioteca duplicada (conflicto con el nombre).</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="224"/>
+        <location filename="files/ide/child_windows/libraries.py" line="223"/>
         <source>This is not a Pinguino library or are not packaged correctly.</source>
         <translation>Esto no es una biblioteca de Pinguino o no está empquetada correctamente.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="270"/>
+        <location filename="files/ide/child_windows/libraries.py" line="269"/>
         <source>already exist.</source>
         <translation>ya existe.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="489"/>
+        <location filename="files/ide/child_windows/libraries.py" line="488"/>
         <source>Are you sure you want to delete these libraries?</source>
         <translation>¿Está seguro que desea eliminar estas bibliotecas?</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="533"/>
+        <location filename="files/ide/child_windows/libraries.py" line="532"/>
         <source>Updated</source>
         <translation>Actualizado</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="536"/>
+        <location filename="files/ide/child_windows/libraries.py" line="535"/>
         <source>Failed</source>
         <translation>Falló</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="552"/>
+        <location filename="files/ide/child_windows/libraries.py" line="551"/>
         <source>Installed</source>
         <translation>Instalado</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="555"/>
+        <location filename="files/ide/child_windows/libraries.py" line="554"/>
         <source>Problems with</source>
         <translation>Problemas con</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="591"/>
+        <location filename="files/ide/child_windows/libraries.py" line="590"/>
         <source>Enable</source>
         <translation>Habilitado</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="591"/>
+        <location filename="files/ide/child_windows/libraries.py" line="590"/>
         <source>Disable</source>
         <translation>Deshabilitado</translation>
     </message>
@@ -439,7 +445,7 @@ Would you like to do?
         <translation></translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="379"/>
+        <location filename="files/ide/methods/methods.py" line="378"/>
         <source>Clear recent files</source>
         <translation>Limpiar archivos recientes</translation>
     </message>
@@ -491,10 +497,11 @@ Use this board config?
         <translation>Esta ruta no existe.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="664"/>
+        <location filename="files/ide/methods/methods.py" line="668"/>
         <source>Pinguino IDE has found changes that were not saved during your last session.
 Do you want recover it?.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pinguino IDE ha encontrado cambios que no fueron guardados en la última sesión.
+¿Desea recuperarlos?.</translation>
     </message>
 </context>
 <context>
@@ -515,22 +522,22 @@ Do you want recover it?.</source>
         <translation>Replace...</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="141"/>
+        <location filename="files/ide/ide.py" line="140"/>
         <source>Search block...</source>
         <translation>Buscar bloque...</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="478"/>
+        <location filename="files/ide/methods/methods.py" line="477"/>
         <source>Missing compiler for %d-bit</source>
         <translation>Faltan compiladores para %d bits</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="481"/>
+        <location filename="files/ide/methods/methods.py" line="480"/>
         <source>Missing libraries for %d-bit</source>
         <translation>Faltan blibliotecas para %d bits</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="484"/>
+        <location filename="files/ide/methods/methods.py" line="483"/>
         <source>Missing libraries and compiler for %d-bit</source>
         <translation>Faltan compiladores y bibliotecas para %d bits</translation>
     </message>
@@ -560,55 +567,55 @@ Do you want recover it?.</source>
         <translation type="obsolete">%d palabras fueron encontradas.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="430"/>
+        <location filename="files/ide/child_windows/libraries.py" line="429"/>
         <source>This library is enable (can be used).</source>
         <translation>Esta librería está actualizada (puede ser usada).</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="433"/>
+        <location filename="files/ide/child_windows/libraries.py" line="432"/>
         <source>This library is not enable.</source>
         <translation>Esta librería no está habilitada.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="282"/>
+        <location filename="files/ide/child_windows/libraries.py" line="281"/>
         <source>Created :</source>
         <translation>Creado:</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="499"/>
+        <location filename="files/ide/child_windows/libraries.py" line="498"/>
         <source>Removed :</source>
         <translation>Eliminado:</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="181"/>
+        <location filename="files/ide/child_windows/libraries.py" line="180"/>
         <source>Copied :</source>
         <translation>Copiado:</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/board_config.py" line="150"/>
+        <location filename="files/ide/child_windows/board_config.py" line="152"/>
         <source>WARNING!! this mode can overwite the bootloader code.</source>
-        <translation type="unfinished"></translation>
+        <translation>¡¡Advertencia!! este modo puede sobreescribir el código del bootloader.</translation>
     </message>
     <message>
         <location filename="files/ide/tools/search_replace.py" line="43"/>
         <source>No words were found.</source>
-        <translation type="unfinished"></translation>
+        <translation>No se encontraron palabras.</translation>
     </message>
     <message>
         <location filename="files/ide/tools/search_replace.py" line="44"/>
         <source>One word were found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Una palabra encontrada.</translation>
     </message>
 </context>
 <context>
     <name>Graphical</name>
     <message>
-        <location filename="files/gide/app/work_area.py" line="101"/>
+        <location filename="files/gide/app/work_area.py" line="96"/>
         <source>Delete selected blocks</source>
         <translation>Eliminar bloques seleccionados</translation>
     </message>
     <message>
-        <location filename="files/gide/app/work_area.py" line="102"/>
+        <location filename="files/gide/app/work_area.py" line="97"/>
         <source>Take Screenshot from selected area</source>
         <translation>Tomar captura del área seleccionada</translation>
     </message>
@@ -808,6 +815,11 @@ Do you want recover it?.</source>
         <location filename="files/frames/paths.ui" line="14"/>
         <source>Paths</source>
         <translation>Rutas</translation>
+    </message>
+    <message>
+        <location filename="files/frames/paths.ui" line="244"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pinguino IDE requires a restart to reinitialize its preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pinguino IDE requiere reiniciarse para aplicar estos cambios.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1557,7 +1569,7 @@ Do you want recover it?.</source>
         <translation>Conectando eventos</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="116"/>
+        <location filename="files/ide/ide.py" line="115"/>
         <source>Welcome to %s %s</source>
         <translation>Bienvenido a %s %s</translation>
     </message>

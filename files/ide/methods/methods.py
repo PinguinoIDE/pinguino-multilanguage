@@ -204,7 +204,6 @@ class Methods(SearchReplace):
 
         editor = kwargs.get("editor", self.get_tab())
         content = editor.text_edit.toPlainText()
-        #pde_file = open(editor.path, mode="w")
         pde_file = codecs.open(editor.path, "w", "utf-8")
         pde_file.write(content)
         pde_file.close()
@@ -492,11 +491,16 @@ class Methods(SearchReplace):
 
     #----------------------------------------------------------------------
     def get_description_board(self):
-        #FIXME
+
         board = self.pinguinoAPI.get_board()
         board_config = "Board: %s\n" % board.name
         board_config += "Proc: %s\n" % board.proc
-        board_config += "Arch: %s\n" % board.arch
+        board_config += "Arch: %d\n" % board.arch
+
+        if board.arch == 32:
+            board_config += "MIPS 16: %s\n" % str(self.configIDE.config("Board", "mips16", True))
+            board_config += "Heap size: %d bytes\n" % self.configIDE.config("Board", "heapsize", 512)
+            board_config += "Optimization: %s\n" % self.configIDE.config("Board", "optimization", "-O3")
 
         if board.arch == 8 and board.bldr == "boot4":
             board_config += "Boootloader: v4\n"
