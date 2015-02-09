@@ -4,7 +4,7 @@
 <context>
     <name>About</name>
     <message>
-        <location filename="files/frames/about.ui" line="258"/>
+        <location filename="files/frames/about.ui" line="278"/>
         <source>About</source>
         <translation>Acerca de</translation>
     </message>
@@ -14,37 +14,37 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Pinguino es un proyecto de Open Software y Open Hardware&lt;br&gt;similar a Arduino. Las tarjetas están basadas en microcontroladores  de 8 y 32 bits&lt;br&gt;de Microchip con USB integrado. El objetivo principal es contruir un sistema&lt;br&gt;USB real, sin convertidores USB-Serial.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="files/frames/about.ui" line="151"/>
+        <location filename="files/frames/about.ui" line="171"/>
         <source>Credits</source>
         <translation>Créditos</translation>
     </message>
     <message>
-        <location filename="files/frames/about.ui" line="251"/>
+        <location filename="files/frames/about.ui" line="271"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="files/frames/about.ui" line="168"/>
+        <location filename="files/frames/about.ui" line="188"/>
         <source>Write by</source>
         <translation>Escrito por</translation>
     </message>
     <message>
-        <location filename="files/frames/about.ui" line="182"/>
+        <location filename="files/frames/about.ui" line="202"/>
         <source>Docummented by</source>
         <translation>Documentado por</translation>
     </message>
     <message>
-        <location filename="files/frames/about.ui" line="196"/>
+        <location filename="files/frames/about.ui" line="216"/>
         <source>Translated by</source>
         <translation>Traducido por</translation>
     </message>
     <message>
-        <location filename="files/frames/about.ui" line="210"/>
+        <location filename="files/frames/about.ui" line="230"/>
         <source>Art by</source>
         <translation>Arte por</translation>
     </message>
     <message>
-        <location filename="files/frames/about.ui" line="285"/>
+        <location filename="files/frames/about.ui" line="305"/>
         <source>License</source>
         <translation>Licencia</translation>
     </message>
@@ -59,7 +59,7 @@
     <message>
         <location filename="files/frames/board_config_advance.ui" line="14"/>
         <source>Advance Board Config</source>
-        <translation type="unfinished">Configuración avanzada</translation>
+        <translation>Configuración avanzada</translation>
     </message>
     <message>
         <location filename="files/frames/board_config_advance.ui" line="23"/>
@@ -69,7 +69,7 @@
     <message>
         <location filename="files/frames/board_config_advance.ui" line="26"/>
         <source>Mips16</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="files/frames/board_config_advance.ui" line="41"/>
@@ -77,42 +77,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="49"/>
-        <source>512 bytes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="files/frames/board_config_advance.ui" line="64"/>
+        <location filename="files/frames/board_config_advance.ui" line="58"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-O2: The compiler will attempt to increase code performance without compromising on size, and without taking too much compilation time.&lt;/p&gt;&lt;p&gt;-O3: This is the highest level of optimization possible. It enables optimizations that are expensive in terms of compile time and memory usage, in many cases can slow down a system due to larger binaries and increased memory usage.&lt;/p&gt;&lt;p&gt;-Os: This option will optimize your code for size.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="67"/>
+        <location filename="files/frames/board_config_advance.ui" line="61"/>
         <source>Optimization:</source>
         <translation>Optimización:</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="75"/>
+        <location filename="files/frames/board_config_advance.ui" line="69"/>
         <source>-O2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="80"/>
+        <location filename="files/frames/board_config_advance.ui" line="74"/>
         <source>-O3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="85"/>
+        <location filename="files/frames/board_config_advance.ui" line="79"/>
         <source>-Os</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="110"/>
+        <location filename="files/frames/board_config_advance.ui" line="104"/>
         <source>Restore default</source>
         <translation>Valores predefinidos</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config_advance.ui" line="117"/>
+        <location filename="files/frames/board_config_advance.ui" line="111"/>
         <source>Accept</source>
         <translation>Aceptar</translation>
     </message>
@@ -127,7 +122,7 @@
     <message>
         <location filename="files/frames/board_config.ui" line="14"/>
         <source>Board Config</source>
-        <translation>Configurar Tarjeta</translation>
+        <translation type="obsolete">Configurar Tarjeta</translation>
     </message>
     <message>
         <location filename="files/frames/board_config.ui" line="26"/>
@@ -135,130 +130,135 @@
         <translation>Arquitectura</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="38"/>
+        <location filename="files/frames/board_config.ui" line="32"/>
         <source>8-bit</source>
         <translation>8 bits</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="48"/>
+        <location filename="files/frames/board_config.ui" line="42"/>
         <source>32-bit</source>
         <translation>32 bits</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="200"/>
+        <location filename="files/frames/board_config.ui" line="170"/>
         <source>Devices</source>
         <translation>Dispositivos</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="127"/>
+        <location filename="files/frames/board_config.ui" line="103"/>
         <source>Bootloader</source>
         <translation>Bootloader</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="161"/>
+        <location filename="files/frames/board_config.ui" line="131"/>
         <source>Cancel</source>
         <translation>Cacelar</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="193"/>
+        <location filename="files/frames/board_config.ui" line="163"/>
         <source>warning!</source>
         <translation>advertencia!</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="168"/>
+        <location filename="files/frames/board_config.ui" line="138"/>
         <source>Accept</source>
         <translation>Aceptar</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="58"/>
+        <location filename="files/frames/board_config.ui" line="52"/>
         <source>Programming mode</source>
         <translation>Modo de programación</translation>
     </message>
     <message>
-        <location filename="files/frames/board_config.ui" line="181"/>
+        <location filename="files/frames/board_config.ui" line="151"/>
         <source>Advance options</source>
         <translation>Opciones avanzadas</translation>
+    </message>
+    <message>
+        <location filename="files/frames/board_config.ui" line="14"/>
+        <source>Board Configuration</source>
+        <translation>Configuración de la tarjeta</translation>
     </message>
 </context>
 <context>
     <name>Dialogs</name>
     <message>
-        <location filename="files/ide/child_windows/wiki_librarires.py" line="92"/>
+        <location filename="files/ide/child_windows/wiki_librarires.py" line="123"/>
         <source>This will take a long time.</source>
         <translation>Esto tomará mucho tiempo.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/hex_viewer.py" line="45"/>
+        <location filename="files/ide/child_windows/hex_viewer.py" line="47"/>
         <source>Impossible show 32-bit hex files.</source>
-        <translation>Imposible mostrar archivos hexadecimales a 32 bits.</translation>
+        <translation type="obsolete">Imposible mostrar archivos hexadecimales a 32 bits.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/insert_block_dialog.py" line="30"/>
+        <location filename="files/ide/child_windows/insert_block_dialog.py" line="34"/>
         <source>search block...</source>
         <translation>buscar bloque...</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="147"/>
+        <location filename="files/ide/child_windows/libraries.py" line="158"/>
         <source>Do you want open this URL in a new tab?</source>
         <translation>¿Desea abrir esta URL en el navegador?</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="29"/>
+        <location filename="files/ide/methods/dialogs.py" line="30"/>
         <source> - Open</source>
         <translation> - Abrir</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="194"/>
+        <location filename="files/ide/child_windows/libraries.py" line="205"/>
         <source>Zip Files (*.zip)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="212"/>
+        <location filename="files/ide/child_windows/libraries.py" line="223"/>
         <source>Library duplicated (name conflict).</source>
         <translation>Biblioteca duplicada (conflicto con el nombre).</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="223"/>
+        <location filename="files/ide/child_windows/libraries.py" line="234"/>
         <source>This is not a Pinguino library or are not packaged correctly.</source>
         <translation>Esto no es una biblioteca de Pinguino o no está empquetada correctamente.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="269"/>
+        <location filename="files/ide/child_windows/libraries.py" line="280"/>
         <source>already exist.</source>
         <translation>ya existe.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="488"/>
+        <location filename="files/ide/child_windows/libraries.py" line="499"/>
         <source>Are you sure you want to delete these libraries?</source>
         <translation>¿Está seguro que desea eliminar estas bibliotecas?</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="532"/>
+        <location filename="files/ide/child_windows/libraries.py" line="543"/>
         <source>Updated</source>
         <translation>Actualizado</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="535"/>
+        <location filename="files/ide/child_windows/libraries.py" line="546"/>
         <source>Failed</source>
         <translation>Falló</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="551"/>
+        <location filename="files/ide/child_windows/libraries.py" line="562"/>
         <source>Installed</source>
         <translation>Instalado</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="554"/>
+        <location filename="files/ide/child_windows/libraries.py" line="565"/>
         <source>Problems with</source>
         <translation>Problemas con</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="590"/>
+        <location filename="files/ide/child_windows/libraries.py" line="601"/>
         <source>Enable</source>
         <translation>Habilitado</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="590"/>
+        <location filename="files/ide/child_windows/libraries.py" line="601"/>
         <source>Disable</source>
         <translation>Deshabilitado</translation>
     </message>
@@ -268,7 +268,7 @@
         <translation>Imposible compilar este archivo, flatan bibliotecas o compiladores.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="43"/>
+        <location filename="files/ide/methods/dialogs.py" line="55"/>
         <source> - Save</source>
         <translation> - Guardar</translation>
     </message>
@@ -278,12 +278,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="32"/>
+        <location filename="files/ide/methods/dialogs.py" line="33"/>
         <source>Pinguino Files (*.pde *.gpde);;All Files (*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="44"/>
+        <location filename="files/ide/methods/dialogs.py" line="56"/>
         <source>This file has not been saved,
 Would you like to do?
 
@@ -293,191 +293,191 @@ Would you like to do?
 </translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="57"/>
+        <location filename="files/ide/methods/dialogs.py" line="69"/>
         <source> - Open directory</source>
         <translation> - Abrir directorio</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="68"/>
+        <location filename="files/ide/methods/dialogs.py" line="81"/>
         <source> - File already open</source>
         <translation> - Archivo ya abierto</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="69"/>
+        <location filename="files/ide/methods/dialogs.py" line="82"/>
         <source>This file is already open in other tab.
 %s</source>
         <translation>Este archivo ya está abierto en otra pestaña.
 %s</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="326"/>
+        <location filename="files/ide/methods/dialogs.py" line="345"/>
         <source> - Error</source>
         <translation> - Error</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="87"/>
+        <location filename="files/ide/methods/dialogs.py" line="102"/>
         <source> - Confirmation</source>
         <translation> - Confirmación</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="101"/>
+        <location filename="files/ide/methods/dialogs.py" line="116"/>
         <source> - Information</source>
         <translation> - Información</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="110"/>
+        <location filename="files/ide/methods/dialogs.py" line="126"/>
         <source> - Warning</source>
         <translation> - Advertencia</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="120"/>
+        <location filename="files/ide/methods/dialogs.py" line="137"/>
         <source> - Save file first.</source>
         <translation> - Guardar primero.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="121"/>
+        <location filename="files/ide/methods/dialogs.py" line="138"/>
         <source>You must save the file before compiling.</source>
         <translation>Debes de guardar antes de compilar.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="137"/>
+        <location filename="files/ide/methods/dialogs.py" line="155"/>
         <source> - Config board</source>
         <translation> - Configurar tarjeta</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="407"/>
+        <location filename="files/ide/methods/dialogs.py" line="427"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="144"/>
+        <location filename="files/ide/methods/dialogs.py" line="162"/>
         <source>Change board</source>
         <translation>Cambiar tarjeta</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="147"/>
+        <location filename="files/ide/methods/dialogs.py" line="165"/>
         <source>Compile</source>
         <translation>Compilar</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="193"/>
+        <location filename="files/ide/methods/dialogs.py" line="211"/>
         <source>Error while compiling.</source>
         <translation>Error mientras se compilaba.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="330"/>
+        <location filename="files/ide/methods/dialogs.py" line="349"/>
         <source>View stdout</source>
         <translation>Ver Stdout</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="366"/>
+        <location filename="files/ide/methods/dialogs.py" line="385"/>
         <source>Ok</source>
         <translation>Aceptar</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="224"/>
+        <location filename="files/ide/methods/dialogs.py" line="243"/>
         <source>Error while linking.</source>
         <translation>Error mientras se enlazaba.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="258"/>
+        <location filename="files/ide/methods/dialogs.py" line="277"/>
         <source>This file has changed on disk.</source>
         <translation>Este archivo ha cambiado en el disco.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="260"/>
+        <location filename="files/ide/methods/dialogs.py" line="279"/>
         <source>This file has deleted/moved on disk.</source>
         <translation>Este archivo ha sido movido/eliminado en el disco.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="263"/>
+        <location filename="files/ide/methods/dialogs.py" line="282"/>
         <source>Overwrite</source>
         <translation>Sobreescribir</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="267"/>
+        <location filename="files/ide/methods/dialogs.py" line="286"/>
         <source>Reload</source>
         <translation>Recargar</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="294"/>
+        <location filename="files/ide/methods/dialogs.py" line="313"/>
         <source>Error while preprocess.</source>
         <translation>Error mientras se preprocesaba.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="327"/>
+        <location filename="files/ide/methods/dialogs.py" line="346"/>
         <source>Unknow error.</source>
         <translation>Errror desconocido.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="359"/>
+        <location filename="files/ide/methods/dialogs.py" line="378"/>
         <source> - Compiled</source>
         <translation> - Copiled</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="360"/>
+        <location filename="files/ide/methods/dialogs.py" line="379"/>
         <source>Compilation done!</source>
         <translation>¡Compilación terminada!</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="363"/>
+        <location filename="files/ide/methods/dialogs.py" line="382"/>
         <source>Upload now!</source>
         <translation>¡Cargar ahora!</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="389"/>
+        <location filename="files/ide/methods/dialogs.py" line="409"/>
         <source> - Upload done</source>
         <translation> - Carga terminada</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="400"/>
+        <location filename="files/ide/methods/dialogs.py" line="420"/>
         <source> - Upload fail</source>
         <translation> - Carga falló</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="431"/>
+        <location filename="files/ide/methods/dialogs.py" line="451"/>
         <source> - Save image</source>
         <translation> - Guardar imagen</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="433"/>
+        <location filename="files/ide/methods/dialogs.py" line="453"/>
         <source>Png files (*.png);;All Files (*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="378"/>
+        <location filename="files/ide/methods/methods.py" line="379"/>
         <source>Clear recent files</source>
         <translation>Limpiar archivos recientes</translation>
     </message>
     <message>
-        <location filename="files/ide/events/event_methods.py" line="646"/>
+        <location filename="files/ide/events/event_methods.py" line="686"/>
         <source>You must compile before.</source>
         <translation>Debes compilar primero.</translation>
     </message>
     <message>
-        <location filename="files/ide/events/event_methods.py" line="771"/>
+        <location filename="files/ide/events/event_methods.py" line="886"/>
         <source>Pinguino code</source>
         <translation>Código Pinguino</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="138"/>
+        <location filename="files/ide/methods/dialogs.py" line="156"/>
         <source>
 Use this board config?
 </source>
         <translation>¿Usar esta configuración de tarjeta?</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="150"/>
+        <location filename="files/ide/methods/dialogs.py" line="168"/>
         <source>Don&apos;t ask again</source>
         <translation>No preguntar de nuevo</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="390"/>
+        <location filename="files/ide/methods/dialogs.py" line="410"/>
         <source>File sucessfully uploaded to Pinguino.</source>
         <translation>Archivo cargado en Pinguino exitosamente.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/dialogs.py" line="404"/>
+        <location filename="files/ide/methods/dialogs.py" line="424"/>
         <source>Try again!</source>
         <translation>¡Intentar nuevamente!</translation>
     </message>
@@ -497,17 +497,45 @@ Use this board config?
         <translation>Esta ruta no existe.</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="668"/>
+        <location filename="files/ide/methods/methods.py" line="724"/>
         <source>Pinguino IDE has found changes that were not saved during your last session.
 Do you want recover it?.</source>
         <translation>Pinguino IDE ha encontrado cambios que no fueron guardados en la última sesión.
 ¿Desea recuperarlos?.</translation>
     </message>
+    <message>
+        <location filename="files/ide/methods/dialogs.py" line="41"/>
+        <source> - Select</source>
+        <translation> - Seleccionar</translation>
+    </message>
+    <message>
+        <location filename="files/ide/methods/dialogs.py" line="44"/>
+        <source>Hex Files (*.hex);;All Files (*)</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>EnvironViewer</name>
+    <message>
+        <location filename="files/frames/environ_viewer.ui" line="14"/>
+        <source>Environ Viewer</source>
+        <translation>Variables de entorno</translation>
+    </message>
+    <message>
+        <location filename="files/frames/environ_viewer.ui" line="31"/>
+        <source>Name</source>
+        <translation>Nombre</translation>
+    </message>
+    <message>
+        <location filename="files/frames/environ_viewer.ui" line="36"/>
+        <source>Value</source>
+        <translation>Valor</translation>
+    </message>
 </context>
 <context>
     <name>Frame</name>
     <message>
-        <location filename="files/gide/app/graphical.py" line="687"/>
+        <location filename="files/gide/app/graphical.py" line="695"/>
         <source>Search Block...</source>
         <translation>Buscar Bloque...</translation>
     </message>
@@ -522,42 +550,42 @@ Do you want recover it?.</source>
         <translation>Replace...</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="140"/>
+        <location filename="files/ide/ide.py" line="244"/>
         <source>Search block...</source>
         <translation>Buscar bloque...</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="477"/>
+        <location filename="files/ide/methods/methods.py" line="506"/>
         <source>Missing compiler for %d-bit</source>
         <translation>Faltan compiladores para %d bits</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="480"/>
+        <location filename="files/ide/methods/methods.py" line="511"/>
         <source>Missing libraries for %d-bit</source>
         <translation>Faltan blibliotecas para %d bits</translation>
     </message>
     <message>
-        <location filename="files/ide/methods/methods.py" line="483"/>
+        <location filename="files/ide/methods/methods.py" line="516"/>
         <source>Missing libraries and compiler for %d-bit</source>
         <translation>Faltan compiladores y bibliotecas para %d bits</translation>
     </message>
     <message>
         <location filename="files/ide/events/event_methods.py" line="679"/>
         <source>compilling: %s</source>
-        <translation>compilando: %s</translation>
+        <translation type="obsolete">compilando: %s</translation>
     </message>
     <message>
-        <location filename="files/ide/events/event_methods.py" line="735"/>
+        <location filename="files/ide/events/event_methods.py" line="819"/>
         <source>compilation done</source>
         <translation>Compilación terminada</translation>
     </message>
     <message>
-        <location filename="files/ide/events/event_methods.py" line="737"/>
+        <location filename="files/ide/events/event_methods.py" line="821"/>
         <source>%s seconds process time</source>
         <translation>%s segundos de procesamiento</translation>
     </message>
     <message>
-        <location filename="files/ide/events/event_methods.py" line="1083"/>
+        <location filename="files/ide/events/event_methods.py" line="1204"/>
         <source>Restore example</source>
         <translation>Restaurar ejemplo</translation>
     </message>
@@ -567,32 +595,32 @@ Do you want recover it?.</source>
         <translation type="obsolete">%d palabras fueron encontradas.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="429"/>
+        <location filename="files/ide/child_windows/libraries.py" line="440"/>
         <source>This library is enable (can be used).</source>
         <translation>Esta librería está actualizada (puede ser usada).</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="432"/>
+        <location filename="files/ide/child_windows/libraries.py" line="443"/>
         <source>This library is not enable.</source>
         <translation>Esta librería no está habilitada.</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="281"/>
+        <location filename="files/ide/child_windows/libraries.py" line="292"/>
         <source>Created :</source>
         <translation>Creado:</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="498"/>
+        <location filename="files/ide/child_windows/libraries.py" line="509"/>
         <source>Removed :</source>
         <translation>Eliminado:</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/libraries.py" line="180"/>
+        <location filename="files/ide/child_windows/libraries.py" line="191"/>
         <source>Copied :</source>
         <translation>Copiado:</translation>
     </message>
     <message>
-        <location filename="files/ide/child_windows/board_config.py" line="152"/>
+        <location filename="files/ide/child_windows/board_config.py" line="157"/>
         <source>WARNING!! this mode can overwite the bootloader code.</source>
         <translation>¡¡Advertencia!! este modo puede sobreescribir el código del bootloader.</translation>
     </message>
@@ -605,6 +633,11 @@ Do you want recover it?.</source>
         <location filename="files/ide/tools/search_replace.py" line="44"/>
         <source>One word were found.</source>
         <translation>Una palabra encontrada.</translation>
+    </message>
+    <message>
+        <location filename="files/ide/events/event_methods.py" line="763"/>
+        <source>Compiling: %s</source>
+        <translation>Compilando: %s</translation>
     </message>
 </context>
 <context>
@@ -779,35 +812,35 @@ Do you want recover it?.</source>
     <message>
         <location filename="files/frames/paths.ui" line="20"/>
         <source>8-bit</source>
-        <translation>8 bits</translation>
+        <translation type="obsolete">8 bits</translation>
     </message>
     <message>
         <location filename="files/frames/paths.ui" line="26"/>
         <source>SDCC compiler:</source>
-        <translation>Compilador SDCC:</translation>
+        <translation type="obsolete">Compilador SDCC:</translation>
     </message>
     <message>
-        <location filename="files/frames/paths.ui" line="202"/>
+        <location filename="files/frames/paths.ui" line="136"/>
         <source>Change...</source>
         <translation>Cambiar...</translation>
     </message>
     <message>
         <location filename="files/frames/paths.ui" line="167"/>
         <source>Libraries:</source>
-        <translation>Bibliotecas:</translation>
+        <translation type="obsolete">Bibliotecas:</translation>
     </message>
     <message>
         <location filename="files/frames/paths.ui" line="117"/>
         <source>32-bit</source>
-        <translation>32 bits</translation>
+        <translation type="obsolete">32 bits</translation>
     </message>
     <message>
         <location filename="files/frames/paths.ui" line="123"/>
         <source>GCC compiler:</source>
-        <translation>Compilador GCC:</translation>
+        <translation type="obsolete">Compilador GCC:</translation>
     </message>
     <message>
-        <location filename="files/frames/paths.ui" line="235"/>
+        <location filename="files/frames/paths.ui" line="41"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
@@ -817,15 +850,25 @@ Do you want recover it?.</source>
         <translation>Rutas</translation>
     </message>
     <message>
-        <location filename="files/frames/paths.ui" line="244"/>
+        <location filename="files/frames/paths.ui" line="50"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pinguino IDE requires a restart to reinitialize its preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pinguino IDE requiere reiniciarse para aplicar estos cambios.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="files/frames/paths.ui" line="62"/>
+        <source>8-bit libraries:</source>
+        <translation>Librerías 8-bits:</translation>
+    </message>
+    <message>
+        <location filename="files/frames/paths.ui" line="106"/>
+        <source>32-bit libraries:</source>
+        <translation>Librerías 32-bits:</translation>
     </message>
 </context>
 <context>
     <name>PinguinoIDE</name>
     <message>
-        <location filename="files/frames/main.ui" line="751"/>
+        <location filename="files/frames/main.ui" line="745"/>
         <source>File</source>
         <translation>Archivos</translation>
     </message>
@@ -835,17 +878,17 @@ Do you want recover it?.</source>
         <translation>Recientes</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="798"/>
+        <location filename="files/frames/main.ui" line="790"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="177"/>
+        <location filename="files/frames/main.ui" line="178"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="181"/>
+        <location filename="files/frames/main.ui" line="182"/>
         <source>Links</source>
         <translation></translation>
     </message>
@@ -860,579 +903,665 @@ Do you want recover it?.</source>
         <translation>Ver</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1474"/>
+        <location filename="files/frames/main.ui" line="1488"/>
         <source>Tools</source>
         <translation>Herramientas</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="918"/>
+        <location filename="files/frames/main.ui" line="907"/>
         <source>Files</source>
         <translation>Archivos</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="961"/>
+        <location filename="files/frames/main.ui" line="950"/>
         <source>Examples</source>
         <translation>Ejemplos</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="966"/>
+        <location filename="files/frames/main.ui" line="955"/>
         <source>Third party libraries</source>
         <translation>Bibliotecas de terceros</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="976"/>
+        <location filename="files/frames/main.ui" line="965"/>
         <source>Home</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="981"/>
+        <location filename="files/frames/main.ui" line="970"/>
         <source>Other...</source>
         <translation>Otros...</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="350"/>
+        <location filename="files/frames/main.ui" line="383"/>
         <source>Source Browser</source>
         <translation>Navegardor de Código</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="363"/>
+        <location filename="files/frames/main.ui" line="1644"/>
         <source>Variables</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="538"/>
+        <location filename="files/frames/main.ui" line="561"/>
         <source>Type</source>
         <translation>Tipo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="548"/>
+        <location filename="files/frames/main.ui" line="573"/>
         <source>Line</source>
-        <translation>Línea</translation>
+        <translation type="obsolete">Línea</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="411"/>
+        <location filename="files/frames/main.ui" line="439"/>
         <source>Functions</source>
         <translation>Funciones</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="448"/>
+        <location filename="files/frames/main.ui" line="476"/>
         <source>Return</source>
         <translation>Retorna</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="453"/>
+        <location filename="files/frames/main.ui" line="481"/>
         <source>Args</source>
         <translation>Argumentos</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="467"/>
+        <location filename="files/frames/main.ui" line="490"/>
         <source>Directives</source>
         <translation>Directivas</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="543"/>
+        <location filename="files/frames/main.ui" line="566"/>
         <source>Value</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="822"/>
+        <location filename="files/frames/main.ui" line="813"/>
         <source>Search Replace</source>
-        <translation>Bucar Reemplazar</translation>
+        <translation>Buscar Reemplazar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="600"/>
+        <location filename="files/frames/main.ui" line="606"/>
         <source>Replace</source>
         <translation>Reemplazar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="610"/>
+        <location filename="files/frames/main.ui" line="616"/>
         <source>Replace all</source>
         <translation>Reemplazar todo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1176"/>
+        <location filename="files/frames/main.ui" line="1191"/>
         <source>Search</source>
         <translation>Buscar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="664"/>
+        <location filename="files/frames/main.ui" line="658"/>
         <source>Previous</source>
         <translation>Anterior</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="678"/>
+        <location filename="files/frames/main.ui" line="672"/>
         <source>Next</source>
         <translation>Siguiente</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="689"/>
+        <location filename="files/frames/main.ui" line="683"/>
         <source>Case sensitive</source>
         <translation>Respetar mayúsculas y minúsculas</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="733"/>
+        <location filename="files/frames/main.ui" line="727"/>
         <source>Python Shell</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="775"/>
+        <location filename="files/frames/main.ui" line="768"/>
         <source>Undo Redo</source>
         <translation>Deshacer Rehacer</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="845"/>
+        <location filename="files/frames/main.ui" line="835"/>
         <source>Pinguino</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1482"/>
+        <location filename="files/frames/main.ui" line="1496"/>
         <source>Blocks</source>
         <translation>Bloques</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="995"/>
+        <location filename="files/frames/main.ui" line="1303"/>
         <source>Graphical mode</source>
         <translation>Modo gráfico</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1045"/>
+        <location filename="files/frames/main.ui" line="1060"/>
         <source>New</source>
         <translation>Nuevo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1048"/>
+        <location filename="files/frames/main.ui" line="1063"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
         <location filename="files/frames/main.ui" line="1057"/>
         <source>Open file</source>
-        <translation>Abrir archivo</translation>
+        <translation type="obsolete">Abrir archivo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1060"/>
+        <location filename="files/frames/main.ui" line="1075"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1072"/>
+        <location filename="files/frames/main.ui" line="1087"/>
         <source>Save</source>
         <translation>Guardar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1075"/>
+        <location filename="files/frames/main.ui" line="1090"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1083"/>
+        <location filename="files/frames/main.ui" line="1098"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1086"/>
+        <location filename="files/frames/main.ui" line="1101"/>
         <source>Close file</source>
         <translation>Cerrar archivo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1089"/>
+        <location filename="files/frames/main.ui" line="1104"/>
         <source>Ctrl+W</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1101"/>
+        <location filename="files/frames/main.ui" line="1116"/>
         <source>Undo</source>
         <translation>Deshacer</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1104"/>
+        <location filename="files/frames/main.ui" line="1119"/>
         <source>Ctrl+Z</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1116"/>
+        <location filename="files/frames/main.ui" line="1131"/>
         <source>Redo</source>
         <translation>Rehacer</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1119"/>
+        <location filename="files/frames/main.ui" line="1134"/>
         <source>Ctrl+Y</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1131"/>
+        <location filename="files/frames/main.ui" line="1146"/>
         <source>Cut</source>
         <translation>Cortar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1134"/>
+        <location filename="files/frames/main.ui" line="1149"/>
         <source>Ctrl+X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1146"/>
+        <location filename="files/frames/main.ui" line="1161"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1149"/>
+        <location filename="files/frames/main.ui" line="1164"/>
         <source>Ctrl+C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1161"/>
+        <location filename="files/frames/main.ui" line="1176"/>
         <source>Paste</source>
         <translation>Pegar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1164"/>
+        <location filename="files/frames/main.ui" line="1179"/>
         <source>Ctrl+V</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1179"/>
+        <location filename="files/frames/main.ui" line="1194"/>
         <source>Ctrl+F</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1191"/>
+        <location filename="files/frames/main.ui" line="1206"/>
         <source>Search and replace</source>
         <translation>Buscar y reemplazar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1194"/>
+        <location filename="files/frames/main.ui" line="1209"/>
         <source>Ctrl+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1206"/>
+        <location filename="files/frames/main.ui" line="1221"/>
         <source>Ctrl+Shift+B</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1218"/>
+        <location filename="files/frames/main.ui" line="1233"/>
         <source>Compile</source>
         <translation>Compilar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1221"/>
+        <location filename="files/frames/main.ui" line="1236"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1233"/>
+        <location filename="files/frames/main.ui" line="1248"/>
         <source>Upload</source>
         <translation>Cargar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1236"/>
+        <location filename="files/frames/main.ui" line="1251"/>
         <source>F6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1241"/>
+        <location filename="files/frames/main.ui" line="1256"/>
         <source>Quit</source>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1244"/>
+        <location filename="files/frames/main.ui" line="1259"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1249"/>
+        <location filename="files/frames/main.ui" line="1264"/>
         <source>About...</source>
         <translation>Acerca de...</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1257"/>
+        <location filename="files/frames/main.ui" line="1272"/>
         <source>Comment/Uncomment region</source>
         <translation>Comentar/Descomentar región</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1260"/>
+        <location filename="files/frames/main.ui" line="1275"/>
         <source>Ctrl+.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1265"/>
+        <location filename="files/frames/main.ui" line="1280"/>
         <source>Comment out region</source>
         <translation>Descomentar región</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1268"/>
+        <location filename="files/frames/main.ui" line="1283"/>
         <source>Ctrl+/</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1273"/>
+        <location filename="files/frames/main.ui" line="1288"/>
         <source>Stdout</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1276"/>
+        <location filename="files/frames/main.ui" line="1291"/>
         <source>F9</source>
         <translation></translation>
     </message>
     <message>
         <location filename="files/frames/main.ui" line="1289"/>
         <source>Switch ide</source>
-        <translation>Alternar IDE</translation>
+        <translation type="obsolete">Alternar IDE</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1292"/>
+        <location filename="files/frames/main.ui" line="1306"/>
         <source>F4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1301"/>
+        <location filename="files/frames/main.ui" line="1315"/>
         <source>Save image</source>
         <translation>Guardar Imagen</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1309"/>
+        <location filename="files/frames/main.ui" line="1323"/>
         <source>View Pinguino code</source>
         <translation>Ver código Pinguino</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1314"/>
+        <location filename="files/frames/main.ui" line="1328"/>
         <source>Save all</source>
         <translation>Guardar todo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1319"/>
+        <location filename="files/frames/main.ui" line="1333"/>
         <source>Close all</source>
         <translation>Cerrar todo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1324"/>
+        <location filename="files/frames/main.ui" line="1338"/>
         <source>Website</source>
         <translation>Sitio web</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1329"/>
+        <location filename="files/frames/main.ui" line="1343"/>
         <source>Wiki</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1334"/>
+        <location filename="files/frames/main.ui" line="1348"/>
         <source>Forum</source>
         <translation>Foro</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1339"/>
+        <location filename="files/frames/main.ui" line="1353"/>
         <source>Blog</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1344"/>
+        <location filename="files/frames/main.ui" line="1358"/>
         <source>Group</source>
         <translation>Grupo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1349"/>
+        <location filename="files/frames/main.ui" line="1363"/>
         <source>Shop</source>
         <translation>Tienda</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="185"/>
+        <location filename="files/frames/main.ui" line="186"/>
         <source>GitHub</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1354"/>
+        <location filename="files/frames/main.ui" line="1368"/>
         <source>Save as</source>
         <translation>Guardar como</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1357"/>
+        <location filename="files/frames/main.ui" line="1371"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1365"/>
+        <location filename="files/frames/main.ui" line="1379"/>
         <source>F1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1392"/>
+        <location filename="files/frames/main.ui" line="1406"/>
         <source>Library manager</source>
         <translation>Gestor de bibliotecas</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1395"/>
+        <location filename="files/frames/main.ui" line="1409"/>
         <source>Ctrl+Shift+L</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1400"/>
+        <location filename="files/frames/main.ui" line="1414"/>
         <source>Hex code</source>
         <translation>Código hexadecimal</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1403"/>
+        <location filename="files/frames/main.ui" line="1417"/>
         <source>Ctrl+Shift+H</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1411"/>
+        <location filename="files/frames/main.ui" line="1425"/>
         <source>Set paths</source>
         <translation>Fijar rutas</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1414"/>
+        <location filename="files/frames/main.ui" line="1428"/>
         <source>Ctrl+Shift+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1419"/>
+        <location filename="files/frames/main.ui" line="1433"/>
         <source>Export code to editor</source>
         <translation>Exportar código al editor</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1424"/>
+        <location filename="files/frames/main.ui" line="1438"/>
         <source>Insert block</source>
         <translation>Insertar bloque</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1427"/>
+        <location filename="files/frames/main.ui" line="1441"/>
         <source>Ctrl+Shift+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1432"/>
+        <location filename="files/frames/main.ui" line="1446"/>
         <source>Indent</source>
         <translation>Indentar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1435"/>
+        <location filename="files/frames/main.ui" line="1449"/>
         <source>Ctrl+&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1440"/>
+        <location filename="files/frames/main.ui" line="1454"/>
         <source>Dedent</source>
         <translation>Desindentar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1443"/>
+        <location filename="files/frames/main.ui" line="1457"/>
         <source>Ctrl+&lt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1448"/>
+        <location filename="files/frames/main.ui" line="1462"/>
         <source>Close others</source>
         <translation>Cerrar otros</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1453"/>
+        <location filename="files/frames/main.ui" line="1467"/>
         <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1458"/>
+        <location filename="files/frames/main.ui" line="1472"/>
         <source>Select all</source>
         <translation>Seleccionar todo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1463"/>
+        <location filename="files/frames/main.ui" line="1477"/>
         <source>Print</source>
         <translation>Imprimir</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1466"/>
+        <location filename="files/frames/main.ui" line="1480"/>
         <source>Ctrl+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1490"/>
+        <location filename="files/frames/main.ui" line="1504"/>
         <source>Python shell</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1498"/>
+        <location filename="files/frames/main.ui" line="1512"/>
         <source>Maximize editor</source>
         <translation>Maximizar editor</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1501"/>
+        <location filename="files/frames/main.ui" line="1515"/>
         <source>Shift+F2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1509"/>
+        <location filename="files/frames/main.ui" line="1523"/>
         <source>Toolbars</source>
         <translation>Barra de herramientas</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1514"/>
+        <location filename="files/frames/main.ui" line="1528"/>
         <source>If Compile then Upload</source>
         <translation>Si Compila entonces Cargue</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1517"/>
+        <location filename="files/frames/main.ui" line="1531"/>
         <source>F7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="237"/>
+        <location filename="files/frames/main.ui" line="241"/>
         <source>Settings</source>
         <translation>Configuración</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1528"/>
+        <location filename="files/frames/main.ui" line="1542"/>
         <source>Confirm board when compiling</source>
         <translation>Confirmar tarjeta cuando se compila</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1533"/>
+        <location filename="files/frames/main.ui" line="1547"/>
         <source>IDE</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1538"/>
+        <location filename="files/frames/main.ui" line="1552"/>
         <source>Libraries</source>
         <translation>Bibliotecas</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1543"/>
+        <location filename="files/frames/main.ui" line="1557"/>
         <source>Compilers</source>
         <translation>Compiladores</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="971"/>
+        <location filename="files/frames/main.ui" line="960"/>
         <source>Current file directory</source>
         <translation>Directorio del archivo actual</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1376"/>
+        <location filename="files/frames/main.ui" line="1390"/>
         <source>Autocomplete code</source>
         <translation>Autocompletar código</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1387"/>
+        <location filename="files/frames/main.ui" line="1401"/>
         <source>Background color</source>
         <translation>Color de fondo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1016"/>
+        <location filename="files/frames/main.ui" line="1029"/>
         <source>Switch mode</source>
         <translation>Alternar modo</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1362"/>
+        <location filename="files/frames/main.ui" line="1376"/>
         <source>Wiki documentation</source>
         <translation>Documentación del wiki</translation>
     </message>
     <message>
         <location filename="files/frames/main.ui" line="1203"/>
         <source>Board Settings</source>
-        <translation>Configuración de tarjeta</translation>
+        <translation type="obsolete">Configuración de tarjeta</translation>
     </message>
     <message>
-        <location filename="files/frames/main.ui" line="1408"/>
+        <location filename="files/frames/main.ui" line="1422"/>
         <source>System paths</source>
         <translation>Rutas del sistema</translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="245"/>
+        <source>Icons theme</source>
+        <translation>Tema de íconos</translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="251"/>
+        <source>Icons size</source>
+        <translation>Tamaño de íconos</translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1072"/>
+        <source>Open</source>
+        <translation>Abrir</translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1218"/>
+        <source>Board Configuration</source>
+        <translation>Configuración de la tarjeta</translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1562"/>
+        <source>Pinguino11</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1570"/>
+        <source>16 x 16</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1578"/>
+        <source>24 x 24</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1586"/>
+        <source>32 x 32</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1594"/>
+        <source>48 x 48</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1602"/>
+        <source>22 x 22</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1607"/>
+        <source>main.c</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1612"/>
+        <source>define.h</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1617"/>
+        <source>user.c</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1622"/>
+        <source>Upload .hex directly
+</source>
+        <translation>Cargar .hex directamente</translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="271"/>
+        <source>Development</source>
+        <translation>Desarrollo</translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1634"/>
+        <source>Menubar</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="files/frames/main.ui" line="1639"/>
+        <source>Environment</source>
+        <translation>Variables de entorno</translation>
     </message>
 </context>
 <context>
@@ -1451,37 +1580,37 @@ Do you want recover it?.</source>
         <translation>también se pueden usar los comandos:</translation>
     </message>
     <message>
-        <location filename="files/ide/widgets/output_widget.py" line="137"/>
+        <location filename="files/ide/widgets/output_widget.py" line="174"/>
         <source>Last commands</source>
         <translation>Últimos comandos</translation>
     </message>
     <message>
-        <location filename="files/ide/widgets/output_widget.py" line="151"/>
+        <location filename="files/ide/widgets/output_widget.py" line="188"/>
         <source>Clear</source>
         <translation>Limpiar</translation>
     </message>
     <message>
-        <location filename="files/ide/widgets/output_widget.py" line="152"/>
+        <location filename="files/ide/widgets/output_widget.py" line="189"/>
         <source>Restart</source>
         <translation>Reiniciar</translation>
     </message>
     <message>
-        <location filename="files/ide/widgets/output_widget.py" line="154"/>
+        <location filename="files/ide/widgets/output_widget.py" line="191"/>
         <source>Cut</source>
         <translation>Cortar</translation>
     </message>
     <message>
-        <location filename="files/ide/widgets/output_widget.py" line="155"/>
+        <location filename="files/ide/widgets/output_widget.py" line="192"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="files/ide/widgets/output_widget.py" line="156"/>
+        <location filename="files/ide/widgets/output_widget.py" line="193"/>
         <source>Paste</source>
         <translation>Pegar</translation>
     </message>
     <message>
-        <location filename="files/ide/widgets/output_widget.py" line="157"/>
+        <location filename="files/ide/widgets/output_widget.py" line="194"/>
         <source>Select all</source>
         <translation>Seleccionar todo</translation>
     </message>
@@ -1489,99 +1618,104 @@ Do you want recover it?.</source>
 <context>
     <name>Splash</name>
     <message>
-        <location filename="files/ide/ide.py" line="44"/>
+        <location filename="files/ide/ide.py" line="58"/>
         <source>Setting enviroment values</source>
         <translation>Configurando las variables de entorno</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="46"/>
+        <location filename="files/ide/ide.py" line="60"/>
         <source>Checking user files</source>
         <translation>Confirmando archivos de usuario</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="49"/>
+        <location filename="files/ide/ide.py" line="63"/>
         <source>Loading Pinguino API</source>
         <translation>Cargando Pinguino API</translation>
     </message>
     <message>
         <location filename="files/ide/ide.py" line="52"/>
         <source>Loading configuration object</source>
-        <translation>Cargando configuración de objeto</translation>
+        <translation type="obsolete">Cargando configuración de objeto</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="54"/>
+        <location filename="files/ide/ide.py" line="70"/>
         <source>Loading graphical mode</source>
         <translation>Cargando modo gráfico</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="59"/>
+        <location filename="files/ide/ide.py" line="75"/>
         <source>Loading icons</source>
         <translation>Cargando íconos</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="64"/>
+        <location filename="files/ide/ide.py" line="85"/>
         <source>Linking paths for libraries and compilers</source>
         <translation>Enlazando rutas para bibliotecas y compiladores</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="67"/>
+        <location filename="files/ide/ide.py" line="88"/>
         <source>Searching user libraries</source>
         <translation>Buscando bibliotecas de usuario</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="73"/>
+        <location filename="files/ide/ide.py" line="96"/>
         <source>Opening last files</source>
         <translation>Abriendo últimos archivos</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="76"/>
+        <location filename="files/ide/ide.py" line="99"/>
         <source>Starting widgets features</source>
         <translation>Iniciando carácterísticas de widgets</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="78"/>
+        <location filename="files/ide/ide.py" line="101"/>
         <source>Building status bar</source>
         <translation>Construyendo barra de estado</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="83"/>
+        <location filename="files/ide/ide.py" line="106"/>
         <source>Overwriting stylesheets</source>
         <translation>Sobreescribiendo estilos</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="87"/>
+        <location filename="files/ide/ide.py" line="110"/>
         <source>Starting timers</source>
         <translation>Iniciando timers</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="95"/>
+        <location filename="files/ide/ide.py" line="118"/>
         <source>Loading examples</source>
         <translation>Cargando ejemplos</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="103"/>
+        <location filename="files/ide/ide.py" line="128"/>
         <source>Loading configuration</source>
         <translation>Cargando configuración</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="105"/>
+        <location filename="files/ide/ide.py" line="126"/>
         <source>Connecting events</source>
         <translation>Conectando eventos</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="115"/>
+        <location filename="files/ide/ide.py" line="138"/>
         <source>Welcome to %s %s</source>
         <translation>Bienvenido a %s %s</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="99"/>
+        <location filename="files/ide/ide.py" line="122"/>
         <source>Loading boards configuration</source>
         <translation>Cargando configuracion de tarjetas</translation>
     </message>
     <message>
-        <location filename="files/ide/ide.py" line="80"/>
+        <location filename="files/ide/ide.py" line="103"/>
         <source>Building Python Shell</source>
         <translation>Construyendo Python Shell</translation>
+    </message>
+    <message>
+        <location filename="files/ide/ide.py" line="78"/>
+        <source>Setting theme</source>
+        <translation>Fijando tema</translation>
     </message>
 </context>
 <context>
