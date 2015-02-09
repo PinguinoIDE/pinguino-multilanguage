@@ -3,16 +3,23 @@
 
 import os
 import shutil
-#import re
+import sys
 from zipfile import ZipFile
-from ConfigParser import RawConfigParser
 import webbrowser
+
+# Python3 compatibility
+if os.getenv("PINGUINO_PYTHON") is "3":
+    #Python3
+    from configparser import RawConfigParser
+else:
+    #Python2
+    from ConfigParser import RawConfigParser
 #import logging
 
 from PySide import QtGui, QtCore
 
 from ..methods.config_libs import ConfigLibsGroup
-#from ..methods.constants import os.getenv("NAME"), NAME
+#from ..methods.constants import os.getenv("PINGUINO_NAME"), NAME
 from ..methods.widgets_features import PrettyFeatures
 from ..methods.dialogs import Dialogs
 from ..methods.repositories import PinguinoLibrary, ErrorModules
@@ -29,6 +36,10 @@ class LibManager(QtGui.QMainWindow):
         self.libframe.setupUi(self)
 
         self.main = IDE
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/logo/art/windowIcon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
 
         if ErrorModules["gitpython"] == False:
             self.libframe.radioButton_repo_git.setEnabled(False)
@@ -53,7 +64,7 @@ class LibManager(QtGui.QMainWindow):
 
         self.ConfigLibs = ConfigLibsGroup()
 
-        self.setWindowTitle(os.getenv("NAME")+" - "+self.windowTitle())
+        self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+self.windowTitle())
 
         self.connect(self.libframe.pushButton_add, QtCore.SIGNAL("clicked()"), self.add_source)
         #self.connect(self.libframe.lineEdit_source, QtCore.SIGNAL("editingFinished()"), self.add_source)
@@ -96,31 +107,31 @@ class LibManager(QtGui.QMainWindow):
         self.centrar()
 
         self.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
 
         self.libframe.tableWidget_libs.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
 
         self.libframe.tableWidget_sources.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
 
         self.libframe.label_help.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: bold;
 
         """)
 
         self.libframe.commandLinkButton_how.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: bold;
 
         """)
@@ -189,7 +200,7 @@ class LibManager(QtGui.QMainWindow):
     #----------------------------------------------------------------------
     def install_from_zip(self):
         open_files = QtGui.QFileDialog.getOpenFileNames(self,
-                os.getenv("NAME")+QtGui.QApplication.translate("Dialogs", " - Open"),
+                os.getenv("PINGUINO_NAME")+QtGui.QApplication.translate("Dialogs", " - Open"),
                 QtCore.QDir.home().path(),
                 QtGui.QApplication.translate("Dialogs", "Zip Files (*.zip)"))
 

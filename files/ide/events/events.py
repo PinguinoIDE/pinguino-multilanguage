@@ -36,16 +36,24 @@ class PinguinoEvents(EventMethods, TimerMethods):
         self.connect(self.main.actionSearch_and_replace, QtCore.SIGNAL("triggered()"), self.set_tab_search)
 
         # Menu View
-        self.connect(self.main.actionMaximize_editor, QtCore.SIGNAL("toggled(bool)"), self.exapand_editor)
+        self.connect(self.main.actionMenubar, QtCore.SIGNAL("toggled(bool)"), self.toggle_menubar)
+        self.connect(self.main.actionMaximize_editor, QtCore.SIGNAL("toggled(bool)"), self.expand_editor)
         self.connect(self.main.actionToolbars, QtCore.SIGNAL("toggled(bool)"), self.toggle_toolbars)
+        self.connect(self.main.actionEnvironment, QtCore.SIGNAL("triggered()"), lambda :self.__show_environ__("environ"))
+        self.connect(self.main.actionVariables, QtCore.SIGNAL("triggered()"), lambda :self.__show_environ__("variables"))
         self.connect(self.main.actionTools_2, QtCore.SIGNAL("toggled(bool)"), self.main.dockWidget_tools.setVisible)
         self.connect(self.main.actionBlocks_2, QtCore.SIGNAL("toggled(bool)"), self.main.dockWidget_blocks.setVisible)
-        self.connect(self.main.actionPython_shell, QtCore.SIGNAL("toggled(bool)"), self.main.dockWidget_output.setVisible)
+        self.connect(self.main.actionPython_shell, QtCore.SIGNAL("toggled(bool)"), self.toggle_pythonshell)
 
         #Menu Settings
         self.connect(self.main.actionAutocomplete, QtCore.SIGNAL("triggered()"), self.switch_autocomplete)
         self.connect(self.main.actionColor_theme, QtCore.SIGNAL("toggled(bool)"), self.switch_color_theme)
         self.connect(self.main.actionConfirm_board, QtCore.SIGNAL("toggled(bool)"), self.switch_confirm_board)
+        self.connect(self.main.action16x16, QtCore.SIGNAL("triggered(bool)"), self.resize_toolbar(16, self.main.action16x16))
+        #self.connect(self.main.action22x22, QtCore.SIGNAL("triggered(bool)"), self.resize_toolbar(22, self.main.action22x22))
+        self.connect(self.main.action24x24, QtCore.SIGNAL("triggered(bool)"), self.resize_toolbar(24, self.main.action24x24))
+        self.connect(self.main.action32x32, QtCore.SIGNAL("triggered(bool)"), self.resize_toolbar(32, self.main.action32x32))
+        self.connect(self.main.action48x48, QtCore.SIGNAL("triggered(bool)"), self.resize_toolbar(48, self.main.action48x48))
 
         # Menu Source
         self.connect(self.main.actionComment_out_region, QtCore.SIGNAL("triggered()"), self.commentregion)
@@ -59,9 +67,13 @@ class PinguinoEvents(EventMethods, TimerMethods):
         self.connect(self.main.actionSelect_board, QtCore.SIGNAL("triggered()"), self.__show_board_config__)
         self.connect(self.main.actionCompile, QtCore.SIGNAL("triggered()"), self.pinguino_compile)
         self.connect(self.main.actionUpload, QtCore.SIGNAL("triggered()"), self.pinguino_upload)
+        self.connect(self.main.actionUpload_hex_directly, QtCore.SIGNAL("triggered()"), self.pinguino_upload_hex)
         self.connect(self.main.actionIf_Compile_then_Upload, QtCore.SIGNAL("triggered()"), self.pinguino_compile_and_upload)
         self.connect(self.main.actionHex_code, QtCore.SIGNAL("triggered()"), self.__show_hex_code__)
         self.connect(self.main.actionStdout, QtCore.SIGNAL("triggered()"), self.__show_stdout__)
+        self.connect(self.main.actionMain_c, QtCore.SIGNAL("triggered()"), self.__show_main_c__)
+        self.connect(self.main.actionUser_c, QtCore.SIGNAL("triggered()"), self.__show_user_c__)
+        self.connect(self.main.actionDefine_h, QtCore.SIGNAL("triggered()"), self.__show_define_h__)
 
         # Graphical
         self.connect(self.main.actionView_Pinguino_code, QtCore.SIGNAL("triggered()"), self.__show_pinguino_code__)
@@ -71,8 +83,8 @@ class PinguinoEvents(EventMethods, TimerMethods):
         # Help
         self.connect(self.main.actionWiki_docs, QtCore.SIGNAL("triggered()"), self.show_wiki_docs)
         self.connect(self.main.actionIDE, QtCore.SIGNAL("triggered()"), lambda :self.open_web_site("https://github.com/PinguinoIDE/pinguino-ide/releases/latest"))
-        self.connect(self.main.actionCompilers, QtCore.SIGNAL("triggered()"), lambda :self.open_web_site("https://github.com/PinguinoIDE/pinguino-compilers/releases/latest"))
-        self.connect(self.main.actionLibraries, QtCore.SIGNAL("triggered()"), lambda :self.open_web_site("https://github.com/PinguinoIDE/pinguino-libraries/releases/latest"))
+        #self.connect(self.main.actionCompilers, QtCore.SIGNAL("triggered()"), lambda :self.open_web_site("https://github.com/PinguinoIDE/pinguino-compilers/releases/latest"))
+        self.connect(self.main.actionLibraries, QtCore.SIGNAL("triggered()"), lambda :self.open_web_site("https://github.com/PinguinoIDE/pinguino-libraries"))
         self.connect(self.main.actionWebsite, QtCore.SIGNAL("triggered()"), lambda :self.open_web_site("http://www.pinguino.cc/"))
         self.connect(self.main.actionWiki, QtCore.SIGNAL("triggered()"), lambda :self.open_web_site("http://wiki.pinguino.cc/"))
         self.connect(self.main.actionForum, QtCore.SIGNAL("triggered()"), lambda :self.open_web_site("http://forum.pinguino.cc/"))
@@ -120,10 +132,13 @@ class PinguinoEvents(EventMethods, TimerMethods):
         self.main.tabWidget_files.contextMenuEvent = self.tab_files_context_menu
         self.main.tabWidget_graphical.contextMenuEvent = self.tab_files_context_menu
 
-        self.connect(self.main.dockWidget_output, QtCore.SIGNAL("visibilityChanged(bool)"), self.update_mode_output)
-        self.connect(self.main.dockWidget_tools, QtCore.SIGNAL("visibilityChanged(bool)"), self.main.actionTools_2.setChecked)
-        self.connect(self.main.dockWidget_blocks, QtCore.SIGNAL("visibilityChanged(bool)"), self.main.actionBlocks_2.setChecked)
-        self.connect(self.main.dockWidget_output, QtCore.SIGNAL("visibilityChanged(bool)"), self.main.actionPython_shell.setChecked)
+        #self.connect(self.main.dockWidget_output, QtCore.SIGNAL("visibilityChanged(bool)"), self.update_mode_output)
+        #self.connect(self.main.dockWidget_tools, QtCore.SIGNAL("visibilityChanged(bool)"), self.main.actionTools_2.setChecked)
+        #self.connect(self.main.dockWidget_blocks, QtCore.SIGNAL("visibilityChanged(bool)"), self.main.actionBlocks_2.setChecked)
+        #self.connect(self.main.dockWidget_output, QtCore.SIGNAL("visibilityChanged(bool)"), self.main.actionPython_shell.setChecked)
+
+        self.connect(self.main.dockWidget_tools, QtCore.SIGNAL("dockLocationChanged(Qt::DockWidgetArea)"), lambda area:self.update_tab_position(self.main.tabWidget_tools, area))
+        self.connect(self.main.dockWidget_blocks, QtCore.SIGNAL("dockLocationChanged(Qt::DockWidgetArea)"), lambda area:self.update_tab_position(self.main.tabWidget_blocks, area))
 
         self.main.actionTools_2.setChecked(self.main.dockWidget_tools.isVisible())
         self.main.actionPython_shell.setChecked(self.main.dockWidget_output.isVisible())

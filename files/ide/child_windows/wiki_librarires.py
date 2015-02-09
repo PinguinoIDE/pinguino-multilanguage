@@ -2,11 +2,32 @@
 #-*- coding: utf-8 -*-
 
 import os
+import logging
 import pickle
-import urllib2
+
+import sys
+
+# Python3 compatibility
+if os.getenv("PINGUINO_PYTHON") is "3":
+    #Python3
+    import urllib.request as urllib2
+else:
+    #Python2
+    import urllib2
+
+
+
 
 from PySide import QtCore, QtGui
-from bs4 import BeautifulSoup
+
+#from bs4 import BeautifulSoup
+
+BEAUTIFULSOUP = True
+try: from bs4 import BeautifulSoup
+except ImportError:
+    INFO = "%s is an optional dependence for Pinguino's Wiki Libraries."
+    logging.warning(INFO%"bs4")
+    BEAUTIFULSOUP = False
 
 #from ..methods.constants import self.ide_wiki_docs
 from ..methods.dialogs import Dialogs
@@ -22,10 +43,20 @@ class WikiDock(QtGui.QMainWindow):
 
         self.main_widget = Ui_WikiDocs()
         self.main_widget.setupUi(self)
+        self.main_widget.progressBar.setVisible(False)
 
-        self.setWindowTitle(os.getenv("NAME")+" - "+self.windowTitle())
+        self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+self.windowTitle())
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/logo/art/windowIcon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
 
         self.ide_wiki_docs = os.path.join(os.getenv("PINGUINO_USER_PATH"), "wikidocs.pickle")
+
+        if not BEAUTIFULSOUP:
+            bs4_link = "<a href='https://pypi.python.org/pypi/beautifulsoup4'><span style='font-weight:600; text-decoration: underline; color:#ff0000;'>BeautifulSoup 4</span></a>"
+            self.main_widget.label_error.setText("You need have installed %s for use this feature."%bs4_link)
+        self.main_widget.label_error.setVisible(not BEAUTIFULSOUP)
 
         self.to_ignore = ["Examples"]
 
@@ -44,7 +75,7 @@ class WikiDock(QtGui.QMainWindow):
         self.connect(self.main_widget.tabWidget, QtCore.SIGNAL("tabCloseRequested(int)"), self.tab_close)
 
         self.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
@@ -93,10 +124,13 @@ class WikiDock(QtGui.QMainWindow):
             if reply:
                 libs = self.update_from_wiki()
                 if libs:
-                    libs = self.update_from_wiki()
+                    #libs = self.update_from_wiki()
                     pickle.dump(libs, open(self.ide_wiki_docs, "w"))
+                    Dialogs.info_message(self, "Wiki documentation updated.")
+                    self.main_widget.progressBar.setVisible(False)
                 else:
                     Dialogs.info_message(self, "Impossible read Wiki page.\n"+"http://wiki.pinguino.cc")
+                    self.main_widget.progressBar.setVisible(False)
                 self.set_home(libs=libs)
                 return
             else:
@@ -211,14 +245,19 @@ class WikiDock(QtGui.QMainWindow):
         table = soup.find_all("table")[1]
 
         libs = []
-        for lib in table.find_all("a"):
+        all_libs = table.find_all("a")
+        self.main_widget.progressBar.setVisible(True)
+        self.main_widget.progressBar.setMaximum(len(all_libs))
+        for lib in all_libs:
             description, funtions = self.get_functions(url+lib.get("href"))
             libs.append({
                 "href": url+lib.get("href"),
                 "name": lib.text,
                 "functions": funtions,
                 "description": description,
-            })
+                })
+            self.main_widget.progressBar.setValue(all_libs.index(lib)+1)
+            print("%d/%d" % (all_libs.index(lib), len(all_libs)))
 
         return libs
 
@@ -228,9 +267,9 @@ class WikiDock(QtGui.QMainWindow):
         html = self.get_html_from_url(url)
         soup = BeautifulSoup(html)
 
-        print "\n" + "*" * 70
-        print url
-        print "*" * 70 + "\n"
+        print("\n" + "*" * 70)
+        print(url)
+        print("*" * 70 + "\n")
 
         mw_pages = soup.find_all("div", attrs={"id":"mw-pages"})
 

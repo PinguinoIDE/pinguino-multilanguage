@@ -15,13 +15,18 @@ class BoardConfig(QtGui.QDialog):
         super(BoardConfig, self).__init__()
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint |
                             QtCore.Qt.WindowSystemMenuHint |
-                            QtCore.Qt.WindowStaysOnTopHint)
+                            QtCore.Qt.WindowStaysOnTopHint |
+                            QtCore.Qt.Tool)
 
         self.board_config = Ui_BoardConfig()
         self.board_config.setupUi(self)
         self.main = parent
 
-        self.setWindowTitle(os.getenv("NAME")+" - "+self.windowTitle())
+        self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+self.windowTitle())
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/logo/art/windowIcon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
 
         self.build_devices_arch()
         self.load_config()
@@ -51,13 +56,13 @@ class BoardConfig(QtGui.QDialog):
         for group in all_groups:
             group.setStyleSheet("""
             QGroupBox{
-                font-family: ubuntu regular;
+                font-family: inherit;
                 font-weight: bold;
             }
             """)
 
         self.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
@@ -106,7 +111,7 @@ class BoardConfig(QtGui.QDialog):
 
         mode = self.main.configIDE.config("Board", "mode", "bootloader")
         self.board_config.radioButton_mode_bootloader.setChecked(mode == "bootloader")
-        self.board_config.radioButton_mode_icsp.setChecked(arch == "icsp")
+        self.board_config.radioButton_mode_icsp.setChecked(mode == "icsp")
 
         bootloader = self.main.configIDE.config("Board", "bootloader", "v1_v2")
         self.board_config.radioButton_bootloader_v1_v2.setChecked(bootloader == "v1_v2")

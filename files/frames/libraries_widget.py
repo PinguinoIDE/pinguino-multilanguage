@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/yeison/Documentos/python/dev/developing/pinguino/pinguino-ide/qtgui/frames/libraries_widget.ui'
+# Form implementation generated from reading ui file '/home/yeison/Documentos/python/developing/pinguino/pinguino-ide/qtgui/frames/libraries_widget.ui'
 #
-# Created: Mon Jun  2 19:52:07 2014
-#      by: pyside-uic 0.2.14 running on PySide 1.2.1
+# Created: Fri Dec 19 15:43:21 2014
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 

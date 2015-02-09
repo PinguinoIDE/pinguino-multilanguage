@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/yeison/Documentos/python/dev/developing/pinguino/pinguino-ide/qtgui/gide/bloques/inside/part_bool.ui'
+# Form implementation generated from reading ui file '/home/yeison/Documentos/python/developing/pinguino/pinguino-ide/qtgui/gide/bloques/inside/part_bool.ui'
 #
-# Created: Mon Jun  2 19:52:07 2014
-#      by: pyside-uic 0.2.14 running on PySide 1.2.1
+# Created: Fri Dec 19 15:43:21 2014
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -15,8 +15,8 @@ class Ui_Form(object):
         Form.resize(94, 34)
         Form.setWindowTitle("")
         self.gridLayout = QtGui.QGridLayout(Form)
-        self.gridLayout.setSpacing(0)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
         self.frame = QtGui.QFrame(Form)
         self.frame.setMinimumSize(QtCore.QSize(10, 34))
@@ -28,8 +28,8 @@ class Ui_Form(object):
         self.frame_2.setMaximumSize(QtCore.QSize(16777215, 34))
         self.frame_2.setObjectName("frame_2")
         self.gridLayout_2 = QtGui.QGridLayout(self.frame_2)
-        self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setSpacing(0)

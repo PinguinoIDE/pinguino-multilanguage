@@ -8,9 +8,22 @@ from PySide.QtGui import QListWidget, QListWidgetItem
 from PySide import QtCore, QtGui
 
 from .autocomplete_icons import CompleteIcons
-#from ..methods import constants as Constants
+from ...pinguino_api.config import Config
+
 
 class PinguinoAutoCompleter(QListWidget):
+    """
+    Rules:
+
+    * Visible after 2 keys (self.setSpell(2))
+    * Don't show with nodifiers
+    * Don't show with backspace
+    * When no matchs autocompleter must be visible
+    * Autocompleter must hide with space
+
+
+
+    """
 
     #----------------------------------------------------------------------
     def __init__(self):
@@ -18,7 +31,12 @@ class PinguinoAutoCompleter(QListWidget):
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint |
                             QtCore.Qt.WindowSystemMenuHint |
-                            QtCore.Qt.WindowStaysOnTopHint)
+                            QtCore.Qt.WindowStaysOnTopHint |
+                            QtCore.Qt.Tool)
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/logo/art/windowIcon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
 
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
@@ -37,18 +55,28 @@ class PinguinoAutoCompleter(QListWidget):
                          "arch32" : [],
                          }
 
+        # file_reserved = open(os.path.join(os.getenv("PINGUINO_USER_PATH"), "reserved.pickle"), "r")
 
-        self.namespaces = pickle.load(open(os.path.join(os.getenv("PINGUINO_USER_PATH"), "reserved.pickle"), "r"))
+
+        with open(os.path.join(os.getenv("PINGUINO_USER_PATH"), "reserved.pickle"), "rb") as file_reserved:
+            self.namespaces = pickle.load(file_reserved)
+
 
         icons = CompleteIcons()
         self.addItemsCompleter(self.namespaces["all"], icons.iconLibrary)
         del icons
+        self.set_arch_autocompleter()
+
+        configIDE = Config()
+        selection_color = configIDE.config("Styles", "selection_color", "#FFFFFF")
+        selection_bg_color = configIDE.config("Styles", "selection_foreground_color", "#57AAFF")
 
         self.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
-
-        """)
+        selection-color: %s;
+        selection-background-color: %s;
+        """%(selection_color, selection_bg_color))
 
 
     #----------------------------------------------------------------------
@@ -77,7 +105,8 @@ class PinguinoAutoCompleter(QListWidget):
 
     #----------------------------------------------------------------------
     def show(self, *args):
-        self.set_arch_autocompleter()
+        #self.set_arch_autocompleter()  #FIXME: move this call
+        self.activateWindow()
         super(PinguinoAutoCompleter, self).show(*args)
 
     #----------------------------------------------------------------------
@@ -98,7 +127,7 @@ class PinguinoAutoCompleter(QListWidget):
         hs = self.horizontalScrollBar()
         cont = 0
         while hs.isVisible() :
-            self.resize(self.width()+5, self.height())
+            self.resize(self.width()+1, self.height())
             cont += 1
             if cont > 100: return # :)
 
@@ -207,22 +236,21 @@ class PinguinoAutoCompleter(QListWidget):
             return
 
         cont = self.getIndex(index, True)
-        if not cont:
-            self.hide()
-            return
+        #if not cont:
+            #self.hide()
+            #return
 
-        if self.enabled:
+        if self.enabled and cont:
             self.setCurrentRow(cont)
             item = cont + 5
             if item >= len(self.itemsList): item = -1
             self.scrollToItem(self.itemsList[item])
 
-            self.move(pos)
-            self.show()
-            self.setFocus()
+        self.move(pos)
+        self.show()
 
-            self.ajustWidth()
-            self.ajustPos()
+        self.ajustWidth()
+        self.ajustPos()
 
-
-
+        self.setFocus()
+        self.activateWindow()

@@ -24,12 +24,14 @@ class Pinguino(PinguinoTools):
     #----------------------------------------------------------------------
     def compile_file(self, file_name):
 
+        #self.main.plainTextEdit_output.log_output("compile_file")
+
         if os.path.isfile(file_name):
             data = self.verify(file_name)
             self.__compiled__ = data["verified"]
             self.__data__ = data
         else:
-            raise Exception, "No such file or directory: %s" % file_name
+            raise Exception("No such file or directory: %s" % file_name)
 
 
     #----------------------------------------------------------------------
@@ -49,9 +51,22 @@ class Pinguino(PinguinoTools):
     #----------------------------------------------------------------------
     def upload(self):
 
+        # Régis : Tip from Yeison to get error message
+        #import sys
+        #reload(sys)
+        #sys.stdout.write("BREAKPOINT\r\n")
+
         data = self.__upload__()
         data = "\n".join(data)
-        if data.find("Pinguino not found") != -1 or data.find("Error") != -1:
+        NO_UPLOADED_KEY_TEXT = ["Pinguino not found",
+                                "Error",
+                                "Upload not possible",
+                                "No target found",
+                                "Resource busy",
+                                "Entity not found",
+                                ]
+
+        if False in [data.find(key)==-1 for key in NO_UPLOADED_KEY_TEXT]:
             if data.find("Error") != -1: data = data[data.find("Error"):]
             return False, data
         return True, data
@@ -62,8 +77,8 @@ class Pinguino(PinguinoTools):
         if self.__current_board__.arch == 8:
             self.__current_board__.bldr = boot[0]
             self.__current_board__.memstart = boot[1]
-        else:
-            raise Exception, "No bootloader options for 32 bits."
+        #else:
+            #raise Exception("No bootloader options for 32 bits.")
 
     #----------------------------------------------------------------------
     def compiled(self):
@@ -99,7 +114,7 @@ class Pinguino(PinguinoTools):
         report["linking"] = errors
         report["line_numbers"] = []
         for error in errors:
-            match = re.match(".*:([\d]+):[\d]+: error.*", error)
+            match = re.match(".*user.c:([\d]+):[\d]+: error.*", error)
             if not match is None: report["line_numbers"] += [int(match.groups()[0])]
         return report
 
@@ -149,19 +164,20 @@ class Pinguino(PinguinoTools):
         #hex_file.close()
         return open(self.__data__["hex_file"], "r")
 
-    #----------------------------------------------------------------------
-    def build_argparse(self):
 
-        parser = argparse.ArgumentParser(description="*** %s ***"%os.getenv("NAME"))
-        parser.add_argument("-v", "--version", dest="version", action="store_true", default=False, help="show %s version and exit"%os.getenv("NAME"))
-        parser.add_argument("-a", "--author", dest="author", action="store_true", default=False, help="show authors of this %s version and exit"%os.getenv("NAME"))
-        parser.add_argument("-f", "--filename", dest="filename", nargs=1, default=False, help="filename to process")
-        parser.add_argument("-l", "--boot", dest="bootloader", nargs=1, default=False, help="set bootloader option")
-        parser.add_argument("-x", "--upload", dest="upload", action="store_true", default=False, help="upload code")
-        parser.add_argument("-g", "--hex", dest="hex_file", action="store_true", default=False, help="print hex_file")
+    ##----------------------------------------------------------------------
+    #def build_argparse(self):
 
-        for board in AllBoards:
-            parser.add_argument(board.shortarg, board.longarg, dest="board", const=board, action="store_const", default=False,
-                                help="compile code for " + board.board + " board")
+        #parser = argparse.ArgumentParser(description="*** %s ***"%os.getenv("PINGUINO_NAME"))
+        #parser.add_argument("-v", "--version", dest="version", action="store_true", default=False, help="show %s version and exit"%os.getenv("PINGUINO_NAME"))
+        #parser.add_argument("-a", "--author", dest="author", action="store_true", default=False, help="show authors of this %s version and exit"%os.getenv("PINGUINO_NAME"))
+        #parser.add_argument("-f", "--filename", dest="filename", nargs=1, default=False, help="filename to process")
+        #parser.add_argument("-l", "--boot", dest="bootloader", nargs=1, default=False, help="set bootloader option")
+        #parser.add_argument("-x", "--upload", dest="upload", action="store_true", default=False, help="upload code")
+        #parser.add_argument("-g", "--hex", dest="hex_file", action="store_true", default=False, help="print hex_file")
 
-        return parser.parse_args()
+        #for board in AllBoards:
+            #parser.add_argument(board.shortarg, board.longarg, dest="board", const=board, action="store_const", default=False,
+                                #help="compile code for " + board.board + " board")
+
+        #return parser.parse_args()

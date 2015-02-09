@@ -16,7 +16,11 @@ class InsertBlock(QtGui.QDialog):
         self.insert = Ui_InsertBlock()
         self.insert.setupUi(self)
 
-        self.setWindowTitle(os.getenv("NAME")+" - "+self.windowTitle())
+        self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+self.windowTitle())
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/logo/art/windowIcon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
 
         self.graphical = KIT
 
@@ -31,7 +35,7 @@ class InsertBlock(QtGui.QDialog):
         self.insert.lineEdit.selectAll()
 
         self.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
@@ -82,7 +86,7 @@ class InsertBlock(QtGui.QDialog):
         self.items = {}
         self.all_sets = self.graphical.get_all_sets()
         for key in self.all_sets.keys():
-            if self.all_sets[key][2][0] == "label":
+            if self.all_sets[key][2][0] in ["label", "decorator"]:
                 label = self.all_sets[key][2][1]
                 if label.lower().startswith(text.lower()):
                     bloques.append([key, self.all_sets[key]])

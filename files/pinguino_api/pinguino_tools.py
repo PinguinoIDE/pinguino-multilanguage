@@ -34,6 +34,7 @@ from .uploader.uploader import Uploader
 
 HOME_DIR = os.path.split(os.path.dirname(os.path.realpath(__file__)))[0]
 
+# import debugger
 
 
 ########################################################################
@@ -41,6 +42,9 @@ class PinguinoTools(object):
 
     #----------------------------------------------------------------------
     def __init__(self):
+        # sys.stderr = debugger.Debugger("stderr")
+        # sys.stdout = debugger.Debugger("stdout")
+        # debugger.Debugger(sys)
 
         self.NoBoot = ("noboot", 0)
         self.Boot2 = ("boot2", 0x2000)
@@ -54,7 +58,7 @@ class PinguinoTools(object):
         #self.P32_DIR = "p32"
         #self.P8_DIR = "p8"
 
-
+    # RB 2015-01-27 : Still useful ? See also methods.py/set_board
     #----------------------------------------------------------------------
     def set_os_variables(self):
 
@@ -65,20 +69,29 @@ class PinguinoTools(object):
 
         if os.getenv("PINGUINO_OS_NAME") == "windows":
             self.COMPILER_8BIT = os.path.join(self.P8_BIN, "sdcc.exe")
+
             #self.p8 = 'picpgm.exe'
-            self.UPLOADER_32 = os.path.join(self.P32_BIN, "mphidflash.exe")
+            #self.UPLOADER_32 = os.path.join(self.P32_BIN, "mphidflash.exe")
+
+            # RB : 2014-11-14 
+            # Windows installer should download and install GnuWin32
+            # and add path to the System Path, something like :
+            # set PATH=%PATH%;C:\Program Files\GnuWin32\bin
+            #self.MAKE = "make.exe"
+
             self.MAKE = os.path.join(self.P32_BIN, "make.exe")
 
         elif os.getenv("PINGUINO_OS_NAME") == "linux":
             self.COMPILER_8BIT = os.path.join(self.P8_BIN, "sdcc")
             #self.p8 = 'picpgm'
-            self.UPLOADER_32 = os.path.join(self.P32_BIN, "ubw32")
+            #self.UPLOADER_32 = os.path.join(self.P32_BIN, "ubw32")
+            #self.UPLOADER_32 = os.path.join(self.P32_BIN, "pic32prog")
             self.MAKE = "make"
 
-        elif os.getenv("PINGUINO_OS_NAME") == "mac":
+        elif os.getenv("PINGUINO_OS_NAME") == "macosx":
             self.COMPILER_8BIT = os.path.join(self.P8_BIN, "sdcc")
             #self.p8 = 'picpgm'
-            self.UPLOADER_32 = os.path.join(self.P32_BIN, "mphidflash")
+            #self.UPLOADER_32 = os.path.join(self.P32_BIN, "mphidflash")
             self.MAKE = "make"
 
 
@@ -89,15 +102,18 @@ class PinguinoTools(object):
         self.__current_board__ = board
         #self.get_regobject_libinstructions(board.arch)
 
+
     #----------------------------------------------------------------------
     def get_board(self):
 
         return self.__current_board__
 
+
     #----------------------------------------------------------------------
     def get_filename(self):
 
         return self.__filename__
+
 
     #----------------------------------------------------------------------
     def get_hex_file(self):
@@ -107,6 +123,7 @@ class PinguinoTools(object):
 
     #----------------------------------------------------------------------
     def verify(self, filename):
+
         DATA_RETURN = {}
         DATA_RETURN["compiling"] = {"c":[], "asm":[]}
         DATA_RETURN["linking"] = []
@@ -136,7 +153,7 @@ class PinguinoTools(object):
 
 
         retour, error_compile = self.compile(filename)
-        if retour!=0:
+        if retour != 0:
             DATA_RETURN["verified"] = False
             DATA_RETURN["compiling"] = error_compile
             return DATA_RETURN
@@ -176,6 +193,10 @@ class PinguinoTools(object):
         hex_file = self.get_hex_file()
         board = self.get_board()
 
+        uploader = Uploader(hex_file, board)
+        result = uploader.write_hex()
+
+        """
         if board.arch == 8:
             uploader = Uploader(hex_file, board)
             result = uploader.write_hex()
@@ -183,37 +204,45 @@ class PinguinoTools(object):
         elif board.arch == 32:
             fichier = open(os.path.join(os.path.expanduser(self.SOURCE_DIR), 'stdout'), 'w+')
 
+            #RB 19-06-2014 : pic32prog
             sortie=Popen([os.path.join(os.path.dirname(self.P32_BIN), self.UPLOADER_32),
                           "-w",
                           hex_file,
                           "-r",
                           "-n"],
                          stdout=fichier, stderr=STDOUT)
+
+            #RB 19-06-2014 : ubw32/mhidflash
+            sortie=Popen([os.path.join(os.path.dirname(self.P32_BIN), self.UPLOADER_32),
+                          "-S", "-p", hex_file],
+                         stdout=fichier, stderr=STDOUT)
+
             sortie.communicate()
             fichier.seek(0)
             result = fichier.readlines()
             fichier.close()
-
-        result = filter(lambda line:not line.isspace(), result)
+        """
+        
+        # Weed out blank lines with filter
+        result = filter(lambda line: not line.isspace(), result)
         return result
-
 
     #----------------------------------------------------------------------
     def get_regobject_libinstructions(self, arch):
         """Return regobject and libinstructions for each architecture."""
         if arch == 8:
-            if getattr(self, "regobject_8", False) and getattr(self, "libinstructions_8", False):
-                return self.regobject_8,  self.libinstructions_8
+            if getattr(self, "libinstructions_8", False):
+                return self.libinstructions_8
             else:
-                self.regobject_8, self.libinstructions_8 = self.read_lib(8)
-                return self.regobject_8,  self.libinstructions_8
+                self.libinstructions_8 = self.read_lib(8)
+                return self.libinstructions_8
 
         elif arch == 32:
-            if getattr(self, "regobject_32", False) and getattr(self, "libinstructions_32", False):
-                return self.regobject_32, self.libinstructions_32
+            if getattr(self, "libinstructions_32", False):
+                return self.libinstructions_32
             else:
-                self.regobject_32, self.libinstructions_32 = self.read_lib(32)
-                return self.regobject_32, self.libinstructions_32
+                self.libinstructions_32 = self.read_lib(32)
+                return self.libinstructions_32
 
 
     #----------------------------------------------------------------------
@@ -257,15 +286,17 @@ class PinguinoTools(object):
                 include = "" if include is None else include
                 define = "" if define is None else define
                 cnvinstruction = instruction if cnvinstruction is "" else cnvinstruction
-                libinstructions.append([instruction, cnvinstruction, include, define])
 
                 if not instruction: continue
 
+
                 regex = re.compile(r"(^|[' ']|['=']|['{']|[',']|[\t]|['(']|['!'])%s\W" % re.escape(instruction))
+                #regobject.append(regex)
 
-                regobject.append(regex)
+                libinstructions.append([instruction, cnvinstruction, include, define, regex])
 
-        return regobject[:], libinstructions[:]
+
+        return libinstructions[:]
 
 
     #----------------------------------------------------------------------
@@ -315,30 +346,38 @@ class PinguinoTools(object):
         fichier = open(os.path.join(os.path.expanduser(self.SOURCE_DIR), "user.c"), "r")
         content = fichier.read()
         content = self.remove_comments(content)
-        content = content.split('\n')
+        #content = content.split('\n')
         nblines = 0
-        for line in content:
-            if not line.isspace():
-                resultline = self.replace_word(line)
-            else: resultline = "\n"
-            #FIXME: error line
-            #if resultline.find("error") == 1:
-                ##line = resultline
-                ##print "error " + resultline
-                ##self.displaymsg("error "+resultline,1)
-                #error.append(resultline)
-                #return False
-            file_line[nblines] = resultline
-            nblines += 1
+        libinstructions = self.get_regobject_libinstructions(self.get_board().arch)
+
+        content = self.replace_word(content, libinstructions) + "\n"
+        #for line in content:
+            #if not line.isspace() and line:
+                #resultline = self.replace_word(line, libinstructions) + "\n"
+            #else: resultline = "\n"
+            ##FIXME: error line
+            ##if resultline.find("error") == 1:
+                ###line = resultline
+                ###print "error " + resultline
+                ###self.displaymsg("error "+resultline,1)
+                ##error.append(resultline)
+                ##return False
+            #file_line[nblines] = resultline
+            #nblines += 1
+
         fichier.close()
 
 
         # save new tmp file
         fichier = open(os.path.join(os.path.expanduser(self.SOURCE_DIR), "user.c"), "w")
-        for i in range(0, nblines):
-            fichier.writelines(file_line[i])
+        fichier.writelines(content)
         fichier.writelines("\r\n")
         fichier.close()
+        #fichier = open(os.path.join(os.path.expanduser(self.SOURCE_DIR), "user.c"), "w")
+        #for i in range(0, nblines):
+            #fichier.writelines(file_line[i])
+        #fichier.writelines("\r\n")
+        #fichier.close()
 
         # sort define.h
         fichier = open(os.path.join(os.path.expanduser(self.SOURCE_DIR), "define.h"), "r")
@@ -375,30 +414,34 @@ class PinguinoTools(object):
         return True
 
     #----------------------------------------------------------------------
-    def replace_word(self, line):
+    def replace_word(self, content, libinstructions=None):
         """ convert pinguino language in C language """
 
-        regobject, libinstructions = self.get_regobject_libinstructions(self.get_board().arch)
+        if libinstructions is None:
+            libinstructions = self.get_regobject_libinstructions(self.get_board().arch)
+
+        ##libinstructions content
+        ##instruction, cnvinstruction, include, define, regex
 
         # replace arduino/pinguino language and add #define or #include to define.h
-        for i in range(len(libinstructions)):
-            if re.search(regobject[i], line):
-                line = line.replace(libinstructions[i][0], libinstructions[i][1])
-                #print (str(self.libinstructions[i][0]), str(self.libinstructions[i][1]))
-                #print (str(self.libinstructions[i][2]), str(self.libinstructions[i][3]))
-                if self.not_in_define(libinstructions[i][2]):
-                    self.add_define(libinstructions[i][2])
-                if self.not_in_define(libinstructions[i][3]):
-                    self.add_define(libinstructions[i][3])
-        return line+"\n"
+        for instruction, cnvinstruction, include, define, regex in libinstructions:
+            if re.search(regex, content):
+                content = content.replace(instruction, cnvinstruction)
+                if self.not_in_define(include): self.add_define(include)
+                if self.not_in_define(define): self.add_define(define)
+
+        return content
+
 
 
     #----------------------------------------------------------------------
-    def remove_comments(self, text):
+    def remove_comments(self, textinput):
         #FIXME: replace comment with white lines for debugger
 
-        if type(text) == type([]):
-            text = "".join(text)
+        if type(textinput) == type([]):
+            text = "".join(textinput)
+        else:
+            text = textinput
 
         def replacer(match):
             s = match.group(0)
@@ -416,8 +459,9 @@ class PinguinoTools(object):
         )
         textout = re.sub(pattern, replacer, text)
 
-        if type(text) == type([]):
+        if type(textinput) == type([]):
             textout = textout.split("\n")
+            textout = map(lambda x:x+"\n", textout)
 
         return textout
 
@@ -435,13 +479,14 @@ class PinguinoTools(object):
             user_imports.append("-I" + lib_dir)
         return " ".join(user_imports)
 
-
     #----------------------------------------------------------------------
     def compile(self, filename):
         """ Compile.
 
-        NB :  "--opt-code-size"   deprecated
-              "--use-non-free"    implicit -I and -L options for non-free headers and libs
+        NB :    "--opt-code-size"   deprecated
+                "--use-non-free"    implicit -I and -L options for non-free headers and libs
+                "-I" + os.path.join(self.P8_DIR, '..', 'sdcc', 'include', 'pic16'),\
+                "-I" + os.path.join(self.P8_DIR, '..', 'sdcc', 'non-free', 'include', 'pic16'),\
         """
 
         ERROR = {"c": {},
@@ -471,10 +516,9 @@ class PinguinoTools(object):
                 "-DBOARD=\"" + board.board + "\"",\
                 "-DPROC=\"" + board.proc + "\"",\
                 "-DBOOT_VER=2",\
-                "-I" + os.path.join(self.P8_DIR, 'sdcc', 'include', 'pic16'),\
-                "-I" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'include', 'pic16'),\
-                "-I" + os.path.join(self.P8_DIR, 'pinguino', 'core'),\
-                "-I" + os.path.join(self.P8_DIR, 'pinguino', 'libraries'),\
+                "--use-non-free",\
+                "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'core'),\
+                "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'libraries'),\
                 "-I" + os.path.dirname(filename),\
                 "--compile-only",\
                 "-o" + os.path.join(os.path.expanduser(self.SOURCE_DIR), 'main.o'),\
@@ -498,10 +542,9 @@ class PinguinoTools(object):
                 "-DBOARD=\"" + board.board + "\"",\
                 "-DPROC=\"" + board.proc + "\"",\
                 "-DBOOT_VER=4",\
-                "-I" + os.path.join(self.P8_DIR, 'sdcc', 'include', 'pic16'),\
-                "-I" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'include', 'pic16'),\
-                "-I" + os.path.join(self.P8_DIR, 'pinguino', 'core'),\
-                "-I" + os.path.join(self.P8_DIR, 'pinguino', 'libraries'),\
+                "--use-non-free",\
+                "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'core'),\
+                "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'libraries'),\
                 "-I" + os.path.dirname(filename),\
                 "--compile-only",\
                 os.path.join(os.path.expanduser(self.SOURCE_DIR), 'main.c'),\
@@ -522,15 +565,15 @@ class PinguinoTools(object):
                 "-DBOARD=\"" + board.board + "\"",\
                 "-DPROC=\"" + board.proc + "\"",\
                 "-DBOOT_VER=0",\
-                "-I" + os.path.join(self.P8_DIR, 'sdcc', 'include', 'pic16'),\
-                "-I" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'include', 'pic16'),\
-                "-I" + os.path.join(self.P8_DIR, 'pinguino', 'core'),\
-                "-I" + os.path.join(self.P8_DIR, 'pinguino', 'libraries'),\
+                "--use-non-free",\
+                "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'core'),\
+                "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'libraries'),\
                 "-I" + os.path.dirname(filename),\
                 "--compile-only",\
                 os.path.join(os.path.expanduser(self.SOURCE_DIR), 'main.c'),\
                 "-o" + os.path.join(os.path.expanduser(self.SOURCE_DIR), 'main.o')] + user_imports,\
                 stdout=fichier, stderr=STDOUT)
+
 
         sortie.communicate()
         if sortie.poll()!=0:
@@ -573,12 +616,25 @@ class PinguinoTools(object):
         return sortie.poll(), ERROR
 
 
+    # ------------------------------------------------------------------------------
+    def report(self, message):
+        import sys
+        reload(sys)
+        sys.stdout.write("DEBUG : " + message + "\r\n")
+
     #----------------------------------------------------------------------
     def link(self, filename):
         """Link.
 
         NB :  "--opt-code-size"   deprecated
-              "--use-non-free"    implicit -I and -L options for non-free headers and libs"""
+              "--use-non-free"    implicit -I and -L options for non-free headers and libs
+                    "-I" + os.path.join(self.P8_DIR, 'sdcc', 'include', 'pic16'),\
+                    "-I" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'include', 'pic16'),\
+                    "-I" + os.path.join(self.P8_DIR, 'pinguino', 'core'),\
+                    "-I" + os.path.join(self.P8_DIR, 'pinguino', 'libraries'),\
+                    "-L" + os.path.join(self.P8_DIR, 'sdcc', 'lib', 'pic16'),\
+                    "-L" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'lib', 'pic16'),\
+        """
 
         error = []
         board = self.get_board()
@@ -606,12 +662,9 @@ class PinguinoTools(object):
                     "-DBOARD=\"" + board.board + "\"",\
                     "-DPROC=\"" + board.proc + "\"",\
                     "-DBOOT_VER=2",\
-                    "-I" + os.path.join(self.P8_DIR, 'sdcc', 'include', 'pic16'),\
-                    "-I" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'include', 'pic16'),\
-                    "-I" + os.path.join(self.P8_DIR, 'pinguino', 'core'),\
-                    "-I" + os.path.join(self.P8_DIR, 'pinguino', 'libraries'),\
-                    "-L" + os.path.join(self.P8_DIR, 'sdcc', 'lib', 'pic16'),\
-                    "-L" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'lib', 'pic16'),\
+                    "--use-non-free",\
+                    "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'core'),\
+                    "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'libraries'),\
                     'libio' + board.proc + '.lib',\
                     'libdev' + board.proc + '.lib',\
                     'libc18f.lib',\
@@ -646,12 +699,9 @@ class PinguinoTools(object):
                     "-DBOARD=\"" + board.board + "\"",\
                     "-DPROC=\"" + board.proc + "\"",\
                     "-DBOOT_VER=4",\
-                    "-I" + os.path.join(self.P8_DIR, 'sdcc', 'include', 'pic16'),\
-                    "-I" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'include', 'pic16'),\
-                    "-I" + os.path.join(self.P8_DIR, 'pinguino', 'core'),\
-                    "-I" + os.path.join(self.P8_DIR, 'pinguino', 'libraries'),\
-                    "-L" + os.path.join(self.P8_DIR, 'sdcc', 'lib', 'pic16'),\
-                    "-L" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'lib', 'pic16'),\
+                    "--use-non-free",\
+                    "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'core'),\
+                    "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'libraries'),\
                     os.path.join(os.path.expanduser(self.SOURCE_DIR), 'main.o'),\
                     'libio' + board.proc + '.lib',\
                     'libdev' + board.proc + '.lib',\
@@ -680,12 +730,9 @@ class PinguinoTools(object):
                     "-DBOARD=\"" + board.board + "\"",\
                     "-DPROC=\"" + board.proc + "\"",\
                     "-DBOOT_VER=0",\
-                    "-I" + os.path.join(self.P8_DIR, 'sdcc', 'include', 'pic16'),\
-                    "-I" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'include', 'pic16'),\
-                    "-I" + os.path.join(self.P8_DIR, 'pinguino', 'core'),\
-                    "-I" + os.path.join(self.P8_DIR, 'pinguino', 'libraries'),\
-                    "-L" + os.path.join(self.P8_DIR, 'sdcc', 'lib', 'pic16'),\
-                    "-L" + os.path.join(self.P8_DIR, 'sdcc', 'non-free', 'lib', 'pic16'),\
+                    "--use-non-free",\
+                    "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'core'),\
+                    "-I" + os.path.join(self.P8_DIR, 'include', 'pinguino', 'libraries'),\
                     'libio' + board.proc + '.lib',\
                     'libdev' + board.proc + '.lib',\
                     'libc18f.lib',\
@@ -705,16 +752,18 @@ class PinguinoTools(object):
             if user_imports32: _IDE_USERLIBS_ = ["_IDE_USERLIBS_=" + user_imports32]
             else: _IDE_USERLIBS_ = []
 
+            #self.report(makefile)
+
             sortie = Popen([self.MAKE,
                             "--makefile=" + makefile,
-
                             "_IDE_PDEDIR_=" + os.path.dirname(filename),
                             "_IDE_PROC_=" + board.proc,
                             "_IDE_BOARD_=" + board.board,
                             "_IDE_BINDIR_=" + self.P32_BIN,  #default /usr/bin
                             "_IDE_P32DIR_=" + self.P32_DIR,  #default /usr/share/pinguino-11.0/p32
                             "_IDE_SRCDIR_=" + self.SOURCE_DIR,
-
+                            "_IDE_USERHOMEDIR_=" + os.getenv("PINGUINO_USER_PATH"),  #default ~/.pinguino
+                            "_IDE_OSARCH_=" + os.getenv("PINGUINO_OS_ARCH"),
                             "_IDE_HEAP_SIZE_=" + self.HEAPSIZE,
                             "_IDE_MIPS16_ENABLE_=" + self.MIPS16,
                             "_IDE_OPTIMIZATION_=" + self.OPTIMIZATION,
@@ -759,12 +808,12 @@ class PinguinoTools(object):
 
         codesize = 0
         address_Hi = 0
-        if board.arch == 32:
-            memfree = board.memend - board.ebase
-        else:
-            memfree = board.memend - board.memstart
-        print "%X"%board.memstart
-        print "%X"%board.memend
+
+        memfree = board.memend - board.memstart
+
+        #print "%X" % board.memstart
+        #print "%X" % board.memend
+
         fichier = open(filename, 'r')
         lines = fichier.readlines()
 
@@ -791,7 +840,6 @@ class PinguinoTools(object):
 
         fichier.close()
         return "code size: " + str(codesize) + " / " + str(memfree) + " " + "bytes" + " (" + str(100*codesize/memfree) + "% " + "used"+ ")"
-
 
 
 # ------------------------------------------------------------------------------

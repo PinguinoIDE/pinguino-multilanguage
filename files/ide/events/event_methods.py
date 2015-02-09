@@ -6,6 +6,8 @@ import codecs
 import webbrowser
 import shutil
 
+from math import ceil
+
 from PySide import QtCore, QtGui
 
 from ..code_editor.pinguino_code_editor import PinguinoCodeEditor
@@ -14,6 +16,15 @@ from ..methods.dialogs import Dialogs
 from ..methods.decorators import Decorator
 #from ..methods import constants as Constants
 from ..methods.methods import Methods
+
+# Python3 compatibility
+if os.getenv("PINGUINO_PYTHON") is "3":
+    #Python3
+    from ..methods.intel_hex3 import IntelHex
+else:
+    #Python2
+    from ..methods.intel_hex import IntelHex
+
 from ..child_windows.about import About
 from ..child_windows.board_config import BoardConfig
 from ..child_windows.plain_text_out import PlainOut
@@ -22,6 +33,7 @@ from ..child_windows.paths import Paths
 from ..child_windows.hex_viewer import HexViewer
 from ..child_windows.insert_block_dialog import InsertBlock
 from ..child_windows.wiki_librarires import WikiDock
+from ..child_windows.environ_viewer import EnvironViewer
 
 
 ########################################################################
@@ -112,7 +124,7 @@ class EventMethods(Methods):
             setattr(editor, "path", save_path)
             self.main.tabWidget_files.setTabText(index, filename)
             self.main.tabWidget_files.setTabToolTip(index, save_path)
-            self.setWindowTitle(os.getenv("NAME")+" - "+save_path)
+            self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+save_path)
 
             self.update_recents(save_path)
 
@@ -160,13 +172,14 @@ class EventMethods(Methods):
         #index = self.main.tabWidget_files.currentIndex()
         filename = self.main.tabWidget_files.tabText(index)
         save_path = getattr(editor, "path", None)
+        if save_path is None: save_path = filename
 
         save_path, filename = Dialogs.set_save_file(self, save_path)
         if not save_path: return False
         setattr(editor, "path", save_path)
         self.main.tabWidget_files.setTabText(index, filename)
         self.main.tabWidget_files.setTabToolTip(index, save_path)
-        self.setWindowTitle(os.getenv("NAME")+" - "+save_path)
+        self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+save_path)
 
         self.__save_file__(editor=editor)
         return True
@@ -204,7 +217,7 @@ class EventMethods(Methods):
     def print_file(self):
         #Bug: no print to file, this is PySide bug.
         editor = self.get_tab().currentWidget()
-        filename = self.get_tab().tabText(self.get_tab().currentIndex()).replace(".pde", ".pdf").replace(".gpde", ".pdf")
+        filename = self.get_tab().tabText(self.get_tab().currentIndex()).replace(".pde", ".pdf")
         QPrinter = QtGui.QPrinter
         printer = QPrinter(QPrinter.HighResolution)
         printer.setPageSize(QPrinter.Letter)
@@ -214,7 +227,7 @@ class EventMethods(Methods):
         printer.setOutputFormat(QPrinter.PdfFormat)
         preview = QtGui.QPrintDialog(printer)
         preview.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
@@ -230,6 +243,17 @@ class EventMethods(Methods):
         self.configIDE.set("Main", "position", self.pos().toTuple())
         self.configIDE.set("Main", "maximized", self.isMaximized())
         #self.configIDE.set("Main", "terminal_height", self.main.dockWidget_output.height())
+
+        side = self.dockWidgetArea(self.main.dockWidget_tools)
+        self.configIDE.set("Main", "dock_tools", side.name.decode())
+
+        side = self.dockWidgetArea(self.main.dockWidget_blocks)
+        self.configIDE.set("Main", "dock_blocks", side.name.decode())
+
+        side = self.dockWidgetArea(self.main.dockWidget_output)
+        self.configIDE.set("Main", "dock_shell", side.name.decode())
+
+        self.configIDE.set("Main", "menubar", self.main.menubar.isVisible())
 
         count = 1
         self.configIDE.clear_recents()
@@ -315,6 +339,9 @@ class EventMethods(Methods):
     def set_tab_search(self):
         self.main.tabWidget_tools.setCurrentIndex(2)
         self.main.lineEdit_search.setFocus()
+        editor = self.main.tabWidget_files.currentWidget()
+        cursor = editor.text_edit.textCursor()
+        self.main.lineEdit_search.setText(cursor.selectedText())
 
 
     # Menu Source
@@ -559,7 +586,7 @@ class EventMethods(Methods):
     def dedentregion(self):
         editor, cursor, prevCursor, selected, firstLine = self.select_block_edit()
 
-        if firstLine != False:
+        if firstLine != False and firstLine.startswith(" "*4):
 
             editor = self.main.tabWidget_files.currentWidget()
             comment_wildcard = " " * 4
@@ -640,8 +667,21 @@ class EventMethods(Methods):
             Dialogs.error_message(self, QtGui.QApplication.translate("Dialogs", "You must compile before."))
             return
         if os.path.isfile(hex_filename):
-            self.frame_hex_viewer = HexViewer(self, hex_filename)
-            self.frame_hex_viewer.show()
+
+            hex_obj = IntelHex(open(hex_filename, "r"))
+            hex_dict = hex_obj.todict()
+            rows = int(ceil(max(hex_dict.keys()) / float(0x18)))
+
+            if rows < 1e3:
+                self.frame_hex_viewer = HexViewer(self, hex_obj, hex_filename)
+                self.frame_hex_viewer.show()
+            else:
+                file_ = codecs.open(hex_filename, "r", "utf-8")
+                content = file_.readlines()
+                file_.close
+                self.frame_hex_plain = PlainOut(hex_filename, "".join(content), highlight=True)
+                self.frame_hex_plain.show()
+
         else:
             Dialogs.error_message(self, QtGui.QApplication.translate("Dialogs", "You must compile before."))
 
@@ -650,6 +690,50 @@ class EventMethods(Methods):
     def __show_stdout__(self):
         self.frame_stdout = PlainOut("Stdout")
         self.frame_stdout.show()
+
+    #----------------------------------------------------------------------
+    def __show_environ__(self, debug):
+        self.frame_environ = EnvironViewer(self, debug)
+        self.frame_environ.show()
+
+
+    #----------------------------------------------------------------------
+    def __show_main_c__(self):
+        source = os.path.join(os.getenv("PINGUINO_USER_PATH"), "source")
+        board = self.configIDE.config("Board", "arch", 8)
+        if board == 32: extra = "32"
+        else: extra = ""
+        filename = os.path.join(source, "main%s.c"%extra)
+
+        if os.path.isfile(filename):
+            file_ = codecs.open(filename, "r", "utf-8")
+            content = file_.readlines()
+            file_.close()
+            self.frame_main = PlainOut("Main.c", "".join(content), highlight=True)
+            self.frame_main.show()
+
+    #----------------------------------------------------------------------
+    def __show_define_h__(self):
+        filename = os.path.join(os.getenv("PINGUINO_USER_PATH"), "source", "define.h")
+
+        if os.path.isfile(filename):
+            file_ = codecs.open(filename, "r", "utf-8")
+            content = file_.readlines()
+            file_.close()
+            self.frame_define = PlainOut("Define.h", "".join(content), highlight=True)
+            self.frame_define.show()
+
+
+    #----------------------------------------------------------------------
+    def __show_user_c__(self):
+        filename = os.path.join(os.getenv("PINGUINO_USER_PATH"), "source", "user.c")
+
+        if os.path.isfile(filename):
+            file_ = codecs.open(filename, "r", "utf-8")
+            content = file_.readlines()
+            file_.close()
+            self.frame_user = PlainOut("User.c", "".join(content), highlight=True)
+            self.frame_user.show()
 
 
     #----------------------------------------------------------------------
@@ -676,7 +760,7 @@ class EventMethods(Methods):
         elif reply == None:
             return False
 
-        self.write_log(QtGui.QApplication.translate("Frame", "compilling: %s")%filename)
+        self.write_log(QtGui.QApplication.translate("Frame", "Compiling: %s")%filename)
         self.write_log(self.get_description_board())
         self.write_log("")
 
@@ -761,6 +845,37 @@ class EventMethods(Methods):
             self.pinguino_upload()
 
 
+    #----------------------------------------------------------------------
+    def pinguino_upload_hex(self):
+
+        Dialogs.warning_message(self, "Be careful with this feature, ensure that .hex file it is correct.")
+
+        path = QtCore.QDir.home().path()
+        filename = Dialogs.set_open_hex(self, path)
+
+        if not filename: return
+
+        self.set_board()
+        reply = Dialogs.confirm_board(self)
+
+        if reply == False:
+            self.__show_board_config__()
+            return False
+        elif reply == None:
+            return False
+
+        board = self.pinguinoAPI.get_board()
+        reply = Dialogs.confirm_message(self, "Do you want upload '%s' to %s"%(filename, board.name))
+
+        if reply:
+            self.pinguinoAPI.__hex_file__ = filename
+            self.pinguino_upload()
+
+
+
+
+
+
 
     # Graphical
 
@@ -799,7 +914,8 @@ class EventMethods(Methods):
     def switch_color_theme(self, pinguino_color=True):
         default_pallete = ["toolBar_edit", "toolBar_files", "toolBar_search_replace",
                            "toolBar_undo_redo", "toolBar_pinguino", "toolBar_pinguino",
-                           "toolBar_graphical", "toolBar_switch", "statusBar"]
+                           "toolBar_graphical", "toolBar_switch", "statusBar", "toolBar_system",
+                           "menubar"]
 
         pinguino_pallete = ["dockWidget_output", "dockWidget_tools", "dockWidget_blocks"]
 
@@ -948,24 +1064,24 @@ class EventMethods(Methods):
     #----------------------------------------------------------------------
     @Decorator.clear_highlighted_lines()
     def jump_function_header(self, row):
-        item = self.main.tableWidget_functions.item(row, 2).text()
-        line = item[:item.find("-")]
+        item = self.main.tableWidget_functions.verticalHeaderItem(row).text()
+        line = item[item.find(":")+1:][:item[item.find(":")+1:].find("-")]
         self.jump_to_line(int(line))
 
 
     #----------------------------------------------------------------------
     @Decorator.clear_highlighted_lines()
     def jump_directive_header(self, row):
-        item = self.main.tableWidget_directives.item(row, 2).text()
-        line = item
+        item = self.main.tableWidget_directives.verticalHeaderItem(row).text()
+        line = item[item.find(":")+1:]
         self.jump_to_line(int(line))
 
 
     #----------------------------------------------------------------------
     @Decorator.clear_highlighted_lines()
     def jump_variable_header(self, row):
-        item = self.main.tableWidget_variables.item(row, 1).text()
-        line = item
+        item = self.main.tableWidget_variables.verticalHeaderItem(row).text()
+        line = item[item.find(":")+1:]
         self.jump_to_line(int(line))
 
 
@@ -984,8 +1100,8 @@ class EventMethods(Methods):
         self.main.actionClose_file.setEnabled(self.main.tabWidget_files.count() > 0)
 
         editor = self.main.tabWidget_files.currentWidget()
-        if getattr(editor, "path", None): self.setWindowTitle(os.getenv("NAME")+" - "+editor.path)
-        else: self.setWindowTitle(os.getenv("NAME"))
+        if getattr(editor, "path", None): self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+editor.path)
+        else: self.setWindowTitle(os.getenv("PINGUINO_NAME"))
 
         index = self.main.tabWidget_files.currentIndex()
         filename = self.main.tabWidget_files.tabText(index)
@@ -1025,12 +1141,17 @@ class EventMethods(Methods):
         self.main.tabWidget_graphical.setVisible(graphical and self.main.tabWidget_graphical.count() > 0)
         self.main.tabWidget_files.setVisible(not graphical and self.main.tabWidget_files.count() > 0)
 
+
+        menu = self.toolbutton_menutoolbar.menu()
         if graphical:
             self.update_actions_for_graphical()
+            menu.insertMenu(self.main.menuHelp.menuAction(), self.main.menuGraphical)
         else:
             self.update_actions_for_text()
+            menu.removeAction(self.main.menuGraphical.menuAction())
 
         self.tab_changed()
+
 
 
     # Events
@@ -1065,7 +1186,7 @@ class EventMethods(Methods):
         menu.addAction(self.main.actionClose_others)
 
         menu.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
@@ -1113,7 +1234,7 @@ class EventMethods(Methods):
 
         menu.setStyleSheet("""
         QMenu {
-            font-family: ubuntu regular;
+            font-family: inherit;
             font-weight: normal;
             }
 
@@ -1137,3 +1258,19 @@ class EventMethods(Methods):
             self.configIDE.set("Features", "terminal_on_graphical", visible)
         else:
             self.configIDE.set("Features", "terminal_on_text", visible)
+
+
+    #----------------------------------------------------------------------
+    def toggle_pythonshell(self, visible):
+        self.main.dockWidget_output.setVisible(visible)
+        self.update_mode_output(visible)
+        #self.configIDE.config("Features", "terminal_on_text", visible)
+
+
+    #----------------------------------------------------------------------
+    def update_tab_position(self, tab, area):
+
+        if area.name == "RightDockWidgetArea":
+            tab.setTabPosition(QtGui.QTabWidget.West)
+        elif area.name == "LeftDockWidgetArea":
+            tab.setTabPosition(QtGui.QTabWidget.East)

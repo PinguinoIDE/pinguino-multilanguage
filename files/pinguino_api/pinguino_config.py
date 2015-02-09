@@ -4,8 +4,16 @@
 import os
 import logging
 import shutil
+import platform
 import sys
-from ConfigParser import RawConfigParser
+
+# Python3 compatibility
+if os.getenv("PINGUINO_PYTHON") is "3":
+    #Python3
+    from configparser import RawConfigParser
+else:
+    #Python2
+    from ConfigParser import RawConfigParser
 
 ########################################################################
 class PinguinoConfig(object):
@@ -20,6 +28,10 @@ class PinguinoConfig(object):
 
         config_paths = RawConfigParser()
         config_paths.readfp(open(os.path.join(os.getenv("PINGUINO_DATA"), "paths.cfg"), "r"))
+
+        #RB20141116 : get the “bitness” of the current OS
+        bitness, linkage = platform.architecture()
+        os.environ["PINGUINO_OS_ARCH"] = bitness
 
         if os.name == "posix": #GNU/Linux
             os.environ["PINGUINO_OS_NAME"] = "linux"
@@ -67,10 +79,12 @@ class PinguinoConfig(object):
                                     dst=os.path.join(os.getenv("PINGUINO_USER_PATH"), "graphical_examples"),
                                     default_dir=True)
 
-        cls.if_not_exist_then_copy(src=os.path.join(os.getenv("PINGUINO_HOME"), "source"),
+        #cls.if_not_exist_then_copy(src=os.path.join(os.getenv("PINGUINO_HOME"), "source"),
+                                    #dst=os.path.join(os.getenv("PINGUINO_USER_PATH"), "source"))
+
+        cls.if_not_exist_then_copy(src=os.path.join(os.getenv("PINGUINO_INSTALL_PATH"), "source"),
                                     dst=os.path.join(os.getenv("PINGUINO_USER_PATH"), "source"))
 
-        #FIXME: wath to do with this dir?
         cls.if_not_exist_then_copy(src=os.path.join(os.getenv("PINGUINO_INSTALL_PATH"), "p32", "obj"),
                                     dst=os.path.join(os.getenv("PINGUINO_USER_PATH"), "source", "obj"))
 
@@ -96,7 +110,8 @@ class PinguinoConfig(object):
         #When src is a file
         if os.path.isfile(src):
             if not os.path.exists(src): logging.warning("Missing: " + src)
-            else: shutil.copy(src, dst)
+            else:
+                if not os.path.exists(dst): shutil.copy(src, dst)
             return
 
         #Create parent directories

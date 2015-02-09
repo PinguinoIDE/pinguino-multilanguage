@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/yeison/Documentos/python/dev/developing/pinguino/pinguino-ide/qtgui/frames/wiki_doc_widget.ui'
+# Form implementation generated from reading ui file '/home/yeison/Documentos/python/developing/pinguino/pinguino-ide/qtgui/frames/wiki_doc_widget.ui'
 #
-# Created: Mon Jun  2 19:52:07 2014
-#      by: pyside-uic 0.2.14 running on PySide 1.2.1
+# Created: Fri Dec 19 15:43:21 2014
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_WikiDocs(object):
     def setupUi(self, WikiDocs):
         WikiDocs.setObjectName("WikiDocs")
-        WikiDocs.resize(817, 454)
+        WikiDocs.resize(817, 482)
         self.centralwidget = QtGui.QWidget(WikiDocs)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtGui.QGridLayout(self.centralwidget)
@@ -34,6 +34,16 @@ class Ui_WikiDocs(object):
         self.gridLayout.addWidget(self.textBrowser_doc, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 1, 1)
+        self.label_error = QtGui.QLabel(self.centralwidget)
+        self.label_error.setStyleSheet("color: rgb(255, 0, 0);")
+        self.label_error.setText("")
+        self.label_error.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_error.setObjectName("label_error")
+        self.gridLayout_2.addWidget(self.label_error, 1, 0, 1, 1)
+        self.progressBar = QtGui.QProgressBar(self.centralwidget)
+        self.progressBar.setProperty("value", 24)
+        self.progressBar.setObjectName("progressBar")
+        self.gridLayout_2.addWidget(self.progressBar, 2, 0, 1, 1)
         WikiDocs.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(WikiDocs)

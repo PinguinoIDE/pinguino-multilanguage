@@ -15,14 +15,20 @@ class BoardConfigAdvance(QtGui.QDialog):
         super(BoardConfigAdvance, self).__init__()
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint |
                             QtCore.Qt.WindowSystemMenuHint |
-                            QtCore.Qt.WindowStaysOnTopHint)
+                            QtCore.Qt.WindowStaysOnTopHint |
+                            QtCore.Qt.Tool)
 
         self.board_config = Ui_AdvanceBoardConfig()
         self.board_config.setupUi(self)
         self.main = parent
 
-        self.HEAPSIZE = {"512 bytes": 512,
-                         "1024 bytes": 1024,}
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/logo/art/windowIcon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
+
+        #FIXME: add correct options
+        self.HEAPSIZE = {"512 byte": 512,
+                         "1024 byte": 1024,}
         self.board_config.comboBox_heapsize.clear()
         self.board_config.comboBox_heapsize.addItems(self.HEAPSIZE.keys())
 
@@ -32,20 +38,20 @@ class BoardConfigAdvance(QtGui.QDialog):
 
         self.load_config()
 
-        self.setWindowTitle(os.getenv("NAME")+" - "+self.windowTitle())
+        self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+self.windowTitle())
 
         self.connect(self.board_config.pushButton_accept, QtCore.SIGNAL("clicked()"), self.accept_config)
         self.connect(self.board_config.pushButton_defaul, QtCore.SIGNAL("clicked()"), self.restore_default)
 
         self.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)
 
         #self.board_config.pushButton_advance.setStyleSheet("""
         #QPushButton{
-            #font-family: ubuntu regular;
+            #font-family: inherit;
             #font-weight: bold;
         #}
         #""")

@@ -4,7 +4,16 @@
 import codecs
 import os
 import re
-from ConfigParser import RawConfigParser
+import sys
+
+# Python3 compatibility
+if os.getenv("PINGUINO_PYTHON") is "3":
+    #Python3
+    from configparser import RawConfigParser
+else:
+    #Python2
+    from ConfigParser import RawConfigParser
+
 import logging
 
 from PySide import QtGui, QtCore
@@ -12,11 +21,10 @@ from PySide import QtGui, QtCore
 from .blocks import Blocks
 from .work_area import WorkArea
 from .tool_area import ToolArea
-#from .constant import os.getenv("NAME")
+#from .constant import os.getenv("PINGUINO_NAME")
 #from ..bloques.color import setColor
 from ..py_bloques.get_blocks import all_sets
-from ..bloques import BlockLinear, BlockFunction, BlockNested, \
-     BlockSpace, BlockNestedSecond, BlockSpaceBool, BlockFrameEdit
+from ..bloques import BlockLinear, BlockFunction, BlockNested, BlockSpace, BlockNestedSecond, BlockSpaceBool, BlockFrameEdit
 from ...ide.methods.backgrounds import BackgroundPallete
 from ...ide.methods.decorators import Decorator
 from ...frames.blocks_widget import Ui_widgetBlock
@@ -146,8 +154,8 @@ class GraphicalIDE(object):
         self.main.actionClose_file.setEnabled(self.main.tabWidget_graphical.count() > 0)
 
         editor = self.main.tabWidget_graphical.currentWidget()
-        if getattr(editor, "path", None): self.ide.setWindowTitle(os.getenv("NAME")+" - "+editor.path)
-        else: self.ide.setWindowTitle(os.getenv("NAME"))
+        if getattr(editor, "path", None): self.ide.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+editor.path)
+        else: self.ide.setWindowTitle(os.getenv("PINGUINO_NAME"))
 
         index = self.main.tabWidget_graphical.currentIndex()
         filename = self.main.tabWidget_graphical.tabText(index)
@@ -174,7 +182,7 @@ class GraphicalIDE(object):
             setattr(editor, "path", save_path)
             self.main.tabWidget_graphical.setTabText(index, filename)
             self.main.tabWidget_graphical.setTabToolTip(index, save_path)
-            self.ide.setWindowTitle(os.getenv("NAME")+" - "+save_path)
+            self.ide.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+save_path)
 
         self.__save_file__(editor=editor)
         return True
@@ -196,7 +204,7 @@ class GraphicalIDE(object):
         setattr(editor, "path", save_path)
         self.main.tabWidget_graphical.setTabText(index, filename)
         self.main.tabWidget_graphical.setTabToolTip(index, save_path)
-        self.ide.setWindowTitle(os.getenv("NAME")+" - "+save_path)
+        self.ide.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+save_path)
 
         self.__save_file__(editor=editor)
         return True
@@ -319,7 +327,7 @@ class GraphicalIDE(object):
             for i in range(len(inside)):
                 if inside[i]: inside[i] = widgets.pop(0)
         else:
-            raise Exception, "¬¬"
+            raise Exception("¬¬")
 
         return inside
 
@@ -363,7 +371,7 @@ class GraphicalIDE(object):
         self.load_blocks(set_blocks)
         self.main.tabWidget_graphical.setTabToolTip(self.main.tabWidget_graphical.currentIndex(), filename)
         self.main.tabWidget_graphical.setTabText(self.main.tabWidget_graphical.currentIndex(), os.path.split(filename)[1])
-        self.ide.setWindowTitle(os.getenv("NAME")+" - "+filename)
+        self.ide.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+filename)
         setattr(editor, "path", filename)
 
         self.ide.tab_changed()
@@ -480,7 +488,7 @@ class GraphicalIDE(object):
         setattr(editor, "path", filename)
         self.main.tabWidget_graphical.setTabToolTip(self.main.tabWidget_graphical.currentIndex(), filename)
         self.main.tabWidget_graphical.setTabText(self.main.tabWidget_graphical.currentIndex(), os.path.split(filename)[1])
-        self.ide.setWindowTitle(os.getenv("NAME")+" - "+filename)
+        self.ide.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+filename)
 
         self.ide.tab_changed()
 
@@ -688,7 +696,7 @@ class GraphicalIDE(object):
         if not text: return
         bloques = []
         for key in all_sets.keys():
-            if all_sets[key][2][0] == "label":
+            if all_sets[key][2][0] in ["label", "decorator"]:
                 label = all_sets[key][2][1]
                 if label.lower().startswith(text.lower()): bloques.append([key, all_sets[key]])
 

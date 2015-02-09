@@ -9,10 +9,11 @@ from PySide import QtCore, QtGui
 from .python_highlighter import Highlighter
 from ..methods.python_shell import PythonShell
 
-HEAD = os.getenv("NAME") + " " + os.getenv("VERSION") + "\n" + "Python " + sys.version + " on " + sys.platform
+HEAD = os.getenv("PINGUINO_NAME") + " " + os.getenv("PINGUINO_VERSION") + "\n" + "Python " + sys.version + " on " + sys.platform
 HELP = QtGui.QApplication.translate("PythonShell", "can also use the commands:") + ' "clear", "restart"'
 
 START = ">>> "
+NEW_LINE = "... "
 
 
 ########################################################################
@@ -27,15 +28,19 @@ class PinguinoTerminal(QtGui.QPlainTextEdit):
         self.appendPlainText(START)
 
         self.extra_args = {}
-
         self.shell = PythonShell()
 
         self.historial = []
         self.index_historial = 0
 
-        Highlighter(self.document(), START)
+        self.multiline_commands = []
+
+        Highlighter(self.document(), [START, NEW_LINE])
 
         self.connect(self, QtCore.SIGNAL("textChanged(QString)"), self.textChanged)
+
+
+        self.setFrameShape(QtGui.QFrame.NoFrame)
 
 
 
@@ -59,11 +64,43 @@ class PinguinoTerminal(QtGui.QPlainTextEdit):
             self.moveCursor(QtGui.QTextCursor.End)
             self.index_historial = 0
             super(PinguinoTerminal, self).keyPressEvent(event)
+
             command = self.get_command()
-            if self.run_default_command(command):
+
+            if self.multiline_commands:
+                self.multiline_commands.append(command)
+                #return
+
+                if command.endswith("\n... \n"):
+                    #mcommand = ";".join(self.multiline_commands)
+                    command = command.replace("\n", ";")
+                    command = command.replace(":;", ":").replace(":;", ":").replace(":;", ":")
+                    command = command.replace(NEW_LINE, "")
+                    command = command[:-2]
+                    command += "\n"
+                    if self.run_default_command(command):
+                        self.appendPlainText(START)
+                        self.multiline_commands = []
+                        return
+                    else:
+                        self.multiline_commands = []
+                        pass
+
+                else:
+                    self.insertPlainText(NEW_LINE)
+                    return
+
+            elif command.endswith(":\n"):
+                self.multiline_commands.append(command)
+                self.insertPlainText(NEW_LINE)
+                return
+
+            elif self.run_default_command(command):
                 self.appendPlainText(START)
                 return
+
             self.historial.append(command.replace("\n", ""))
+
             if not command.isspace():
                 self.moveCursor(QtGui.QTextCursor.End)
                 self.insertPlainText(self.shell.run(command))
@@ -160,7 +197,7 @@ class PinguinoTerminal(QtGui.QPlainTextEdit):
 
         menu.setStyleSheet("""
         QMenu {
-            font-family: ubuntu regular;
+            font-family: inherit;
             font-weight: normal;
             }
 
@@ -181,7 +218,7 @@ class PinguinoTerminal(QtGui.QPlainTextEdit):
         QPlainTextEdit {
             background-color: #333;
             color: #FFFFFF;
-            font-family: ubuntu mono;
+            font-family: mono;
             font-weight: normal;
             font-size: %dpt;
         }

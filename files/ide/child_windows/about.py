@@ -14,18 +14,19 @@ class About(QtGui.QDialog):
         super(About, self).__init__()
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint |
                             QtCore.Qt.WindowSystemMenuHint |
-                            QtCore.Qt.WindowStaysOnTopHint)
+                            QtCore.Qt.WindowStaysOnTopHint |
+                            QtCore.Qt.Tool)
 
         self.about = Ui_About()
         self.about.setupUi(self)
 
-        self.setWindowTitle(os.getenv("NAME")+" - "+self.windowTitle())
+        self.setWindowTitle(os.getenv("PINGUINO_NAME")+" - "+self.windowTitle())
 
-        self.about.label_name.setText(os.getenv("NAME")+" "+os.getenv("VERSION")+"."+os.getenv("SUBVERSION"))
+        self.about.label_name.setText(os.getenv("PINGUINO_NAME")+" "+os.getenv("PINGUINO_VERSION")+"-"+os.getenv("PINGUINO_SUBVERSION"))
 
-
-        self.about.label.setPixmap(QtGui.QPixmap(":/logo/art/pinguino11.svg"))
-
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/logo/art/windowIcon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
 
         self.connect(self.about.pushButton_credits, QtCore.SIGNAL("clicked()"), lambda :self.about.stackedWidget.setCurrentIndex(1))
         self.connect(self.about.pushButton_license, QtCore.SIGNAL("clicked()"), lambda :self.about.stackedWidget.setCurrentIndex(2))
@@ -38,7 +39,7 @@ class About(QtGui.QDialog):
         self.about.tabWidget.setCurrentIndex(0)
 
         self.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
 
         """)

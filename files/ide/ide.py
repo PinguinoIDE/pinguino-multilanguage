@@ -1,20 +1,14 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-import os
 import sys
-import codecs
-import shutil
-import logging
-#from ConfigParser import RawConfigParser
-
+import os
+import platform
 from PySide import QtGui, QtCore
 
 from .methods.backgrounds import BackgroundPallete
 from .events.events import PinguinoEvents
 from .methods.decorators import Decorator
-from .methods.dialogs import Dialogs
-from .methods.config import Config
 from .code_editor.autocomplete_icons import CompleteIcons
 from .widgets.output_widget import PinguinoTerminal
 from .methods.widgets_features import PrettyFeatures
@@ -22,14 +16,30 @@ from ..gide.app.graphical import GraphicalIDE
 from ..frames.main import Ui_PinguinoIDE
 from ..pinguino_api.pinguino import Pinguino, AllBoards
 from ..pinguino_api.pinguino_config import PinguinoConfig
+from ..pinguino_api.config import Config
 
+import logging
+import debugger
 
 ########################################################################
 class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
 
     #@Decorator.debug_time()
-    def __init__(self, splash_write):
+    def __init__(self, splash_write, argvs):
         super(PinguinoIDE, self).__init__()
+
+        debugger.Debugger(sys)
+
+        root = logging.getLogger()
+        root.setLevel(logging.DEBUG)
+
+        ch = logging.StreamHandler(debugger.sys_redirect("stdout", False))
+        ch.setLevel(logging.DEBUG)
+        formatter = logging.Formatter("%(message)s")
+        ch.setFormatter(formatter)
+        root.addHandler(ch)
+
+        # print(self.get_systeminfo())
 
         QtCore.QTextCodec.setCodecForCStrings(QtCore.QTextCodec.codecForName("UTF-8"))
         QtCore.QTextCodec.setCodecForLocale(QtCore.QTextCodec.codecForName("UTF-8"))
@@ -37,7 +47,11 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
 
         self.main = Ui_PinguinoIDE()
         self.main.setupUi(self)
-        self.reload_toolbar_icons()
+
+        self.argvs = argvs
+
+        if not self.argvs.devmode:
+            self.main.menubar.removeAction(self.main.menuDevelopment.menuAction())
 
         #set_environ_vars()
         #self.check_user_files()
@@ -49,8 +63,10 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
         splash_write(QtGui.QApplication.translate("Splash", "Loading Pinguino API"))
         self.pinguinoAPI = Pinguino()
         self.pinguinoAPI._boards_ = AllBoards
-        splash_write(QtGui.QApplication.translate("Splash", "Loading configuration object"))
+
+        splash_write(QtGui.QApplication.translate("Splash", "Loading configuration"))
         self.configIDE = Config()
+
         splash_write(QtGui.QApplication.translate("Splash", "Loading graphical mode"))
         self.PinguinoKIT = GraphicalIDE(self)
         self.main.tabWidget_graphical.setVisible(False)
@@ -59,6 +75,11 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
         splash_write(QtGui.QApplication.translate("Splash", "Loading icons"))
         self.ICONS = CompleteIcons()
 
+        splash_write(QtGui.QApplication.translate("Splash", "Setting theme"))
+        self.build_menutoolbar()
+        self.set_icon_theme()
+        self.reload_toolbar_icons()
+
         #self.update_pinguino_paths()
         #self.update_user_libs()
         splash_write(QtGui.QApplication.translate("Splash", "Linking paths for libraries and compilers"))
@@ -66,9 +87,11 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
         PinguinoConfig.update_pinguino_extra_options(self.configIDE, self.pinguinoAPI)
         splash_write(QtGui.QApplication.translate("Splash", "Searching user libraries"))
         PinguinoConfig.update_user_libs(self.pinguinoAPI)
+
+        # RB 2015-01-27 : Still useful ? See also methods.py/set_board
         self.pinguinoAPI.set_os_variables()
 
-        self.setWindowTitle(os.getenv("NAME")+" "+os.getenv("VERSION"))
+        self.setWindowTitle(os.getenv("PINGUINO_NAME")+" "+os.getenv("PINGUINO_VERSION"))
 
         splash_write(QtGui.QApplication.translate("Splash", "Opening last files"))
         self.open_last_files()
@@ -97,13 +120,13 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
         self.__update_graphical_path_files__(os.path.join(os.getenv("PINGUINO_USER_PATH"), "graphical_examples"))
 
         splash_write(QtGui.QApplication.translate("Splash", "Loading boards configuration"))
-        self.set_board()
+        #self.set_board() #called in self.get_status_board()
         self.statusbar_ide(self.get_status_board())
 
-        splash_write(QtGui.QApplication.translate("Splash", "Loading configuration"))
-        self.load_main_config()
         splash_write(QtGui.QApplication.translate("Splash", "Connecting events"))
         self.connect_events()
+        splash_write(QtGui.QApplication.translate("Splash", "Loading configuration"))
+        self.load_main_config()
 
         os_name = os.getenv("PINGUINO_OS_NAME")
         if os_name == "windows":
@@ -112,13 +135,83 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
         elif os_name == "linux":
             os.environ["LD_LIBRARY_PATH"]="/usr/lib32:/usr/lib:/usr/lib64"
 
-        splash_write(QtGui.QApplication.translate("Splash", "Welcome to %s %s")%(os.getenv("NAME"), os.getenv("VERSION")))
-
+        splash_write(QtGui.QApplication.translate("Splash", "Welcome to %s %s")%(os.getenv("PINGUINO_NAME"), os.getenv("PINGUINO_VERSION")))
+        print("Pinguino IDE started!")
 
 
     ##----------------------------------------------------------------------
     #def __str__(self):
-        #return " ".join([os.getenv("NAME"), os.getenv("VERSION")])
+        #return " ".join([os.getenv("PINGUINO_NAME"), os.getenv("PINGUINO_VERSION")])
+
+
+    #----------------------------------------------------------------------
+    def build_menutoolbar(self):
+
+        self.toolbutton_menutoolbar = QtGui.QToolButton(self)
+        self.toolbutton_menutoolbar.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
+        menu = QtGui.QMenu()
+
+        icon = QtGui.QIcon.fromTheme("preferences-system")
+        self.toolbutton_menutoolbar.setIcon(icon)
+
+        menu.addMenu(self.main.menuFile)
+        menu.addMenu(self.main.menuEdit)
+        menu.addMenu(self.main.menuView)
+        menu.addMenu(self.main.menuSettings)
+        menu.addMenu(self.main.menuSource)
+        menu.addMenu(self.main.menuPinguino)
+        menu.addMenu(self.main.menuGraphical)
+        menu.addMenu(self.main.menuHelp)
+        if self.argvs.devmode:
+            menu.addMenu(self.main.menuDevelopment)
+
+        menu.addSeparator()
+        menu.addAction(self.main.actionMenubar)
+
+        self.toolbutton_menutoolbar.setMenu(menu)
+        self.main.toolBar_system.addWidget(self.toolbutton_menutoolbar)
+
+
+    #----------------------------------------------------------------------
+    def get_systeminfo(self):
+
+        data = {}
+        try: data["os.name"] = str(os.name)
+        except: pass
+        try: data["os.environ"] = str(os.environ)
+        except: pass
+        try: data["os.uname"] = str(os.uname())
+        except: pass
+        try: data["sys.argv"] = str(sys.argv)
+        except: pass
+        try: data["sys.flags"] = str(sys.flags)
+        except: pass
+        try: data["sys.platform"] = str(sys.platform)
+        except: pass
+        try: data["sys.version"] = str(sys.version)
+        except: pass
+        try: data["platform.architecture"] = str(platform.architecture())
+        except: pass
+        try: data["platform.dist"] = str(platform.dist())
+        except: pass
+        try: data["platform.linux_distribution"] = str(platform.linux_distribution())
+        except: pass
+        try: data["platform.mac_ver"] = str(platform.mac_ver())
+        except: pass
+        try: data["platform.system"] = str(platform.system())
+        except: pass
+        try: data["platform.win32_ver"] = str(platform.win32_ver())
+        except: pass
+        try: data["platform.libc_ver"] = str(platform.libc_ver())
+        except: pass
+        try: data["platform.machine"] = str(platform.machine())
+        except: pass
+        try: data["platform.platform"] = str(platform.platform())
+        except: pass
+        try: data["platform.release"] = str(platform.release())
+        except: pass
+
+        return "\n" + "#" + "-" * 80 + "\n#" + "-" * 80 + "\n" + "\n".join([": ".join(item) for item in data.items()]) + "\n#" + "-" * 80 + "\n#" + "-" * 80
 
 
     #----------------------------------------------------------------------
@@ -135,30 +228,25 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
         self.main.tabWidget_tools.setCurrentIndex(0)
         self.main.tabWidget_blocks_tools.setCurrentIndex(0)
 
+        side = self.configIDE.config("Main", "dock_tools", "RightDockWidgetArea")
+        self.addDockWidget(QtCore.Qt.DockWidgetArea(getattr(QtCore.Qt, side)), self.main.dockWidget_tools)
+        self.update_tab_position(self.main.tabWidget_tools, self.dockWidgetArea(self.main.dockWidget_tools))
+
+        side = self.configIDE.config("Main", "dock_blocks", "RightDockWidgetArea")
+        self.addDockWidget(QtCore.Qt.DockWidgetArea(getattr(QtCore.Qt, side)), self.main.dockWidget_blocks)
+        self.update_tab_position(self.main.tabWidget_blocks, self.dockWidgetArea(self.main.dockWidget_blocks))
+
+        side = self.configIDE.config("Main", "dock_shell", "BottomDockWidgetArea")
+        self.addDockWidget(QtCore.Qt.DockWidgetArea(getattr(QtCore.Qt, side)), self.main.dockWidget_output)
+
         PrettyFeatures.LineEdit_default_text(self.main.lineEdit_search, QtGui.QApplication.translate("Frame", "Search..."))
         PrettyFeatures.LineEdit_default_text(self.main.lineEdit_replace, QtGui.QApplication.translate("Frame", "Replace..."))
         PrettyFeatures.LineEdit_default_text(self.main.lineEdit_blocks_search, QtGui.QApplication.translate("Frame", "Search block..."))
 
 
-        self.toolbars = [self.main.toolBar_edit,
-                    self.main.toolBar_files,
-                    self.main.toolBar_graphical,
-                    self.main.toolBar_pinguino,
-                    self.main.toolBar_search_replace,
-                    self.main.toolBar_switch,
-                    self.main.toolBar_undo_redo,
-                    ]
-
-        for toolbar in self.toolbars:
-            toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)  #explicit IconOnly for windows
-            #toolbar.setIconSize(QtCore.QSize(24, 24))
-            toolbar.setIconSize(QtCore.QSize(32, 32))
-            #toolbar.setIconSize(QtCore.QSize(48, 48))
-
-
     #----------------------------------------------------------------------
     def set_styleSheet(self):
-        self.load_fonts()
+        #self.load_fonts()
 
         self.PinguinoPallete = BackgroundPallete()
         self.PinguinoPallete.save_palette(self.main.centralwidget.parent())
@@ -166,6 +254,8 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
 
         bg_color = self.configIDE.config("Styles", "background_color", "#FFFFFF")
         alternate_bg_color = self.configIDE.config("Styles", "alternate_background_color", "#DDE8FF")
+        selection_color = self.configIDE.config("Styles", "selection_color", "#FFFFFF")
+        selection_bg_color = self.configIDE.config("Styles", "selection_foreground_color", "#57AAFF")
 
         self.main.tableWidget_functions.setStyleSheet("""
         QTableWidget {
@@ -191,21 +281,22 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
 
         #Global CSS styles
         self.setStyleSheet("""
-        font-family: ubuntu regular;
+        font-family: inherit;
         font-weight: normal;
-
-        """)
+        selection-color: %s;
+        selection-background-color: %s;
+        """%(selection_color, selection_bg_color))
 
         self.main.groupBox_replace.setStyleSheet("""
         QGroupBox{
-            font-family: ubuntu regular;
+            font-family: inherit;
             font-weight: bold;
         }
         """)
 
         self.main.groupBox_search.setStyleSheet("""
         QGroupBox{
-            font-family: ubuntu regular;
+            font-family: inherit;
             font-weight: bold;
         }
         """)
@@ -215,11 +306,10 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
         QPlainTextEdit {
             background-color: #333;
             color: #FFFFFF;
-            font-family: ubuntu mono;
+            font-family: mono;
             font-weight: normal;
-            font-size: 11pt;
+            font-size: 10pt;
         }
-
         """)
 
 
@@ -233,9 +323,14 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
             update_reserved = self.update_reserved_words
             update_installed_reserved = self.update_instaled_reserved_words
 
+            @classmethod
+            def update(self):
+                self.update_reserved()
+                self.update_installed_reserved()
+
+
             functions = ["update_reserved",
                          "update_installed_reserved",
-
                          ]
 
         self.main.plainTextEdit_output.set_extra_args(**{"pinguino_main": self,
@@ -261,20 +356,9 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
     #----------------------------------------------------------------------
     def update_actions_for_text(self):
         normal = False
-        #self.main.menuGraphical.setEnabled(normal)
-        self.main.actionExport_code_to_editor.setEnabled(normal)
-        self.main.actionView_Pinguino_code.setEnabled(normal)
-        self.main.actionInsert_Block.setEnabled(normal)
+        # self.main.menuGraphical.setEnabled(normal
+        self.main.menubar.removeAction(self.main.menuGraphical.menuAction())
 
-        self.main.actionComment_out_region.setEnabled(not normal)
-        self.main.actionComment_Uncomment_region.setEnabled(not normal)
-        self.main.actionRedo.setEnabled(not normal)
-        self.main.actionUndo.setEnabled(not normal)
-        self.main.actionCut.setEnabled(not normal)
-        self.main.actionCopy.setEnabled(not normal)
-        self.main.actionPaste.setEnabled(not normal)
-        self.main.actionSearch.setEnabled(not normal)
-        self.main.actionSearch_and_replace.setEnabled(not normal)
         self.main.dockWidget_blocks.setVisible(normal)
         self.main.dockWidget_tools.setVisible(not normal)
         self.main.toolBar_search_replace.setVisible(not normal)
@@ -291,20 +375,9 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
     #----------------------------------------------------------------------
     def update_actions_for_graphical(self):
         normal = True
-        #self.main.menuGraphical.setEnabled(normal)
-        self.main.actionExport_code_to_editor.setEnabled(normal)
-        self.main.actionView_Pinguino_code.setEnabled(normal)
-        self.main.actionInsert_Block.setEnabled(normal)
+        # self.main.menuGraphical.setEnabled(normal)
+        self.main.menubar.insertMenu(self.main.menuHelp.menuAction(), self.main.menuGraphical)
 
-        self.main.actionRedo.setEnabled(not normal)
-        self.main.actionComment_out_region.setEnabled(not normal)
-        self.main.actionComment_Uncomment_region.setEnabled(not normal)
-        self.main.actionUndo.setEnabled(not normal)
-        self.main.actionCut.setEnabled(not normal)
-        self.main.actionCopy.setEnabled(not normal)
-        self.main.actionPaste.setEnabled(not normal)
-        self.main.actionSearch.setEnabled(not normal)
-        self.main.actionSearch_and_replace.setEnabled(not normal)
         self.main.dockWidget_blocks.setVisible(normal)
         self.main.dockWidget_tools.setVisible(not normal)
         self.main.toolBar_search_replace.setVisible(not normal)
@@ -320,35 +393,122 @@ class PinguinoIDE(QtGui.QMainWindow, PinguinoEvents):
     #----------------------------------------------------------------------
     def reload_toolbar_icons(self):
 
+        self.toolbars = [self.main.toolBar_edit,
+                         self.main.toolBar_files,
+                         self.main.toolBar_graphical,
+                         self.main.toolBar_pinguino,
+                         self.main.toolBar_search_replace,
+                         self.main.toolBar_switch,
+                         self.main.toolBar_undo_redo,
+                         self.main.toolBar_system,
+                         ]
+
+        for toolbar in self.toolbars:
+            toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)  #explicit IconOnly for windows
+            size = self.configIDE.config("Main", "icons_size", 24)
+            self.resize_toolbar(size, getattr(self.main, "action%dx%d"%(size, size)))()
+            getattr(self.main, "action%dx%d"%(size, size)).setChecked(True)
+
         icons_toolbar = [
-                         (self.main.actionNew_file, "new_file"),
-                         (self.main.actionOpen_file, "open_file"),
-                         (self.main.actionSave_file, "save_file"),
+                         (self.main.actionNew_file, "document-new"),
+                         (self.main.actionOpen_file, "document-open"),
+                         (self.main.actionSave_file, "document-save"),
 
-                         (self.main.actionUndo, "undo"),
-                         (self.main.actionRedo, "redo"),
-                         (self.main.actionCut, "cut"),
-                         (self.main.actionCopy, "copy"),
-                         (self.main.actionPaste, "paste"),
+                         (self.main.actionUndo, "edit-undo"),
+                         (self.main.actionRedo, "edit-redo"),
+                         (self.main.actionCut, "edit-cut"),
+                         (self.main.actionCopy, "edit-copy"),
+                         (self.main.actionPaste, "edit-paste"),
 
-                         (self.main.actionSearch, "search"),
-                         (self.main.actionSearch_and_replace, "replace"),
+                         (self.main.actionSearch, "edit-find"),
+                         (self.main.actionSearch_and_replace, "edit-find-replace"),
 
-                         (self.main.actionSelect_board, "board"),
-                         (self.main.actionCompile, "compile"),
-                         (self.main.actionUpload, "download"),
+                         (self.main.actionSelect_board, "applications-electronics"),
+                         (self.main.actionCompile, "system-run"),
+                         (self.main.actionUpload, "emblem-downloads"),
 
-                         (self.main.actionSave_image, "save_image"),
-                         #(self.main.actionSwitch_ide, ""),
+                         (self.main.actionSave_image, "applets-screenshooter"),
+
+
+                         (self.toolbutton_menutoolbar, "preferences-system"),
 
                         ]
 
         for action, icon_name in icons_toolbar:
-            icon = QtGui.QIcon()
-            icon.addPixmap(QtGui.QPixmap(":/toolbar/toolbar/%s.svg"%icon_name), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            action.setIcon(icon)
+            if QtGui.QIcon.hasThemeIcon(icon_name):
+                icon = QtGui.QIcon.fromTheme(icon_name)
+                action.setIcon(icon)
+                action.setVisible(True)
+            else:
+                action.setVisible(False)
 
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/toolbar/toolbar/switch_to_text.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        icon.addPixmap(QtGui.QPixmap(":/toolbar/toolbar/switch_to_graphical.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QIcon.fromTheme("insert-text").pixmap(size), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        icon.addPixmap(QtGui.QIcon.fromTheme("insert-object").pixmap(size), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
         self.main.actionSwitch_ide.setIcon(icon)
+
+
+    #----------------------------------------------------------------------
+    def set_icon_theme(self):
+
+        QtGui.QIcon.setThemeSearchPaths(QtGui.QIcon.themeSearchPaths()+[os.path.join(os.getenv("PINGUINO_DATA"), "qtgui", "resources", "themes")])
+        #paths = filter(lambda path:os.path.isdir(path), QtGui.QIcon.themeSearchPaths())
+        paths = [path for path in QtGui.QIcon.themeSearchPaths() if os.path.isdir(path)]
+        themes = [(path, os.listdir(path)) for path in paths]
+
+        valid_themes = []
+        for path, list_themes in themes:
+            for theme in list_themes:
+                if os.path.isdir(os.path.join(path, theme)): valid_themes.append(theme)
+
+        self.main.menuIcons_theme.clear()
+
+        dict_themes = {}
+        for theme in valid_themes:
+            action = QtGui.QAction(self)
+            action.setCheckable(True)
+            action.setText(theme.capitalize().replace("-", " "))
+            self.connect(action, QtCore.SIGNAL("triggered()"), self.change_icon_theme(theme, action))
+            dict_themes[theme] = action
+            self.main.menuIcons_theme.addAction(action)
+
+        theme = self.configIDE.config("Main", "theme", "pinguino11")
+        if not theme in valid_themes:
+            theme = "pinguino11"
+            self.configIDE.set("Main", "theme", "pinguino11")
+        self.change_icon_theme(theme, dict_themes[theme])()
+        dict_themes[theme].setChecked(True)
+
+
+    #----------------------------------------------------------------------
+    def change_icon_theme(self, theme, action):
+
+        def set_theme():
+            QtGui.QIcon.setThemeName(theme)
+            self.reload_toolbar_icons()
+            self.configIDE.set("Main", "theme", theme)
+            self.configIDE.save_config()
+
+            [act.setChecked(False) for act in self.main.menuIcons_theme.actions()]
+            action.setChecked(True)
+
+        return set_theme
+
+
+    #----------------------------------------------------------------------
+    def resize_toolbar(self, size, action):
+
+        def resize_icons():
+            for toolbar in self.toolbars:
+                toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+                toolbar.setIconSize(QtCore.QSize(size, size))
+
+            [act.setChecked(False) for act in self.main.menuIcons_size.actions()]
+            action.setChecked(True)
+            self.configIDE.set("Main", "icons_size", size)
+
+            self.toolbutton_menutoolbar.setIconSize(QtCore.QSize(size, size))
+
+        return resize_icons
+

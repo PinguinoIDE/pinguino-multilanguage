@@ -41,18 +41,32 @@ ADJ2 = -5  #space on expand
 
 #----------------------------------------------------------------------
 def changeFontSize(widget):
-    name = widget.__str__()
-    name = name[name.rfind(".")+1:name.find(" ")]
+    #name = widget.__str__()
+    #name = name[name.rfind(".")+1:name.find(" ")]
 
     widget.setStyleSheet("""
-    %s{
+    QLineEdit{
         color: #FFFFFF;
-        font-family: ubuntu mono;
+        font-family: mono;
         font-weight: normal;
-        font-size: 15pt;
+        font-size: 12pt;
     }
 
-    """%name)
+    QLabel{
+        color: #FFFFFF;
+        font-family: mono;
+        font-weight: normal;
+        font-size: 12pt;
+    }
+
+    QPlainTextEdit{
+        color: #FFFFFF;
+        font-family: mono;
+        font-weight: normal;
+        font-size: 12pt;
+    }
+
+    """)
 
 
 
@@ -70,6 +84,8 @@ class Constructor(object):
         self.LineCode = []
         self.fullWidgetWith = []
         self.codeStart = {}
+
+        changeFontSize(widget)
 
         for add in bloque:
             if add[0] == "label": self.addLabel(widget, add[1])
@@ -121,7 +137,7 @@ class Constructor(object):
         label.setupUi(widgetLabel)
         label.label.setText(text)
 
-        changeFontSize(label.label)
+        #changeFontSize(label.label)
 
         if rgb != None:
             #label.label.setStyleSheet("background-color: rgb(%d, %d, %d);\ncolor: rgb(255, 255, 255);" %rgb)
@@ -147,7 +163,7 @@ class Constructor(object):
         label = Label()
         label.setupUi(widgetLabel)
         label.label.setText(text)
-        changeFontSize(label.label)
+        #changeFontSize(label.label)
         if rgb != None:
             #label.label.setStyleSheet("background-color: rgb(%d, %d, %d);\ncolor: rgb(255, 255, 255);" %rgb)            label.label.setStyleSheet(label.label.styleSheet()+"""
             label.label.setStyleSheet(label.label.styleSheet()+"""
@@ -173,16 +189,16 @@ class Constructor(object):
         spin.setupUi(widgetSpin)
 
         #icon = QtGui.QIcon()
-        #icon.addPixmap(QtGui.QPixmap("%sup.svg"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #icon.addPixmap(QtGui.QPixmap("%sup.png"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         #spin.toolButton_3.setIcon(icon)
 
         #icon1 = QtGui.QIcon()
-        #icon1.addPixmap(QtGui.QPixmap("%sdown.svg"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #icon1.addPixmap(QtGui.QPixmap("%sdown.png"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         #spin.toolButton_4.setIcon(icon1)
 
 
-        spin.frame.setStyleSheet("image: url(%sup.svg);"%self.isideDir)
-        spin.frame_2.setStyleSheet("image: url(%sdown.svg);"%self.isideDir)
+        spin.frame.setStyleSheet("image: url(%sup.png);"%self.isideDir)
+        spin.frame_2.setStyleSheet("image: url(%sdown.png);"%self.isideDir)
 
         edit = spin.lineEdit
         #edit.setStyleSheet("background-image: url(:/bg/bg/box.png);\ncolor: rgb(90, 90, 90);")
@@ -190,7 +206,7 @@ class Constructor(object):
         b_up = spin.frame
         b_down = spin.frame_2
 
-        changeFontSize(edit)
+        #changeFontSize(edit)
 
         edit.setStyleSheet(edit.styleSheet()+"""
         QLineEdit{
@@ -235,19 +251,17 @@ class Constructor(object):
         spin = ControlSpin()
         spin.setupUi(widgetSpin)
 
-        spin.lineEdit.setStyleSheet("background-image: url(:/bg/bg/box.png);color: rgb(90,90,90)")
-
         #icon = QtGui.QIcon()
-        #icon.addPixmap(QtGui.QPixmap("%sup.svg"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #icon.addPixmap(QtGui.QPixmap("%sup.png"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         #spin.toolButton_3.setIcon(icon)
 
         #icon1 = QtGui.QIcon()
-        #icon1.addPixmap(QtGui.QPixmap("%sdown.svg"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #icon1.addPixmap(QtGui.QPixmap("%sdown.png"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         #spin.toolButton_4.setIcon(icon1)
 
 
-        spin.frame.setStyleSheet("image: url(%sup.svg);"%self.isideDir)
-        spin.frame_2.setStyleSheet("image: url(%sdown.svg);"%self.isideDir)
+        spin.frame.setStyleSheet("image: url(%sup.png);"%self.isideDir)
+        spin.frame_2.setStyleSheet("image: url(%sdown.png);"%self.isideDir)
 
 
         edit = spin.lineEdit
@@ -255,7 +269,7 @@ class Constructor(object):
         b_down = spin.frame_2
 
         edit.setText(str(start))
-        changeFontSize(edit)
+        #changeFontSize(edit)
 
         edit.setStyleSheet(edit.styleSheet()+"""
         QLineEdit{
@@ -300,7 +314,7 @@ class Constructor(object):
         name = Name()
         name.setupUi(widgetName)
         name.lineEdit.setText(str(text))
-        changeFontSize(name.lineEdit)
+        #changeFontSize(name.lineEdit)
 
         if background == "white" and color != None:
             #name.lineEdit.setStyleSheet("background-image: url(:/bg/bg/box.png);\ncolor: rgb(%d, %d, %d);" %color)
@@ -310,7 +324,7 @@ class Constructor(object):
             QLineEdit{
                 background-image: url(:/bg/bg/box.png);
                 color: rgb(%d, %d, %d);
-                font-family: ubuntu mono;
+                font-family: mono;
             }
             """%color)
 
@@ -323,7 +337,7 @@ class Constructor(object):
             name.lineEdit.setStyleSheet("""
             QLineEdit{
                 background-image: url(:/bg/bg/box.png);
-                font-family: ubuntu mono;
+                font-family: mono;
             }
             """)
 
@@ -335,7 +349,7 @@ class Constructor(object):
             name.lineEdit.setStyleSheet("""
             QLineEdit{
                 color: rgb(%d, %d, %d);
-                font-family: ubuntu mono;
+                font-family: mono;
             }
             """%color)
 
@@ -346,6 +360,8 @@ class Constructor(object):
 
     #----------------------------------------------------------------------
     def buildChoice(self, widget, curr, opc):
+
+        opc = list(opc)
         widgetChoice = QtGui.QWidget(widget)
         choice = ControlSpin()
         choice.setupUi(widgetChoice)
@@ -356,11 +372,11 @@ class Constructor(object):
         choice.lineEdit.setStyleSheet("background-image: url(:/bg/bg/box.png); color: rgb(90,90,90);")
 
         #icon = QtGui.QIcon()
-        #icon.addPixmap(QtGui.QPixmap("%sup.svg"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #icon.addPixmap(QtGui.QPixmap("%sup.png"%self.isideDir), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         #choice.toolButton_3.setIcon(icon)
 
-        choice.frame.setStyleSheet("image: url(%sup.svg);"%self.isideDir)
-        choice.frame_2.setStyleSheet("image: url(%sdown.svg);"%self.isideDir)
+        choice.frame.setStyleSheet("image: url(%sup.png);"%self.isideDir)
+        choice.frame_2.setStyleSheet("image: url(%sdown.png);"%self.isideDir)
 
 
         edit = choice.lineEdit
@@ -369,7 +385,7 @@ class Constructor(object):
         b_min = 0
         b_max = len(opc) - 1
 
-        changeFontSize(edit)
+        #changeFontSize(edit)
 
 
         def up(*args):
@@ -411,7 +427,7 @@ class Constructor(object):
         slider.setupUi(widgetSlider)
 
         edit = slider.lineEdit_2
-        changeFontSize(edit)
+        #changeFontSize(edit)
         slid = slider.horizontalSlider
         #edit.setStyleSheet("background-image: url(:/general/arte/box.png);\ncolor: rgb(0, 0, 0);")
         #edit.setStyleSheet("color: rgb(255, 255, 255);")
@@ -484,17 +500,17 @@ class Constructor(object):
             inside.setupUi(widgetInside)
             widgetInside.setMinimumHeight(34)
             widgetInside.setMaximumHeight(34)
-            inside.frame.setStyleSheet("image: url(%s/insert21b.svg);"%self.isideDir)
-            inside.frame_2.setStyleSheet("background-image: url(%s/insert23b.svg);"%self.isideDir)
-            #inside.frame_3.setStyleSheet("image: url(bloques/inside/arte/insert22b.svg);")
+            inside.frame.setStyleSheet("image: url(%s/insert21b.png);"%self.isideDir)
+            inside.frame_2.setStyleSheet("background-image: url(%s/insert23b.png);"%self.isideDir)
+            #inside.frame_3.setStyleSheet("image: url(bloques/inside/arte/insert22b.png);")
 
 
         else:
             inside = Inside()
             inside.setupUi(widgetInside)
 
-            inside.frame.setStyleSheet("image: url(%s/insert21.svg);"%self.isideDir)
-            inside.frame_2.setStyleSheet("background-image: url(%s/insert23.svg);"%self.isideDir)
+            inside.frame.setStyleSheet("image: url(%s/insert21.png);"%self.isideDir)
+            inside.frame_2.setStyleSheet("background-image: url(%s/insert23.png);"%self.isideDir)
 
 
 
@@ -516,17 +532,17 @@ class Constructor(object):
             widgetInside.setMinimumHeight(34)
             widgetInside.setMaximumHeight(34)
 
-            inside.frame.setStyleSheet("image: url(%s/insert21b.svg);"%self.isideDir)
-            inside.frame_2.setStyleSheet("background-image: url(%s/insert23b.svg);"%self.isideDir)
-            inside.frame_3.setStyleSheet("image: url(%s/insert21b_.svg);"%self.isideDir)
+            inside.frame.setStyleSheet("image: url(%s/insert21b.png);"%self.isideDir)
+            inside.frame_2.setStyleSheet("background-image: url(%s/insert23b.png);"%self.isideDir)
+            inside.frame_3.setStyleSheet("image: url(%s/insert21b_.png);"%self.isideDir)
 
         else:
             inside = InsideBool()
             inside.setupUi(widgetInside)
-            inside.frame.setStyleSheet("image: url(%s/insert21.svg);"%self.isideDir)
-            inside.frame_2.setStyleSheet("background-image: url(%s/insert23.svg);"%self.isideDir)
-            #inside.frame_3.setStyleSheet("image: url(%sinsert22.svg);"%self.isideDir)
-            inside.frame_3.setStyleSheet("image: url(%s/insert21_.svg);"%self.isideDir)
+            inside.frame.setStyleSheet("image: url(%s/insert21.png);"%self.isideDir)
+            inside.frame_2.setStyleSheet("background-image: url(%s/insert23.png);"%self.isideDir)
+            #inside.frame_3.setStyleSheet("image: url(%sinsert22.png);"%self.isideDir)
+            inside.frame_3.setStyleSheet("image: url(%s/insert21_.png);"%self.isideDir)
 
 
         widgetInside.setMinimumSize(30, widgetInside.size().height())
@@ -762,6 +778,7 @@ class Constructor(object):
         widget_choide.setObjectName("BLOCK_CHOICE")
         self.layout.addWidget(widget_choide)
         lineEdit.contextMenuEvent = self.build_menu
+        self.set_as_draggable(lineEdit, widget)
         self.constructorCode.append(lambda :["spin_choice"]+[str(lineEdit.text())]+add[2:])
 
     def addSpinInt(self, widget, add):
@@ -772,6 +789,7 @@ class Constructor(object):
         QtCore.QObject.connect(lineEdit, QtCore.SIGNAL("textChanged(QString)"), lambda x:self.updateLine(lineEdit))
         self.updateLine(lineEdit)
         lineEdit.contextMenuEvent = self.build_menu
+        self.set_as_draggable(lineEdit, widget)
         self.constructorCode.append(lambda :["spin_int"]+[str(lineEdit.text())]+add[2:])
 
     def addSpinFloat(self, widget, add):
@@ -782,6 +800,7 @@ class Constructor(object):
         QtCore.QObject.connect(lineEdit, QtCore.SIGNAL("textChanged(QString)"), lambda x:self.updateLine(lineEdit))
         self.updateLine(lineEdit)
         lineEdit.contextMenuEvent = self.build_menu
+        self.set_as_draggable(lineEdit, widget)
         self.constructorCode.append(lambda :["spin_float", str(lineEdit.text())]+add[2:])
 
     def addLineEdit(self, widget, add):
@@ -790,7 +809,7 @@ class Constructor(object):
         self.layout.addWidget(widgetEdit)
         QtCore.QObject.connect(lineEdit, QtCore.SIGNAL("textChanged(QString)"), lambda x:self.updateLine(lineEdit))
         self.updateLine(lineEdit)
-        lineEdit.contextMenuEvent = self.build_menu
+        self.set_as_draggable(lineEdit, widget)
         self.constructorCode.append(lambda :["edit", str(lineEdit.text())] + add[2:])
 
     def addSlider(self, widget, add):
@@ -798,6 +817,7 @@ class Constructor(object):
         widgetSlider.setObjectName("BLOCK_SLIDER")
         self.layout.addWidget(widgetSlider)
         lineEdit.contextMenuEvent = self.build_menu
+        self.set_as_draggable(lineEdit, widget)
         self.constructorCode.append(lambda :["slider", str(lineEdit.text())])
 
     #def addButton(self, widget, add):
@@ -912,3 +932,11 @@ class Constructor(object):
     def setDecrementHigth(self):
         self.widget.setMinimumSize(self.widget.size()-QtCore.QSize(0, 100))
         self.widget.setMaximumSize(self.widget.size()-QtCore.QSize(0, 100))
+
+    #----------------------------------------------------------------------
+    def set_as_draggable(self, lineEdit, widget):
+        lineEdit.contextMenuEvent = self.build_menu
+        lineEdit.mouseMoveEvent = widget.mouseMoveEvent
+        lineEdit.mousePressEvent = widget.mousePressEvent
+        lineEdit.mouseReleaseEvent = widget.mouseReleaseEvent
+        lineEdit.setCursor(QtCore.Qt.OpenHandCursor)

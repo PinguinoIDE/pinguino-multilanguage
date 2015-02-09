@@ -20,6 +20,7 @@ class CustomTextEdit(QtGui.QTextEdit):
 
     #----------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
+
         super(CustomTextEdit, self).__init__(*args, **kwargs)
         self.completer = PinguinoAutoCompleter()
         self.completer.text_edit = self
@@ -48,6 +49,7 @@ class CustomTextEdit(QtGui.QTextEdit):
         #self.initialize()
         #self.setPalette(palette)
 
+        self.last_w = ""
         self.next_ignore = None
 
         #Highlighter(self)
@@ -59,9 +61,9 @@ class CustomTextEdit(QtGui.QTextEdit):
         self.setStyleSheet("""
         QTextEdit {
             background-color: #FFF;
-            font-family: ubuntu mono;
+            font-family: mono;
             font-weight: normal;
-            font-size: 12pt;
+            font-size: 11pt;
             }
 
         """)
@@ -106,7 +108,7 @@ class CustomTextEdit(QtGui.QTextEdit):
         self.setStyleSheet("""
         QTextEdit {
             background-color: #FFF;
-            font-family: ubuntu mono;
+            font-family: mono;
             font-weight: normal;
             font-size: %dpt;
             }
@@ -116,10 +118,12 @@ class CustomTextEdit(QtGui.QTextEdit):
 
     #----------------------------------------------------------------------
     def insertItem(self, completion):
+
         self.insert(completion.text())
 
 
     #----------------------------------------------------------------------
+
     def insert(self, completion):
         if not completion: return
         #selected = completion
@@ -148,8 +152,8 @@ class CustomTextEdit(QtGui.QTextEdit):
         self.setFocus()
 
 
-
     #----------------------------------------------------------------------
+
     def getPosPopup(self):
         pos = self.pos()
         pos1 = self.mapToGlobal(pos)
@@ -159,7 +163,9 @@ class CustomTextEdit(QtGui.QTextEdit):
         pos2.setY(cRect.y())
         return pos1 + pos2
 
+
     #----------------------------------------------------------------------
+
     def autoInsert(self, event):
         key = event.text()
         tc = self.textCursor()
@@ -193,6 +199,7 @@ class CustomTextEdit(QtGui.QTextEdit):
             return accept(")")
         else: return False
 
+
     #----------------------------------------------------------------------
     def keyPressEvent_autocompleter(self, event):
 
@@ -211,12 +218,15 @@ class CustomTextEdit(QtGui.QTextEdit):
 
         self.keyPressEvent(event)
 
+
     #----------------------------------------------------------------------
     def force_keyPressEvent(self, event):
 
         super(CustomTextEdit, self).keyPressEvent(event)
 
+
     #----------------------------------------------------------------------
+
     def __keyPressEvent__(self, event):
         self.setFocus()
 
@@ -237,6 +247,7 @@ class CustomTextEdit(QtGui.QTextEdit):
             QtCore.Qt.Key_Down,
             QtCore.Qt.Key_Right,
             QtCore.Qt.Key_Left,
+            QtCore.Qt.Key_Backspace,
             ) or event.modifiers() in (
             QtCore.Qt.ControlModifier,
             #QtCore.Qt.ShiftModifier,
@@ -282,7 +293,9 @@ class CustomTextEdit(QtGui.QTextEdit):
         self.show_autocomplete_if_conditions()
 
 
+
     #----------------------------------------------------------------------
+
     def smart_under_selection(self, tc):
         #word like: cdc|
         tc.movePosition(tc.WordLeft, tc.KeepAnchor)
@@ -296,24 +309,64 @@ class CustomTextEdit(QtGui.QTextEdit):
         else: tc.movePosition(tc.WordRight, tc.KeepAnchor)
 
 
-
     #----------------------------------------------------------------------
     def show_autocomplete_if_conditions(self):
-        tc = self.textCursor()
-        self.smart_under_selection(tc)
 
+        tc = self.textCursor()
+
+        if self.get_format() in ["comment", "quotation"]:
+            self.completer.hide()
+            return
+
+        self.smart_under_selection(tc)
         selected = tc.selectedText().split()
 
-        if not selected: return
-        #selected = selected[-1]
+        if re.match('^[\w.]+$', selected[-1]) is None:
+            self.completer.hide()
+            return
 
-        #Si no cumple con el mínimo de letras
+
+        if selected: self.last_w = selected[-1]
+
         try:
-            if len(selected[-1]) < self.completer.spell:
+            #Si no cumple con el mínimo de letras
+            if len(self.last_w) < self.completer.spell:
                 self.completer.hide()
 
             else:
-                self.completer.popup(self.getPosPopup(), selected[-1])
-                self.setFocus()
+                self.completer.popup(self.getPosPopup(), self.last_w)
 
-        except UnicodeEncodeError: return  #capturas tildes y caracteres especiales
+        except UnicodeEncodeError:
+            return  #capturas tildes y caracteres especiales
+
+
+    #----------------------------------------------------------------------
+    def brace_match(self):
+
+        return
+
+
+    #----------------------------------------------------------------------
+    def get_format(self):
+
+        contex_color = {"#7f0000": "quotation",
+                        "#cc0000": "quotation",
+                        "#007f00": "comment",
+                        "#c81818": "comment",}
+
+        tc = self.textCursor()
+        pos = tc.positionInBlock()
+
+        block = tc.block()
+        layout = block.layout()
+        formats = layout.additionalFormats()
+
+        for format_ in formats:
+            if pos >= format_.start and pos <= format_.start + format_.length:
+                return contex_color.get(format_.format.foreground().color().name().lower(), None)
+
+
+
+
+
+

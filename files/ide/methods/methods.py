@@ -12,7 +12,7 @@ from .decorators import Decorator
 from .dialogs import Dialogs
 from ..tools.files import Files
 from ..tools.search_replace import SearchReplace
-from ..methods.library_manager import Librarymanager
+#from ..methods.library_manager import Librarymanager
 from ..widgets.output_widget import START
 
 
@@ -295,10 +295,12 @@ class Methods(SearchReplace):
 
 
     #----------------------------------------------------------------------
+    @Decorator.call_later()
     def load_main_config(self):
 
         if self.configIDE.config("Main", "maximized", True):
             self.showMaximized()
+            self.setWindowState(QtCore.Qt.WindowMaximized)
 
         else:
             pos = self.configIDE.config("Main", "position", "(0, 0)")
@@ -307,14 +309,13 @@ class Methods(SearchReplace):
             size = self.configIDE.config("Main", "size", "(1050, 550)")
             self.resize(*eval(size))
 
-        ##self.main.plainTextEdit_output.resize(self.main.plainTextEdit_output.size()+
-                                              ##QtCore.QSize(0, self.configIDE.config("Main", "terminal_height", 80))
-                                              ##)
 
-        #self.main.dockWidget_output.resize(100, 100)
+        visible = self.configIDE.config("Main", "menubar", True)
+        self.main.actionMenubar.setChecked(visible)
+        self.main.menubar.setVisible(visible)
+        self.main.toolBar_system.setVisible(not visible)
 
-
-        #self.configIDE.set("Main", "terminal_height", self.main.plainTextEdit_output.height())
+        self.switch_ide_mode(self.configIDE.config("Features", "graphical", False))
 
 
     #----------------------------------------------------------------------
@@ -355,8 +356,8 @@ class Methods(SearchReplace):
 
             len_ = 40
             if len(file_) > len_:
-                file_path_1 = file_[:len_/2]
-                file_path_2 = file_[-len_/2:]
+                file_path_1 = file_[:int(len_/2)]
+                file_path_2 = file_[int(-len_/2):]
                 file_path = file_path_1 + "..." + file_path_2
             else: file_path = file_
 
@@ -412,16 +413,16 @@ class Methods(SearchReplace):
         lines = ""
         for line in args:
             lines += line
-            #self.main.plainTextEdit_output.appendPlainText(line)
 
         for key in kwargs.keys():
             line = key + ": " + kwargs[key]
             lines += line
 
-        #Integration with Shell: print(Lines)
-        #self.main.plainTextEdit_output.appendPlainText(lines)
-        self.main.plainTextEdit_output.log_output(lines.replace("\n", "\n"+START))
+        #import sys
+        #reload(sys)
+        #sys.stdout.write(lines)
 
+        self.main.plainTextEdit_output.log_output(lines.replace("\n", "\n"+START))
         self.main.plainTextEdit_output.update()
 
         scroll = self.main.plainTextEdit_output.verticalScrollBar()
@@ -442,51 +443,88 @@ class Methods(SearchReplace):
     #----------------------------------------------------------------------
     def set_board(self):
 
+        # config data
         board_name = self.configIDE.config("Board", "board", "Pinguino 2550")
+        arch = self.configIDE.config("Board", "arch", 8)
+        mode = self.configIDE.config("Board", "mode", "boot")
+        bootloader = self.configIDE.config("Board", "bootloader", "v1_v2")
+
+
+        # set board
         for board in self.pinguinoAPI._boards_:
             if board.name == board_name:
                 self.pinguinoAPI.set_board(board)
 
-        arch = self.configIDE.config("Board", "arch", 8)
-        if arch == 8:
-            bootloader = self.configIDE.config("Board", "bootloader", "v1_v2")
+
+        # set mode and bootloader
+        if arch == 8 and mode == "bootloader":
             if bootloader == "v1_v2":
                 self.pinguinoAPI.set_bootloader(self.pinguinoAPI.Boot2)
             else:
                 self.pinguinoAPI.set_bootloader(self.pinguinoAPI.Boot4)
 
+        # no configuration bootloader for 32 bits
+
+        if mode == "icsp":
+            # if mode is icsp overwrite all configuration
+            self.pinguinoAPI.set_bootloader(self.pinguinoAPI.NoBoot)
+
+
+        # update environment
         os.environ["PINGUINO_BOARD_ARCH"] = str(arch)
 
-        compiler = self.configIDE.get_path("sdcc_bin"), "sdcc"
 
+        # set compilers and libraries for each arch
+        # RB20150127 : modified until I can compile p32-gcc for mac os x
+        #elif os.getenv("PINGUINO_OS_NAME") == "linux":
         if os.getenv("PINGUINO_OS_NAME") == "windows":
             ext = ".exe"
-        elif os.getenv("PINGUINO_OS_NAME") == "linux":
+        else :
             ext = ""
 
         if arch == 8:
-            compiler = os.path.exists(os.path.join(self.configIDE.get_path("sdcc_bin"), "sdcc" + ext))
-            libraries = os.path.exists(self.configIDE.get_path("pinguino_8_libs"))
+            compiler_path = os.path.join(self.configIDE.get_path("sdcc_bin"), "sdcc" + ext)
+            libraries_path = self.configIDE.get_path("pinguino_8_libs")
 
         elif arch == 32:
-            compiler = os.path.exists(os.path.join(self.configIDE.get_path("gcc_bin"), "mips-elf-gcc-4.5.2" + ext))
-            libraries = os.path.exists(self.configIDE.get_path("pinguino_32_libs"))
+            #RB20140615 + RB20141116 + RB20150127 :
+            #- gcc toolchain has been renamed from mips-elf-gcc to p32-gcc except for MAC OS X
+            if os.getenv("PINGUINO_OS_NAME") == "macosx":
+                compiler_path = os.path.join(self.configIDE.get_path("gcc_bin"), "mips-elf-gcc" + ext)
+            else:
+                compiler_path = os.path.join(self.configIDE.get_path("gcc_bin"), "p32-gcc" + ext)
+            #- except for 32-bit Windows
+            #if os.getenv("PINGUINO_OS_NAME") == "windows":
+            #    if os.getenv("PINGUINO_OS_ARCH") == "32bit":
+            #        compiler_path = os.path.join(self.configIDE.get_path("gcc_bin"), "mips-gcc" + ext)
+            libraries_path = self.configIDE.get_path("pinguino_32_libs")
 
+
+        # generate messages
         status = ""
-        if not compiler:
+        if not os.path.exists(compiler_path):
             status = QtGui.QApplication.translate("Frame", "Missing compiler for %d-bit") % arch
+            logging.warning("Missing compiler for %d-bit" % arch)
+            logging.warning("Not found: %s" % compiler_path)
 
-        elif  not libraries:
+        if not os.path.exists(libraries_path):
             status = QtGui.QApplication.translate("Frame", "Missing libraries for %d-bit") % arch
+            logging.warning("Missing libraries for %d-bit" % arch)
+            logging.warning("Not found: %s" % libraries_path)
 
-        if not libraries and not compiler:
+        if not os.path.exists(libraries_path) and not os.path.exists(compiler_path):
             status = QtGui.QApplication.translate("Frame", "Missing libraries and compiler for %d-bit") % arch
+            #logging.warning("Missing libraries and compiler for %d-bit" % arch)
+            #logging.warning("Missing: %s" % compiler_path)
+            #logging.warning("Missing: %s" % libraries_path)
 
         if status:
             self.statusbar_warnning(status)
             os.environ["PINGUINO_CAN_COMPILE"] = "False"
         else:
             os.environ["PINGUINO_CAN_COMPILE"] = "True"
+            logging.warning("Found: %s" % compiler_path)
+            logging.warning("Found: %s" % libraries_path)
 
 
     #----------------------------------------------------------------------
@@ -504,8 +542,10 @@ class Methods(SearchReplace):
 
         if board.arch == 8 and board.bldr == "boot4":
             board_config += "Boootloader: v4\n"
-        if board.arch == 8 and board.bldr == "boot2":
+        elif board.arch == 8 and board.bldr == "boot2":
             board_config += "Boootloader: v1 & v2\n"
+        elif board.arch == 8 and board.bldr == "noboot":
+            board_config += "Mode: ICSP\n"
 
         return board_config
 
@@ -538,10 +578,10 @@ class Methods(SearchReplace):
     #----------------------------------------------------------------------
     def update_reserved_words(self):
 
-        libinstructions = self.pinguinoAPI.read_lib(8)[1]
+        libinstructions = self.pinguinoAPI.read_lib(8)
         name_spaces_8 = map(lambda x:x[0], libinstructions)
 
-        libinstructions = self.pinguinoAPI.read_lib(32)[1]
+        libinstructions = self.pinguinoAPI.read_lib(32)
         name_spaces_32 = map(lambda x:x[0], libinstructions)
 
         reserved_filename = os.path.join(os.getenv("PINGUINO_USER_PATH"), "reserved.pickle")
@@ -558,16 +598,17 @@ class Methods(SearchReplace):
         namespaces = {"arch8": name_spaces_8, "arch32": name_spaces_32, "all": name_spaces_commun,}
         pickle.dump(namespaces, open(reserved_filename, "w"))
 
-        print("Write on %s" % reserved_filename)
+        logging.warning("Writing: " + reserved_filename)
+        return("Writing: " + reserved_filename)
 
 
     #----------------------------------------------------------------------
     def update_instaled_reserved_words(self):
 
-        libinstructions = self.pinguinoAPI.read_lib(8, include_default=False)[1]
+        libinstructions = self.pinguinoAPI.read_lib(8, include_default=False)
         name_spaces_8 = map(lambda x:x[0], libinstructions)
 
-        libinstructions = self.pinguinoAPI.read_lib(32, include_default=False)[1]
+        libinstructions = self.pinguinoAPI.read_lib(32, include_default=False)
         name_spaces_32 = map(lambda x:x[0], libinstructions)
 
         reserved_filename = os.path.join(os.getenv("PINGUINO_USER_PATH"), "reserved.pickle")
@@ -590,45 +631,50 @@ class Methods(SearchReplace):
         #pickle.dump(olds, open(reserved_filename, "w"))
         pickle.dump(namespaces, open(reserved_filename, "w"))
 
-        print("Write on %s" % reserved_filename)
+        logging.warning("Writing: " + reserved_filename)
+        return("Writing: " + reserved_filename)
+
+
+    ##----------------------------------------------------------------------
+    #def load_fonts(self):
+
+        ##fonts_dir = os.path.join(os.getenv("PINGUINO_INSTALL_PATH"), "ide", "qtgui", "resources", "fonts")
+        #fonts_dir = os.path.join(os.getenv("PINGUINO_DATA"), "qtgui", "resources", "fonts")
+        #if not os.path.exists(fonts_dir):
+            #logging.warning("Missing: "+fonts_dir)
+            #return
+
+        #for dir_font in os.listdir(fonts_dir):
+            #for ttf in filter(lambda file:file.endswith(".ttf") or file.endswith(".otf"), os.listdir(os.path.join(fonts_dir, dir_font))):
+                ##print QtGui.QFontDatabase.addApplicationFontFromData(os.path.join(fonts_dir, dir_font, ttf))
+                #status = QtGui.QFontDatabase.addApplicationFont(os.path.join(fonts_dir, dir_font, ttf))
+                #if status == -1: logging.warning("Error loading: "+os.path.join(fonts_dir, dir_font, ttf))
 
 
     #----------------------------------------------------------------------
-    def load_fonts(self):
+    def expand_editor(self, expand):
 
-        #fonts_dir = os.path.join(os.getenv("PINGUINO_INSTALL_PATH"), "ide", "qtgui", "resources", "fonts")
-        fonts_dir = os.path.join(os.getenv("PINGUINO_DATA"), "qtgui", "resources", "fonts")
-        if not os.path.exists(fonts_dir):
-            logging.warning("Missing: "+fonts_dir)
-            return
+        self.toggle_toolbars(not expand)
+        self.main.dockWidget_output.setVisible(not expand)
+        self.main.actionToolbars.setChecked(not expand)
 
-        for dir_font in os.listdir(fonts_dir):
-            for ttf in filter(lambda file:file.endswith(".ttf") or file.endswith(".otf"), os.listdir(os.path.join(fonts_dir, dir_font))):
-                #print QtGui.QFontDatabase.addApplicationFontFromData(os.path.join(fonts_dir, dir_font, ttf))
-                status = QtGui.QFontDatabase.addApplicationFont(os.path.join(fonts_dir, dir_font, ttf))
-                if status == -1: logging.warning("Error loading: "+os.path.join(fonts_dir, dir_font, ttf))
+        if expand:
+            self.main.menubar.setVisible(expand)
+            self.main.actionMenubar.setChecked(expand)
 
-
-    #----------------------------------------------------------------------
-    def exapand_editor(self, exapand):
-
-        self.toggle_toolbars(not exapand)
-        self.main.dockWidget_output.setVisible(not exapand)
-        self.main.actionToolbars.setChecked(not exapand)
-
-        self.main.statusBar.setVisible(not exapand)
+        self.main.statusBar.setVisible(not expand)
 
         if self.is_graphical():
-            self.main.dockWidget_blocks.setVisible(not exapand)
+            self.main.dockWidget_blocks.setVisible(not expand)
             self.main.dockWidget_tools.setVisible(False)
         else:
-            self.main.dockWidget_tools.setVisible(not exapand)
+            self.main.dockWidget_tools.setVisible(not expand)
             self.main.dockWidget_blocks.setVisible(False)
 
     #----------------------------------------------------------------------
     def toggle_toolbars(self, visible):
 
-        if visible == False:
+        if not visible:
             for toolbar in self.toolbars:
                 toolbar.setVisible(visible)
 
@@ -639,11 +685,21 @@ class Methods(SearchReplace):
             self.main.toolBar_pinguino.setVisible(True)
 
             visible = self.is_graphical()
-
             self.main.toolBar_edit.setVisible(not visible)
             self.main.toolBar_graphical.setVisible(visible)
             self.main.toolBar_search_replace.setVisible(not visible)
             self.main.toolBar_undo_redo.setVisible(not visible)
+
+        self.main.toolBar_system.setVisible(not self.main.menubar.isVisible())
+
+
+    #----------------------------------------------------------------------
+    def toggle_menubar(self):
+
+        self.main.menubar.setVisible(not self.main.menubar.isVisible())
+        if not self.main.menubar.isVisible():
+            self.toggle_toolbars(True)
+        self.main.toolBar_system.setVisible(not self.main.menubar.isVisible())
 
 
     #----------------------------------------------------------------------
@@ -670,6 +726,5 @@ class Methods(SearchReplace):
                 if reply:
                     editor.text_edit.setPlainText(content)
                     os.remove(filename_backup)
-
 
 

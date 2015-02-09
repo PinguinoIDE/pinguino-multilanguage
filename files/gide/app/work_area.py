@@ -105,7 +105,7 @@ class WorkArea(QtGui.QWidget):
 
         menu.setStyleSheet("""
         QMenu {
-            font-family: ubuntu regular;
+            font-family: inherit;
             font-weight: normal;
             }
 
@@ -154,7 +154,7 @@ class WorkArea(QtGui.QWidget):
 
 
     #----------------------------------------------------------------------
-    def get_better_pos(self, posList, pos):
+    def get_better_pos(self, posList, pos, child):
 
         distancia = lambda pa, pb:sqrt((pa.x()-pb.x())**2+(pa.y()-pb.y())**2)
 
@@ -167,14 +167,16 @@ class WorkArea(QtGui.QWidget):
             b = point[1]
 
             if b.metadata.type_ == "tipo1":
-                if b.metadata.to: continue
+                if b.metadata.to:
+                    if not child.metadata.type_ in "tipo2 tipo5".split(): continue
 
             elif b.metadata.type_ in "tipo4".split():
-                if b.metadata.nested: continue
+                if b.metadata.nested:
+                    if not child.metadata.type_ in "tipo2 tipo5".split(): continue
 
             elif b.metadata.type_ in "tipo7 tipo9".split():
-                if b.metadata.to and b.metadata.nested: continue
-                #FIXME: two positios!
+                if b.metadata.to and b.metadata.nested:
+                    if not child.metadata.type_ in "tipo2 tipo5".split(): continue
 
             h = distancia(s, pos)
             if h < 20 and h != 0.0: newPosList.append((s, h, point[1]))
@@ -301,7 +303,7 @@ class WorkArea(QtGui.QWidget):
 
             listPos = self.get_type_magnetic(child)
 
-            point, accept, parent = self.get_better_pos(listPos, point)
+            point, accept, parent = self.get_better_pos(listPos, point, child)
 
             self.prepareAccept = [accept, child, parent]
             self.accept_move(False, child, parent)
@@ -314,16 +316,17 @@ class WorkArea(QtGui.QWidget):
 
 
             self.SelectArea.show()
+            under = self.SelectionAbs[:]
 
-            if self.SelectArea.isVisible():
-                under = self.SelectionAbs[:]
+            if self.SelectArea.isVisible() and (child in under):
 
-                self.SelectArea.hide()
+                #self.SelectArea.hide()
 
                 if len(under) > 1:
                     self.SelectArea.show()
                     selected = under
-                    if child in selected: selected.remove(child)
+                    #if child in selected: selected.remove(child)
+                    selected.remove(child)
                     for Id in selected:
                         if Id.metadata.from_ == []:
                             #print Id
@@ -334,6 +337,9 @@ class WorkArea(QtGui.QWidget):
                             self.move_group(Id, relative)
                             #self.moveGroupInside(Id, relative)
                     self.SelectArea.move(self.SelectArea.pos()+relative)
+
+            else:
+                self.SelectArea.hide()
 
 
             child.metadata.pos_ = point
@@ -537,12 +543,14 @@ class WorkArea(QtGui.QWidget):
 
 
             pos = child.pos()
+            self.global_close_hand = [child.childAt(child.mapFromGlobal(event.globalPos()))]
 
             if event.modifiers() == QtCore.Qt.ControlModifier:
+                #Copy full block
                 if child.metadata.parent != "None":
                     pos += child.metadata.parent.metadata.widget.pos()
                 fullw = map(lambda wdg:wdg.metadata.basename, child.metadata.inside)
-                #if not fullw: fullw = [False]
+                child.childAt(child.mapFromGlobal(event.globalPos())).setCursor(QtCore.Qt.ClosedHandCursor)
                 child = self.new_bloq(child.NAME, child.ARGS, self.mapToGlobal(pos), child.BASENAME, full=fullw)[0]
 
 
@@ -550,6 +558,7 @@ class WorkArea(QtGui.QWidget):
                 #Copy a basic block
                 if child.metadata.parent != "None":
                     pos += child.metadata.parent.metadata.widget.pos()
+                child.childAt(child.mapFromGlobal(event.globalPos())).setCursor(QtCore.Qt.ClosedHandCursor)
                 child = self.new_bloq(child.NAME, child.ARGS, self.mapToGlobal(pos), child.BASENAME, full=[False])[0]
 
 
@@ -574,6 +583,9 @@ class WorkArea(QtGui.QWidget):
         if self.CHILD != None:
             if self.CHILD.childAt(self.CHILD.mapFromGlobal(event.globalPos())):
                 self.CHILD.childAt(self.CHILD.mapFromGlobal(event.globalPos())).setCursor(QtCore.Qt.OpenHandCursor)
+                for ch in self.global_close_hand:
+                    ch.setCursor(QtCore.Qt.OpenHandCursor)
+
             self.frame.main.actionSave_file.setEnabled(True)
 
         if self.getUnderSelection() == []:
@@ -747,7 +759,7 @@ class WorkArea(QtGui.QWidget):
 //
 //  WARNING! All changes made in this file will be lost!
 //------------------------------------------------------------------\n
-"""% (datetime.today().strftime("%Y-%m-%d"), os.getenv("NAME"), os.getenv("VERSION"))
+"""% (datetime.today().strftime("%Y-%m-%d"), os.getenv("PINGUINO_NAME"), os.getenv("PINGUINO_VERSION"))
 
         pinguino_code = header_code + global_ + pinguino_code
 
@@ -825,6 +837,9 @@ class WorkArea(QtGui.QWidget):
             code += "\n" + "\n".join(map(lambda x:"    "+x, self.get_code_from(bloque, auto_open=auto_open).split("\n"))) + "}\n\n"
             #else:
                 #code += "\n" + "\n".join(map(lambda x:"    "+x, self.get_code_from(bloque, auto_open=auto_open).split("\n"))) + "%s;}\n\n" % line[2]
+
+        elif ID.metadata.type_ in ["tipo9"]:
+            code = code.replace("\n", "{}\n")
 
 
         if len(ID.metadata.to) > 0:
