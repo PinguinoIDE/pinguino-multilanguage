@@ -8,4 +8,4 @@
 
 Name: avrin
 Language: ja
-Contribution: 2014/03 
+Contribution: 2014/06,2014/03
