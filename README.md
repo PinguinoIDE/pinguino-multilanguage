@@ -20,7 +20,7 @@ this must generate/update pinguino_pt_BR.ts
 
 
 ## Translate files
-Now you have your translation files ready to be used with Qt Linguist [you can follow tutorial] (https://qt-project.org/doc/qt-5/linguist-translators.html). Load the `.ts` file, double click entries and type the translation, click the `?` icon to mark them as finished.
+Now you have your translation files ready to be used with Qt Linguist ([you can follow tutorial] (https://qt-project.org/doc/qt-5/linguist-translators.html)). Load the `.ts` file, double click entries and type the translation, click the `?` icon to mark them as finished.
 
 
 ## Test translation on Pinguino IDE
