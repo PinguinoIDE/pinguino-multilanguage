@@ -29,4 +29,4 @@ In Qt Linguist do `File -> Release` to compile a new .qm file. Copy this file in
 
 ## How to add your translations to official Pinguino IDE?
 Fork this repository, follow the steps above and do [pull request](https://help.github.com/articles/using-pull-requests/).
-Don't forget sign credits.txt with your name.
+Don't forget sign [credits.txt](https://github.com/PinguinoIDE/pinguino-multilanguage/blob/master/credits.txt) with your name.
