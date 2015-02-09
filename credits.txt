@@ -1,11 +1,11 @@
 
-# Name: 
+# Name:
 # Language:
-# Contribution: main translation or correction
+# Date:
 
 #-------------------------------------------------------------------
 
 
 Name: avrin
 Language: ja
-Contribution: 2014/06,2014/03
+Date: 2014/06,2014/03
